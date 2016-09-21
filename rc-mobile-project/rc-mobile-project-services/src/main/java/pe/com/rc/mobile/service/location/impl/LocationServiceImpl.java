@@ -16,7 +16,7 @@ public class LocationServiceImpl implements LocationService {
 	private LocationRepository locationRepository;
 
 	public List<Location> listLocations() {
-		// TODO Auto-generated method stub
+		System.out.println("LocationServiceImpl");
 		List<Location> listaLocations = null;
 
 		try {

@@ -23,9 +23,16 @@ public class LocationRepositoryImpl implements LocationRepository {
 	private LocationHelper locationHelper;
 
 	public List<Location> listLocations() {
+		System.out.println("LocationRepositoryImpl");
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+		
+		System.out.println("LocationRepositoryImpl  - 2");
 		locationHelper = new LocationHelper(jdbcTemplate);
+		
+		System.out.println("LocationRepositoryImpl  - 3");
 		List<Location> listLocations = locationHelper.getLocations();
+		
+		System.out.println("LocationRepositoryImpl  - 4");
 		return listLocations;
 	}
 
