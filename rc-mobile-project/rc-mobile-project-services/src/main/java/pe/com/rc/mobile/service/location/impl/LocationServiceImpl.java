@@ -16,15 +16,12 @@ public class LocationServiceImpl implements LocationService {
 	private LocationRepository locationRepository;
 
 	public List<Location> listLocations() {
-		System.out.println("LocationServiceImpl");
 		List<Location> listaLocations = null;
-
 		try {
 			listaLocations = locationRepository.listLocations();
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-
 		return listaLocations;
 	}
 
