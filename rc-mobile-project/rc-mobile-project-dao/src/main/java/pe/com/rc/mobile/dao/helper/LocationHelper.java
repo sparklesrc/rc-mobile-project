@@ -9,6 +9,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SqlReturnResultSet;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
+import org.springframework.transaction.annotation.Transactional;
+
 import pe.com.rc.mobile.model.Location;
 
 @SuppressWarnings("all")
@@ -24,10 +26,8 @@ public class LocationHelper {
 	}
 
 	public List<Location> getLocations() {
-		System.out.println("LocationHelper.getLocations() - INICIO");
 		Map<String, Object> results = simpleJdbcCall.execute();
 		List<Location> appVersionRs = (List<Location>) results.get("RS");
-		System.out.println("LocationHelper.getLocations() - FIN");
 		return appVersionRs;
 	}
 
@@ -50,4 +50,11 @@ public class LocationHelper {
 			return location;
 		}
 	}
+	
+//	@Transactional(rollbackFor=Exception.class)
+//	public void performBothSProcsTransactionally(){
+//	   //executeSP1
+//
+//	   //executeSP2
+//	}
 }
