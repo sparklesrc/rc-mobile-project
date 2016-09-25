@@ -22,8 +22,8 @@ public class LocationController {
 	@RequestMapping(value = "/listAll", method = RequestMethod.POST, produces = { "application/json" })
 	public @ResponseBody List<Location> listLocations() {
 		System.out.println("LIST ALL");
-		// List<Location> listaLocacitons = locationService.listLocations();
-		List<Location> listaLocacitons = getLista();
+		 List<Location> listaLocacitons = locationService.listLocations();
+//		List<Location> listaLocacitons = getLista();
 		return listaLocacitons;
 	}
 
