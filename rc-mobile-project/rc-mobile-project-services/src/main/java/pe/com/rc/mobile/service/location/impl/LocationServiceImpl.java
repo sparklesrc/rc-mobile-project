@@ -1,12 +1,14 @@
 package pe.com.rc.mobile.service.location.impl;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pe.com.rc.mobile.dao.LocationRepository;
 import pe.com.rc.mobile.model.Location;
+import pe.com.rc.mobile.model.Lugar;
+import pe.com.rc.mobile.model.LugarRq;
+import pe.com.rc.mobile.model.Preferencia;
 import pe.com.rc.mobile.service.location.LocationService;
 
 @Service
@@ -20,9 +22,19 @@ public class LocationServiceImpl implements LocationService {
 		try {
 			listaLocations = locationRepository.listLocations();
 		} catch (Exception e) {
-			// TODO: handle exception
 		}
 		return listaLocations;
 	}
 
+	public List<Lugar> listarLugaresByDefault(LugarRq lugarRq) {
+		List<Lugar> lugares = null;
+		String distrito = lugarRq.getUbicacion().getCodigoPostal();
+		List<Preferencia> preferencias = lugarRq.getPreferencia();
+		try {
+			lugares = locationRepository.listarLugaresByDefault(distrito,
+					preferencias);
+		} catch (Exception e) {
+		}
+		return lugares;
+	}
 }

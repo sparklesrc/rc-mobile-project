@@ -18,4 +18,8 @@ public class Constants {
 	public static final String PARAM_SCHEDULE_REF = "schedule_ref";
 	public static final String PARAM_LATITUDE = "latitude";
 	public static final String PARAM_LONGITUDE = "longitude";
+
+	public static final String PROC_GET_LUGARES_BY_DEFAULT = "PROC_GET_LUGARES_BY_DEFAULT";
+	public static final String PARAM_DISTRITO = "@DISTRITO";
+	public static final String PARAM_PREFERENCIAS = "@PREFERENCIAS";
 }
