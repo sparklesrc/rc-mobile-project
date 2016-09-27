@@ -1,5 +1,6 @@
 package pe.com.rc.mobile.web.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +46,8 @@ public class LocationController {
 			@RequestBody LugarRq lugarRq) {
 
 		List<Lugar> lugares = locationService.listarLugaresByDefault(lugarRq);
-
-		return null;
+		List<LugarRs> respo = new ArrayList<LugarRs>();
+		respo.add((LugarRs) lugares);
+		return respo;
 	}
 }
