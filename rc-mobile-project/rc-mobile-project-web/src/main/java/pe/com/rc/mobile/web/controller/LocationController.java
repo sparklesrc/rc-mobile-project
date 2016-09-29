@@ -1,6 +1,5 @@
 package pe.com.rc.mobile.web.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +13,6 @@ import pe.com.rc.mobile.model.Location;
 import pe.com.rc.mobile.model.Lugar;
 import pe.com.rc.mobile.model.LugarRq;
 import pe.com.rc.mobile.model.LugarRs;
-import pe.com.rc.mobile.model.Preferencia;
-import pe.com.rc.mobile.model.Ubicacion;
 import pe.com.rc.mobile.service.location.LocationService;
 import pe.com.rc.mobile.web.util.Constants;
 
@@ -42,12 +39,12 @@ public class LocationController {
 	 * @since 26/09/2016
 	 */
 	@RequestMapping(value = Constants.URL_LIST_DEFAULT, method = RequestMethod.POST, produces = { "application/json" })
-	public @ResponseBody List<LugarRs> listarLugaresDefault(
+	public @ResponseBody LugarRs listarLugaresDefault(
 			@RequestBody LugarRq lugarRq) {
 
 		List<Lugar> lugares = locationService.listarLugaresByDefault(lugarRq);
-		List<LugarRs> respo = new ArrayList<LugarRs>();
-		respo.add((LugarRs) lugares);
+		LugarRs respo = new LugarRs();
+		respo.setLugar(lugares);
 		return respo;
 	}
 }

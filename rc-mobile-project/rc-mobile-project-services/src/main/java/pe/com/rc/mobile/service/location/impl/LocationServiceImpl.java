@@ -30,9 +30,10 @@ public class LocationServiceImpl implements LocationService {
 		List<Lugar> lugares = null;
 		String distrito = lugarRq.getUbicacion().getCodigoPostal();
 		List<Preferencia> preferencias = lugarRq.getPreferencia();
+		String idUsuario = lugarRq.getIdUsuario();
 		try {
 			lugares = locationRepository.listarLugaresByDefault(distrito,
-					preferencias);
+					preferencias, idUsuario);
 		} catch (Exception e) {
 		}
 		return lugares;

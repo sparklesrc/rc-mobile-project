@@ -22,4 +22,8 @@ public class Constants {
 	public static final String PROC_GET_LUGARES_BY_DEFAULT = "PROC_GET_LUGARES_BY_DEFAULT";
 	public static final String PARAM_DISTRITO = "@DISTRITO";
 	public static final String PARAM_PREFERENCIAS = "@PREFERENCIAS";
+	
+	public static final String PROC_GET_AMISTADES_BY_PLACE = "PROC_GET_AMISTADES_BY_PLACE";
+	public static final String PARAM_USUARIO_ID = "";
+	public static final String PARAM_LUGAR_ID = "";
 }

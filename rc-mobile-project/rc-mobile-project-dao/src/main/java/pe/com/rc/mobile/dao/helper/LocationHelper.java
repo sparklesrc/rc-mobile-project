@@ -73,11 +73,10 @@ public class LocationHelper {
 		}
 	}
 
-	public List<Lugar> getLugaresByDefault(String distrito,
-			List<Preferencia> preferencias) {
+	public List<Lugar> getLugaresByDefault(String distrito, String idPreferencia) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put(Constants.PARAM_DISTRITO, distrito);
-		params.put(Constants.PARAM_PREFERENCIAS, preferencias);
+		params.put(Constants.PARAM_PREFERENCIAS, idPreferencia);
 
 		Map<String, Object> results = simpleJdbcCall2.execute(params);
 		List<Lugar> listaLugares = (List<Lugar>) results.get(Constants.RESULT);
@@ -115,6 +114,5 @@ public class LocationHelper {
 
 			return lugar;
 		}
-
 	}
 }
