@@ -22,6 +22,7 @@ public class LocationServiceImpl implements LocationService {
 		try {
 			listaLocations = locationRepository.listLocations();
 		} catch (Exception e) {
+			System.out.println("ERROR AL LISTAR");
 		}
 		return listaLocations;
 	}
