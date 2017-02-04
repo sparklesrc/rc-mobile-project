@@ -9,42 +9,36 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import pe.com.rc.mobile.model.Location;
 import pe.com.rc.mobile.model.Lugar;
 import pe.com.rc.mobile.model.LugarRq;
 import pe.com.rc.mobile.model.LugarRs;
-import pe.com.rc.mobile.service.location.LocationService;
+import pe.com.rc.mobile.service.lugar.LugarService;
 import pe.com.rc.mobile.web.util.Constants;
 
 @RestController
 @RequestMapping(Constants.URL_BASE)
-public class LocationController {
+public class LugarController {
 
 	@Autowired
-	LocationService locationService;
-
-	@RequestMapping(value = Constants.URL_LIST_ALL, method = RequestMethod.POST, produces = { "application/json" })
-	public @ResponseBody List<Location> listLocations() {
-		List<Location> listaLocacitons = locationService.listLocations();
-		return listaLocacitons;
-	}
+	LugarService lugarService;
 
 	/**
-	 * Metodo que obtiene por defecto los lugares mas cercanos en base a la
-	 * lista de preferencias segun el distrito de ubicacion
+	 * Metodo que obtiene al logar los lugares mas cercanos en base a la lista
+	 * de preferencias segun el distrito de ubicacion
 	 * 
 	 * @param lugarRq
 	 * @return List<LugarRs>
 	 * @author framirez
 	 * @since 26/09/2016
 	 */
-	@RequestMapping(value = Constants.URL_LIST_DEFAULT, method = RequestMethod.POST, produces = { "application/json" })
+	@RequestMapping(value = Constants.URL_LUGAR + Constants.URL_LIST_DEFAULT, method = RequestMethod.POST, produces = { "application/json" })
 	public @ResponseBody LugarRs listarLugaresDefault(
 			@RequestBody LugarRq lugarRq) {
 
-		List<Lugar> lugares = locationService.listarLugaresByDefault(lugarRq);
+		List<Lugar> lugares = lugarService.listarLugaresByDefault(lugarRq);
 		LugarRs respo = new LugarRs();
 		respo.setLugar(lugares);
 		return respo;
+
 	}
 }

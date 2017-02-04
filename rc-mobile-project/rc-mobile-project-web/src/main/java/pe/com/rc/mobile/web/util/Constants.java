@@ -7,6 +7,6 @@ public class Constants {
 	public static final String URL_LOGIN = "/login";
 	public static final String URL_LIST_ALL = "/listAll";
 
+	public static final String URL_LUGAR = "/lugar";
 	public static final String URL_LIST_DEFAULT = "/listByDefault";
-
 }

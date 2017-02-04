@@ -16,6 +16,8 @@ public class Lugar {
 	private List<TipoLugar> tipoLugar;
 	private Ubicacion ubicacion;
 	private List<Amistad> amistad;
+	private Integer cantEstrellas;
+	private MusicaLugar musicaLugar;
 
 	public String getId() {
 		return id;
@@ -111,6 +113,22 @@ public class Lugar {
 
 	public void setMacroPlace(MacroPlace macroPlace) {
 		this.macroPlace = macroPlace;
+	}
+
+	public Integer getCantEstrellas() {
+		return cantEstrellas;
+	}
+
+	public void setCantEstrellas(Integer cantEstrellas) {
+		this.cantEstrellas = cantEstrellas;
+	}
+
+	public MusicaLugar getMusicaLugar() {
+		return musicaLugar;
+	}
+
+	public void setMusicaLugar(MusicaLugar musicaLugar) {
+		this.musicaLugar = musicaLugar;
 	}
 
 }

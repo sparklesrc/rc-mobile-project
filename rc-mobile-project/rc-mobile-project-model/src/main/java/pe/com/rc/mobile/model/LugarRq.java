@@ -14,7 +14,7 @@ import java.util.List;
 public class LugarRq {
 
 	private Ubicacion ubicacion;
-	private List<Preferencia> preferencia;
+	private Preferencia preferencia;
 	private List<Amistad> amistad;
 	private String idUsuario;
 
@@ -24,14 +24,6 @@ public class LugarRq {
 
 	public void setUbicacion(Ubicacion ubicacion) {
 		this.ubicacion = ubicacion;
-	}
-
-	public List<Preferencia> getPreferencia() {
-		return preferencia;
-	}
-
-	public void setPreferencia(List<Preferencia> preferencia) {
-		this.preferencia = preferencia;
 	}
 
 	public List<Amistad> getAmistad() {
@@ -48,6 +40,14 @@ public class LugarRq {
 
 	public void setIdUsuario(String idUsuario) {
 		this.idUsuario = idUsuario;
+	}
+
+	public Preferencia getPreferencia() {
+		return preferencia;
+	}
+
+	public void setPreferencia(Preferencia preferencia) {
+		this.preferencia = preferencia;
 	}
 
 }

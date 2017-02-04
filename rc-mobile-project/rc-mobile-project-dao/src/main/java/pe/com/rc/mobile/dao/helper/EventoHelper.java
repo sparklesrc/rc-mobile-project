@@ -8,7 +8,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SqlReturnResultSet;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 
-import pe.com.rc.mobile.dao.helper.LocationHelper.LocationMapper;
 import pe.com.rc.mobile.dao.util.Constants;
 import pe.com.rc.mobile.model.Evento;
 import pe.com.rc.mobile.model.Location;

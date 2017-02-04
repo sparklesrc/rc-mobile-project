@@ -1,24 +1,26 @@
 package pe.com.rc.mobile.model;
 
+import java.util.List;
+
 public class Preferencia {
 
-	private String id;
-	private String descripcion;
+	private List<TipoLugar> tipoLugar;
+	private List<MusicaLugar> musicaLugar;
 
-	public String getId() {
-		return id;
+	public List<TipoLugar> getTipoLugar() {
+		return tipoLugar;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setTipoLugar(List<TipoLugar> tipoLugar) {
+		this.tipoLugar = tipoLugar;
 	}
 
-	public String getDescripcion() {
-		return descripcion;
+	public List<MusicaLugar> getMusicaLugar() {
+		return musicaLugar;
 	}
 
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
+	public void setMusicaLugar(List<MusicaLugar> musicaLugar) {
+		this.musicaLugar = musicaLugar;
 	}
 
 }
