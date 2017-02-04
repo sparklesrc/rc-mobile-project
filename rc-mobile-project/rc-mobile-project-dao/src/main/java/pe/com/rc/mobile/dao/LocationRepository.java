@@ -10,5 +10,5 @@ public interface LocationRepository {
 	List<Location> listLocations();
 
 	List<Lugar> listarLugaresByDefault(String distrito,
-			List<Preferencia> preferencias);
+			List<Preferencia> preferencias, String idUsuario);
 }
