@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import pe.com.rc.mobile.core.exception.ServiceException;
 import pe.com.rc.mobile.model.Lugar;
 import pe.com.rc.mobile.model.LugarRq;
 import pe.com.rc.mobile.model.LugarRs;
@@ -33,7 +34,7 @@ public class LugarController {
 	 */
 	@RequestMapping(value = Constants.URL_LUGAR + Constants.URL_LIST_DEFAULT, method = RequestMethod.POST, produces = { "application/json" })
 	public @ResponseBody LugarRs listarLugaresDefault(
-			@RequestBody LugarRq lugarRq) {
+			@RequestBody LugarRq lugarRq) throws ServiceException {
 
 		List<Lugar> lugares = lugarService.listarLugaresByDefault(lugarRq);
 		LugarRs respo = new LugarRs();

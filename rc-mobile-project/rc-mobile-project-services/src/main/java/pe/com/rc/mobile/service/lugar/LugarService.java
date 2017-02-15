@@ -2,6 +2,7 @@ package pe.com.rc.mobile.service.lugar;
 
 import java.util.List;
 
+import pe.com.rc.mobile.core.exception.ServiceException;
 import pe.com.rc.mobile.model.Lugar;
 import pe.com.rc.mobile.model.LugarRq;
 
@@ -14,5 +15,5 @@ import pe.com.rc.mobile.model.LugarRq;
  */
 public interface LugarService {
 
-	List<Lugar> listarLugaresByDefault(LugarRq lugarRq);
+	List<Lugar> listarLugaresByDefault(LugarRq lugarRq) throws ServiceException;
 }

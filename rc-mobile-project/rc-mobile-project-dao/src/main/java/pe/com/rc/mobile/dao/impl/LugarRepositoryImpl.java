@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import pe.com.rc.mobile.core.exception.DaoException;
 import pe.com.rc.mobile.dao.LugarRepository;
 import pe.com.rc.mobile.dao.helper.AmistadHelper;
 import pe.com.rc.mobile.dao.helper.LugarHelper;
@@ -30,7 +31,7 @@ public class LugarRepositoryImpl implements LugarRepository {
 
 	public List<Lugar> listarLugaresByDefault(String distrito,
 			List<TipoLugar> tipoLugar, List<MusicaLugar> musicaLugar,
-			String idUsuario) {
+			String idUsuario) throws DaoException {
 
 		List<Lugar> lugares = new ArrayList(0);
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
