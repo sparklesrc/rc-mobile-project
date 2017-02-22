@@ -42,5 +42,10 @@
 			<artifactId>rc-mobile-project-dao</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>pe.com.rc.mobile</groupId>
+			<artifactId>rc-mobile-project-core</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 </project>

@@ -1,9 +1,13 @@
 package pe.com.rc.mobile.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Location {
 
+	@JsonIgnore
 	private String locationId;
 	private String locationName;
+	@JsonIgnore
 	private String storeId;
 	private String address;
 	private String addressFind;
@@ -11,6 +15,7 @@ public class Location {
 	private String districtFind;
 	private String province;
 	private String department;
+	@JsonIgnore
 	private String channelId;
 	private String scheduleRef;
 	private String latitude;
