@@ -1,0 +1,23 @@
+
+select  lug.lugar_id,
+	lug.razon_social,
+	lug.ruc,
+	lug.telefono,
+	lug.direccion,
+	lug.representante_legal,
+	lug.email,
+	lug.pagina_web,
+	lug.distrito,
+	lug.departamento,
+	lug.provincia,
+	lug.pais,
+	lug.codigo_postal,
+	lug.latitude,
+	lug.longitude
+from 	tbl_lugar lug,
+	tbl_tipo_lugar tip,
+	tbl_musica_lugar mus
+where	lug.distrito = @distrito
+and	lug.lugar_id = tip.lugar_id
+and	lug.lugar_id = mus.lugar_id
+and	tip.lugar
