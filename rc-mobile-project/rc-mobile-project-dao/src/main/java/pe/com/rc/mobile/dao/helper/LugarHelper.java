@@ -32,15 +32,15 @@ public class LugarHelper {
 		simpleJdbcCall.declareParameters(new SqlParameter(
 				Constants.PARAM_DISTRITO, Types.VARCHAR));
 		simpleJdbcCall.declareParameters(new SqlParameter(
-				Constants.PARAM_TIPO_LUGAR, Types.ARRAY));
+				Constants.PARAM_TIPO_LUGAR, Types.VARCHAR));
 		simpleJdbcCall.declareParameters(new SqlParameter(
-				Constants.PARAM_MUSICA_LUGAR, Types.ARRAY));
+				Constants.PARAM_MUSICA_LUGAR, Types.VARCHAR));
 		simpleJdbcCall.declareParameters(new SqlReturnResultSet(
 				Constants.RESULT, new LugarMapper()));
 	}
 
-	public List<Lugar> getLugaresByDefault(String distrito,
-			List<TipoLugar> tipoLugar, List<MusicaLugar> musicaLugar) {
+	public List<Lugar> getLugaresByDefault(String distrito, String tipoLugar,
+			String musicaLugar) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put(Constants.PARAM_DISTRITO, distrito);
 		params.put(Constants.PARAM_TIPO_LUGAR, tipoLugar);

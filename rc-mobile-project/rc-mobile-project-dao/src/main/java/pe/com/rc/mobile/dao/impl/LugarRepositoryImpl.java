@@ -12,12 +12,9 @@ import org.springframework.stereotype.Repository;
 
 import pe.com.rc.mobile.core.exception.DaoException;
 import pe.com.rc.mobile.dao.LugarRepository;
-import pe.com.rc.mobile.dao.helper.AmistadHelper;
 import pe.com.rc.mobile.dao.helper.LugarHelper;
-import pe.com.rc.mobile.model.Amistad;
 import pe.com.rc.mobile.model.Lugar;
 import pe.com.rc.mobile.model.MusicaLugar;
-import pe.com.rc.mobile.model.Preferencia;
 import pe.com.rc.mobile.model.TipoLugar;
 
 @Repository
@@ -37,10 +34,40 @@ public class LugarRepositoryImpl implements LugarRepository {
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 		lugarHelper = new LugarHelper(jdbcTemplate);
 
-		lugares = lugarHelper.getLugaresByDefault(distrito, tipoLugar,
-				musicaLugar);
+		String tiposLugar = getTiposLugar(tipoLugar);
+		String musicasLugar = getMusicasLugar(musicaLugar);
+
+		lugares = lugarHelper.getLugaresByDefault(distrito, tiposLugar,
+				musicasLugar);
 
 		return lugares;
 	}
 
+	private String getTiposLugar(List<TipoLugar> tipoLugar) {
+		String valor = "";
+		int contador = 1;
+		for (TipoLugar tl : tipoLugar) {
+			if (contador < tipoLugar.size()) {
+				valor += "\'".concat(tl.getDescripcion()).concat("\',");
+			} else {
+				valor += "\'".concat(tl.getDescripcion()).concat("\'");
+			}
+			contador++;
+		}
+		return valor;
+	}
+
+	private String getMusicasLugar(List<MusicaLugar> musicaLugar) {
+		String valor = "";
+		int contador = 1;
+		for (MusicaLugar tl : musicaLugar) {
+			if (contador < musicaLugar.size()) {
+				valor += "\'".concat(tl.getDescripcion()).concat("\',");
+			} else {
+				valor += "\'".concat(tl.getDescripcion()).concat("\'");
+			}
+			contador++;
+		}
+		return valor;
+	}
 }
