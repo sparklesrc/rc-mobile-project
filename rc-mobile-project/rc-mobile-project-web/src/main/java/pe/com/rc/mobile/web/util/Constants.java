@@ -1,5 +1,11 @@
 package pe.com.rc.mobile.web.util;
 
+/**
+ * Clase Constantes
+ * 
+ * @author framirez
+ *
+ */
 public class Constants {
 
 	public static final String URL_BASE = "/rest";
