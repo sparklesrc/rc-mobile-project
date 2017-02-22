@@ -8,6 +8,7 @@ public class SimpleClass {
 
 	void printLog() {
 		System.out.println("Valores...");
+		System.out.println("\'apple\',\'banana\'");
 		logger.info("Caso");
 		logger.error("Error");
 		logger.debug("PRUEBA");
