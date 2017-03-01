@@ -1,23 +1,52 @@
+Relacion: Lugar - TipoLugar - TipoMusica
+Siempre se mantendra de 1 en 1
+
+/**
+ * GET LUGARES BY DEFAULT
+**/
 
 select  lug.lugar_id,
-	lug.razon_social,
-	lug.ruc,
-	lug.telefono,
-	lug.direccion,
-	lug.representante_legal,
-	lug.email,
-	lug.pagina_web,
-	lug.distrito,
-	lug.departamento,
-	lug.provincia,
-	lug.pais,
-	lug.codigo_postal,
-	lug.latitude,
-	lug.longitude
-from 	tbl_lugar lug,
-	tbl_tipo_lugar tip,
-	tbl_musica_lugar mus
-where	lug.distrito = @distrito
-and	lug.lugar_id = tip.lugar_id
-and	lug.lugar_id = mus.lugar_id
-and	tip.lugar
+	lu.razon_social,
+	lu.ruc,
+	lu.telefono,
+	lu.direccion,
+	lu.representante_legal,
+	lu.email,
+	lu.pagina_web,
+	lu.distrito,
+	lu.departamento,
+	lu.provincia,
+	lu.pais,
+	lu.codigo_postal,
+	lu.latitude,
+	lu.longitude
+from 	tbl_lugar lu,
+		tbl_tipo_lugar tl,
+		tbl_tipo_musica tm
+where	lu.distrito = @distrito
+and	lu.lugar_id = tl.lugar_id
+and	lu.lugar_id = tm.lugar_id
+and	tm.descripcion IN (@tipo_musica)
+and tl.descripcion IN (@tipo_lugar);
+
+Tabla: TBL_LUGAR
+id
+id_tipo_lugar
+id_tipo_musica
+
+
+Tabla: TBL_TIPO_LUGAR
+id
+descripcion
+
+
+Tabla: TBL_TIPO_MUSICA
+id
+descripcion
+
+
+/**
+ * GET LUGARES
+**/
+
+Puede usar el mismo PROC, los parametros serian los mismos
