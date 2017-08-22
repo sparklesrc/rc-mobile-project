@@ -17,7 +17,7 @@ public class Lugar {
 	private Ubicacion ubicacion;
 	private List<Amistad> amistad;
 	private Integer cantEstrellas;
-	private MusicaLugar musicaLugar;
+	private List<MusicaLugar> musicaLugar;
 
 	public String getId() {
 		return id;
@@ -123,11 +123,11 @@ public class Lugar {
 		this.cantEstrellas = cantEstrellas;
 	}
 
-	public MusicaLugar getMusicaLugar() {
+	public List<MusicaLugar> getMusicaLugar() {
 		return musicaLugar;
 	}
 
-	public void setMusicaLugar(MusicaLugar musicaLugar) {
+	public void setMusicaLugar(List<MusicaLugar> musicaLugar) {
 		this.musicaLugar = musicaLugar;
 	}
 
