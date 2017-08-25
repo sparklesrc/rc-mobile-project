@@ -32,9 +32,9 @@ public class LugarHelper {
 		simpleJdbcCall.declareParameters(new SqlParameter(
 				Constants.PARAM_DISTRITO, Types.VARCHAR));
 		simpleJdbcCall.declareParameters(new SqlParameter(
-				Constants.PARAM_TIPO_LUGAR, Types.ARRAY));
+				Constants.PARAM_TIPO_LUGAR, Types.VARCHAR));
 		simpleJdbcCall.declareParameters(new SqlParameter(
-				Constants.PARAM_MUSICA_LUGAR, Types.ARRAY));
+				Constants.PARAM_MUSICA_LUGAR, Types.VARCHAR));
 		simpleJdbcCall.declareParameters(new SqlReturnResultSet(
 				Constants.RESULT, new LugarMapper()));
 	}
@@ -42,9 +42,9 @@ public class LugarHelper {
 	public List<Lugar> getLugaresByDefault(String distrito,
 			List<TipoLugar> tipoLugar, List<MusicaLugar> musicaLugar) {
 		Map<String, Object> params = new HashMap<String, Object>();
+		params.put(Constants.PARAM_MUSICA_LUGAR, musicaLugar.get(0).getDescripcion());
+		params.put(Constants.PARAM_TIPO_LUGAR, tipoLugar.get(0).getDescripcion());
 		params.put(Constants.PARAM_DISTRITO, distrito);
-		params.put(Constants.PARAM_TIPO_LUGAR, tipoLugar);
-		params.put(Constants.PARAM_MUSICA_LUGAR, musicaLugar);
 
 		Map<String, Object> results = simpleJdbcCall.execute(params);
 		List<Lugar> listaLugares = (List<Lugar>) results.get(Constants.RESULT);
@@ -55,7 +55,7 @@ public class LugarHelper {
 
 		public Lugar mapRow(ResultSet rs, int rowNum) throws SQLException {
 			Lugar lugar = new Lugar();
-			lugar.setId(rs.getString("lugar_id"));
+//			lugar.setId(""+rs.getLong("lugar_id"));
 			lugar.setRazonSocial(rs.getString("razon_social"));
 			lugar.setRuc(rs.getString("ruc"));
 			lugar.setTelefono(rs.getString("telefono"));
@@ -64,21 +64,23 @@ public class LugarHelper {
 			lugar.setEmail(rs.getString("email"));
 			lugar.setPaginaWeb(rs.getString("pagina_web"));
 
-			MacroPlace mp = new MacroPlace();
-			mp.setDistrito(rs.getString("distrito"));
-			mp.setDepartamento(rs.getString("departamento"));
-			mp.setProvincia(rs.getString("provincia"));
-			mp.setPais(rs.getString("pais"));
-			lugar.setMacroPlace(mp);
+//			MacroPlace mp = new MacroPlace();
+//			mp.setDistrito(rs.getString("distrito"));
+//			mp.setDepartamento(rs.getString("departamento"));
+//			mp.setProvincia(rs.getString("provincia"));
+//			mp.setPais(rs.getString("pais"));
+//			lugar.setMacroPlace(mp);
 
-			List<TipoLugar> tipoLugar = new ArrayList<TipoLugar>();
-			lugar.setTipoLugar(tipoLugar);
+//			List<TipoLugar> tipoLugar = new ArrayList<TipoLugar>();
+//			lugar.setTipoLugar(tipoLugar);
 
-			Ubicacion ub = new Ubicacion();
-			ub.setCodigoPostal(rs.getString("codigo_postal"));
-			ub.setLatitude("latitude");
-			ub.setLongitude("longitude");
-			lugar.setUbicacion(ub);
+//			Ubicacion ub = new Ubicacion();
+//			ub.setCodigoPostal(rs.getString("codigo_postal"));
+//			ub.setLatitude("latitude");
+//			ub.setLongitude("longitude");
+//			lugar.setUbicacion(ub);
+			
+//			lugar.setCantEstrellas(rs.getInt("cant_estrella"));
 
 			return lugar;
 		}

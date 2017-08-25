@@ -36,7 +36,10 @@ public class LugarController {
 	public @ResponseBody LugarRs listarLugaresDefault(
 			@RequestBody LugarRq lugarRq) throws ServiceException {
 
+		System.out.println("FRAMIREZ :: INICIO");
+		
 		List<Lugar> lugares = lugarService.listarLugaresByDefault(lugarRq);
+
 		LugarRs respo = new LugarRs();
 		respo.setLugar(lugares);
 		return respo;
