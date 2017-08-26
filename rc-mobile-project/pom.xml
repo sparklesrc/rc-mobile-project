@@ -10,6 +10,7 @@
 	<description>Proyecto Padre Movil</description>
 	<modules>
 		<module>rc-mobile-project-model</module>
+		<module>rc-mobile-project-core</module>
 		<module>rc-mobile-project-dao</module>
 		<module>rc-mobile-project-services</module>
 		<module>rc-mobile-project-web</module>
