@@ -33,41 +33,9 @@ public class LugarRepositoryImpl implements LugarRepository {
 		List<Lugar> lugares = new ArrayList(0);
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 		lugarHelper = new LugarHelper(jdbcTemplate);
-
-		String tiposLugar = getTiposLugar(tipoLugar);
-		String musicasLugar = getMusicasLugar(musicaLugar);
-
-		lugares = lugarHelper.getLugaresByDefault(distrito, tiposLugar,
-				musicasLugar);
+		lugares = lugarHelper.getLugaresByDefault(distrito, tipoLugar,
+				musicaLugar);
 
 		return lugares;
-	}
-
-	private String getTiposLugar(List<TipoLugar> tipoLugar) {
-		String valor = "";
-		int contador = 1;
-		for (TipoLugar tl : tipoLugar) {
-			if (contador < tipoLugar.size()) {
-				valor += "\'".concat(tl.getDescripcion()).concat("\',");
-			} else {
-				valor += "\'".concat(tl.getDescripcion()).concat("\'");
-			}
-			contador++;
-		}
-		return valor;
-	}
-
-	private String getMusicasLugar(List<MusicaLugar> musicaLugar) {
-		String valor = "";
-		int contador = 1;
-		for (MusicaLugar tl : musicaLugar) {
-			if (contador < musicaLugar.size()) {
-				valor += "\'".concat(tl.getDescripcion()).concat("\',");
-			} else {
-				valor += "\'".concat(tl.getDescripcion()).concat("\'");
-			}
-			contador++;
-		}
-		return valor;
 	}
 }
