@@ -39,8 +39,8 @@ public class LugarHelper {
 				Constants.RESULT, new LugarMapper()));
 	}
 
-	public List<Lugar> getLugaresByDefault(String distrito,
-			List<TipoLugar> tipoLugar, List<MusicaLugar> musicaLugar) {
+	public List<Lugar> getLugaresByDefault(String distrito, List<TipoLugar> tipoLugar,
+			List<MusicaLugar> musicaLugar) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put(Constants.PARAM_MUSICA_LUGAR, musicaLugar.get(0).getDescripcion());
 		params.put(Constants.PARAM_TIPO_LUGAR, tipoLugar.get(0).getDescripcion());

@@ -12,12 +12,9 @@ import org.springframework.stereotype.Repository;
 
 import pe.com.rc.mobile.core.exception.DaoException;
 import pe.com.rc.mobile.dao.LugarRepository;
-import pe.com.rc.mobile.dao.helper.AmistadHelper;
 import pe.com.rc.mobile.dao.helper.LugarHelper;
-import pe.com.rc.mobile.model.Amistad;
 import pe.com.rc.mobile.model.Lugar;
 import pe.com.rc.mobile.model.MusicaLugar;
-import pe.com.rc.mobile.model.Preferencia;
 import pe.com.rc.mobile.model.TipoLugar;
 
 @Repository
@@ -36,11 +33,9 @@ public class LugarRepositoryImpl implements LugarRepository {
 		List<Lugar> lugares = new ArrayList(0);
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 		lugarHelper = new LugarHelper(jdbcTemplate);
-
 		lugares = lugarHelper.getLugaresByDefault(distrito, tipoLugar,
 				musicaLugar);
 
 		return lugares;
 	}
-
 }
