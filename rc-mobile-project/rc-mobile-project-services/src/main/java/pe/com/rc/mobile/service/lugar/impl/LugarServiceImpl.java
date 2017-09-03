@@ -2,7 +2,8 @@ package pe.com.rc.mobile.service.lugar.impl;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,8 @@ import pe.com.rc.mobile.service.lugar.LugarService;
 @Service
 public class LugarServiceImpl implements LugarService {
 
-	private Logger logger = Logger.getLogger(LugarServiceImpl.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(LugarServiceImpl.class);
 
 	@Autowired
 	LugarRepository lugarRepository;
@@ -40,6 +42,9 @@ public class LugarServiceImpl implements LugarService {
 	 */
 	public List<Lugar> listarLugaresByDefault(LugarRq lugarRq)
 			throws ServiceException {
+
+		logger.info("LugarServiceImpl.listarLugaresByDefault");
+
 		List<Lugar> lugares = null;
 		String distrito = lugarRq.getUbicacion().getCodigoPostal();
 		String idUsuario = lugarRq.getIdUsuario();
@@ -51,7 +56,7 @@ public class LugarServiceImpl implements LugarService {
 			lugares = lugarRepository.listarLugaresByDefault(distrito,
 					tipoLugar, musicaLugar, idUsuario);
 		} catch (DaoException e) {
-			logger.error("Error al obtener la Lista de Lugares por Default", e);
+			logger.error("Error al obtener la Lista de Lugares por Default.", e);
 		}
 
 		return lugares;
