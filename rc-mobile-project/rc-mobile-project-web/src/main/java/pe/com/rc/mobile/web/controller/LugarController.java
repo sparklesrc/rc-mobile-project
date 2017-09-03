@@ -2,6 +2,8 @@ package pe.com.rc.mobile.web.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +22,9 @@ import pe.com.rc.mobile.web.util.Constants;
 @RequestMapping(Constants.URL_BASE)
 public class LugarController {
 
+	private static final Logger logger = LoggerFactory
+			.getLogger(LugarController.class);
+
 	@Autowired
 	LugarService lugarService;
 
@@ -35,9 +40,8 @@ public class LugarController {
 	@RequestMapping(value = Constants.URL_LUGAR + Constants.URL_LIST_DEFAULT, method = RequestMethod.POST, produces = { "application/json" })
 	public @ResponseBody LugarRs listarLugaresDefault(
 			@RequestBody LugarRq lugarRq) throws ServiceException {
+		logger.info("Obtener Lugares - LugarController.listarLugaresDefault");
 
-		System.out.println("FRAMIREZ :: INICIO");
-		
 		List<Lugar> lugares = lugarService.listarLugaresByDefault(lugarRq);
 
 		LugarRs respo = new LugarRs();
