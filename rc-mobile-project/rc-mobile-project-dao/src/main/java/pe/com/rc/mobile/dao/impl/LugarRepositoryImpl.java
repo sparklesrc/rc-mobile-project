@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -20,6 +22,9 @@ import pe.com.rc.mobile.model.TipoLugar;
 @Repository
 public class LugarRepositoryImpl implements LugarRepository {
 
+	private static final Logger logger = LoggerFactory
+			.getLogger(LugarRepositoryImpl.class);
+
 	@Autowired
 	@Qualifier("dbDataSource")
 	private DataSource dataSource;
@@ -29,6 +34,8 @@ public class LugarRepositoryImpl implements LugarRepository {
 	public List<Lugar> listarLugaresByDefault(String distrito,
 			List<TipoLugar> tipoLugar, List<MusicaLugar> musicaLugar,
 			String idUsuario) throws DaoException {
+
+		logger.info("LugarRepositoryImpl.listarLugaresByDefault");
 
 		List<Lugar> lugares = new ArrayList(0);
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
