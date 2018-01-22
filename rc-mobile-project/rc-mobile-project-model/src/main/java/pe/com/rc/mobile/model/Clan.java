@@ -1,8 +1,10 @@
 package pe.com.rc.mobile.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -31,7 +33,7 @@ public class Clan extends Record implements Serializable {
 	@ManyToMany
 	@JoinTable(name = "clan_members", joinColumns = { @JoinColumn(name = "clan_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "user_id") })
-	private List<User> members;
+	private List<User> members = new ArrayList<User>();
 
 	public String getName() {
 		return name;
