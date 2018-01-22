@@ -15,4 +15,7 @@ public class Constants {
 
 	public static final String URL_LUGAR = "/lugar";
 	public static final String URL_LIST_DEFAULT = "/listByDefault";
+	
+	public static final String URL_CLAN = "/clan";
+	public static final String URL_GET_CLAN_MEMBERS = "/getClanMembers";
 }

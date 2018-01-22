@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import pe.com.rc.mobile.dao.ClanDAO;
 import pe.com.rc.mobile.dao.helper.BaseHibernateDAO;
 import pe.com.rc.mobile.model.Clan;
+import pe.com.rc.mobile.model.User;
 
 @Repository
 public class ClanDAOH extends BaseHibernateDAO implements ClanDAO {
@@ -19,7 +20,7 @@ public class ClanDAOH extends BaseHibernateDAO implements ClanDAO {
 
 	public List<Clan> all() {
 		Criteria criteria = this.getSession().createCriteria(Clan.class);
-        return criteria.list();
+		return criteria.list();
 	}
 
 	public void save(Clan t) {
@@ -32,6 +33,12 @@ public class ClanDAOH extends BaseHibernateDAO implements ClanDAO {
 
 	public void delete(Clan t) {
 		this.getSession().delete(t);
+	}
+
+	public List<User> getMembersByClan(Clan clan) {
+		Criteria criteria = this.getSession().createCriteria(User.class);
+		criteria.add(Restrictions.eq("members", clan));
+		return criteria.list();
 	}
 
 }
