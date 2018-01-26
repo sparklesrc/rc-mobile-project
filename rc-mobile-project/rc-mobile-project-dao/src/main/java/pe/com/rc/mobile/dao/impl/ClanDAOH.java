@@ -6,8 +6,8 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import pe.com.rc.mobile.dao.ClanDAO;
 import pe.com.rc.mobile.dao.helper.BaseHibernateDAO;
-import pe.com.rc.mobile.model.Clan;
 import pe.com.rc.mobile.model.User;
+import pe.com.rc.mobile.model.clan.Clan;
 
 @Repository
 public class ClanDAOH extends BaseHibernateDAO implements ClanDAO {

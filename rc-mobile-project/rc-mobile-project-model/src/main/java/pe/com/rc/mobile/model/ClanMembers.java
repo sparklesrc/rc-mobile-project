@@ -13,6 +13,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import pe.com.rc.mobile.model.clan.Clan;
+
 @Entity
 @Table(name = "clan_members")
 @AssociationOverrides({ @AssociationOverride(name = "primaryKey.user", joinColumns = @JoinColumn(name = "user_id")),

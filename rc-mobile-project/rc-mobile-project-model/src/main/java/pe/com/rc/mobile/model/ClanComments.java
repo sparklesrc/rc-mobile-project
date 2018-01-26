@@ -10,6 +10,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import pe.com.rc.mobile.model.clan.Clan;
+
 @Entity
 @Table(name = "clan_comments")
 public class ClanComments extends Record implements Serializable {

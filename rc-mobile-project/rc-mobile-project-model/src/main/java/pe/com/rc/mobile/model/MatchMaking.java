@@ -12,6 +12,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import pe.com.rc.mobile.model.clan.Clan;
+
 @Entity
 @Table(name = "match_making")
 public class MatchMaking extends Record implements Serializable {

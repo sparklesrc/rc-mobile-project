@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 
 import pe.com.rc.mobile.dao.ClanDAO;
 import pe.com.rc.mobile.dao.GameDAO;
-import pe.com.rc.mobile.model.Clan;
 import pe.com.rc.mobile.model.Game;
 import pe.com.rc.mobile.model.User;
 import pe.com.rc.mobile.model.clan.BuildClanRequest;
+import pe.com.rc.mobile.model.clan.Clan;
 
 @Service
 public class ClanServiceImpl implements ClanService {

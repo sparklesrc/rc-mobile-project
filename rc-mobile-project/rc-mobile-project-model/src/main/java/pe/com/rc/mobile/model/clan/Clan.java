@@ -1,4 +1,4 @@
-package pe.com.rc.mobile.model;
+package pe.com.rc.mobile.model.clan;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -14,6 +14,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import pe.com.rc.mobile.model.ClanComments;
+import pe.com.rc.mobile.model.ClanMembers;
+import pe.com.rc.mobile.model.Game;
+import pe.com.rc.mobile.model.Record;
 
 @Entity
 @Table(name = "clan")

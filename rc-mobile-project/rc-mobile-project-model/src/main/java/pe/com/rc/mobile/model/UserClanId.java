@@ -6,6 +6,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.ManyToOne;
 
+import pe.com.rc.mobile.model.clan.Clan;
+
 @Embeddable
 public class UserClanId implements Serializable {
 

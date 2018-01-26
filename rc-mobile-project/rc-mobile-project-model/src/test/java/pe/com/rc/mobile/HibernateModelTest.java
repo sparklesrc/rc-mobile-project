@@ -7,11 +7,12 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.junit.Test;
-import pe.com.rc.mobile.model.Clan;
+
 import pe.com.rc.mobile.model.ClanMembers;
 import pe.com.rc.mobile.model.Game;
 import pe.com.rc.mobile.model.MemberType;
 import pe.com.rc.mobile.model.User;
+import pe.com.rc.mobile.model.clan.Clan;
 
 public class HibernateModelTest {
 

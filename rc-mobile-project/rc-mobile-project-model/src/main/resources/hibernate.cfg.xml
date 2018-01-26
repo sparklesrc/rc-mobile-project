@@ -13,7 +13,7 @@
 		<property name="show_sql">true</property>
 		<property name="format_sql">true</property>
     	<mapping class="pe.com.rc.mobile.model.User" />
-    	<mapping class="pe.com.rc.mobile.model.Clan" />
+    	<mapping class="pe.com.rc.mobile.model.clan.Clan" />
     	<mapping class="pe.com.rc.mobile.model.Game" />
     	<mapping class="pe.com.rc.mobile.model.ClanComments" />
     	<mapping class="pe.com.rc.mobile.model.ClanMembers" />
