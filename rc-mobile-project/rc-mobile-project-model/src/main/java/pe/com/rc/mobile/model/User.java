@@ -3,11 +3,14 @@ package pe.com.rc.mobile.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -22,8 +25,16 @@ public class User extends Record implements Serializable {
 	private String steamLinkAvatar;
 	@Column(name = "last_login")
 	private Date lastLogin;
-	@ManyToMany(mappedBy = "members")
-	private List<Clan> clans = new ArrayList<Clan>();
+
+	@OneToMany(mappedBy = "primaryKey.user", cascade = CascadeType.ALL)
+	private Set<ClanMembers> clanMembers = new HashSet<ClanMembers>();
+
+	public User() {
+	}
+
+	public void addClan(ClanMembers clan) {
+		this.clanMembers.add(clan);
+	}
 
 	public Long getSteamId() {
 		return steamId;
@@ -57,11 +68,16 @@ public class User extends Record implements Serializable {
 		this.lastLogin = lastLogin;
 	}
 
-	public List<Clan> getClans() {
-		return clans;
+	public Set<ClanMembers> getClanMembers() {
+		return clanMembers;
 	}
 
-	public void setClans(List<Clan> clans) {
-		this.clans = clans;
+	public void setClanMembers(Set<ClanMembers> clanMembers) {
+		this.clanMembers = clanMembers;
 	}
+
+	public void addClanMember(ClanMembers clanMember) {
+		this.clanMembers.add(clanMember);
+	}
+
 }

@@ -2,15 +2,15 @@ package pe.com.rc.mobile.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -30,10 +30,13 @@ public class Clan extends Record implements Serializable {
 	private Integer starsNumber;
 	@OneToMany(mappedBy = "clan", fetch = FetchType.LAZY)
 	private List<ClanComments> comments;
-	@ManyToMany
-	@JoinTable(name = "clan_members", joinColumns = { @JoinColumn(name = "clan_id") }, inverseJoinColumns = {
-			@JoinColumn(name = "user_id") })
-	private List<User> members = new ArrayList<User>();
+
+	@OneToMany(mappedBy = "primaryKey.clan", cascade = CascadeType.ALL)
+	private Set<ClanMembers> clanMembers = new HashSet<ClanMembers>();
+
+	public Clan() {
+
+	}
 
 	public String getName() {
 		return name;
@@ -75,12 +78,16 @@ public class Clan extends Record implements Serializable {
 		this.comments = comments;
 	}
 
-	public List<User> getMembers() {
-		return members;
+	public void addClanMember(ClanMembers clanMember) {
+		this.clanMembers.add(clanMember);
 	}
 
-	public void setMembers(List<User> members) {
-		this.members = members;
+	public Set<ClanMembers> getClanMembers() {
+		return clanMembers;
+	}
+
+	public void setClanMembers(Set<ClanMembers> clanMembers) {
+		this.clanMembers = clanMembers;
 	}
 
 }

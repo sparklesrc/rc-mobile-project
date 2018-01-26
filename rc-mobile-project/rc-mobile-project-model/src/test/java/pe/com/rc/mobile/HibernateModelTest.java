@@ -1,68 +1,60 @@
 package pe.com.rc.mobile;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.junit.Test;
 import pe.com.rc.mobile.model.Clan;
+import pe.com.rc.mobile.model.ClanMembers;
 import pe.com.rc.mobile.model.Game;
+import pe.com.rc.mobile.model.MemberType;
 import pe.com.rc.mobile.model.User;
 
 public class HibernateModelTest {
 
-	private Session session = HibernateUtil.getSessionFactory().openSession();
-
 	@Test
-	public void readUsers() {
-		@SuppressWarnings("unchecked")
-		List<User> users = session.createQuery("FROM User").list();
+	public void saveNewClanMemberWithExistingUserAndClan() throws Exception {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		List<ClanMembers> membersFromDB = null;
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+			User user = (User) session.get(User.class, new Long(1L));
+			Clan clan = (Clan) session.get(Clan.class, new Long(1L));
+			MemberType memberType = (MemberType) session.get(MemberType.class, new Long(2L));
 
-		assertNotNull(users);
+			ClanMembers clanMembers = new ClanMembers();
+			clanMembers.setUser(user);
+			clanMembers.setClan(clan);
+			clanMembers.setMemberType(memberType);
+			clanMembers.setCreateDate(new Date());
+			clanMembers.setActive(1);
 
-		for (User user : users) {
-			assertNotNull(user.getId());
+			session.saveOrUpdate(clanMembers);
+			tx.commit();
+
+			membersFromDB = session.createQuery("FROM ClanMembers").list();
+			assertNotNull(membersFromDB);
+
+		} catch (Exception e) {
+			if (tx != null)
+				tx.rollback();
+			throw e;
+		} finally {
+			session.close();
 		}
 	}
 
-	@Test
-	public void insertClanMembers() {
-		List<Clan> clanes = new ArrayList<Clan>();
-
-		for (Clan clan : getClanes()) {
-			clanes.add(clan);
-		}
-
-        for (User user : getUsers()) {
-  
-            assertEquals(0, user.getClans().size());
-            user.setClans(clanes);
-            session.saveOrUpdate(user);
-  
-            assertNotNull(user);
-        }
-	}
-
-	@Test
-	public void readClanMembers() {
-		@SuppressWarnings("unchecked")
-		List<Clan> clanes = session.createQuery("FROM Clan").list();
-
-		assertNotNull(clanes);
-
-		for (Clan clan : clanes) {
-			assertNotNull(clan.getId());
-		}
-	}
-	
-	private List<Clan> getClanes(){
+	private List<Clan> getClanes() {
 		Game game = new Game();
 		game.setId(1L);
 		game.setName("CSGO");
 		game.setSteamApp(730);
 		game.setActive(1);
-		
+
 		Clan clanA = new Clan();
 		clanA.setId(1L);
 		clanA.setName("Pepitos");
@@ -86,23 +78,23 @@ public class HibernateModelTest {
 		clanC.setDecription("Rat Rat Rat");
 		clanC.setStarsNumber(2);
 		clanC.setActive(1);
-		
+
 		List<Clan> clanes = new ArrayList<Clan>();
 		clanes.add(clanA);
 		clanes.add(clanB);
 		clanes.add(clanC);
-		
+
 		return clanes;
 	}
 
-	private List<User> getUsers(){
+	private List<User> getUsers() {
 		User user = new User();
 		user.setId(1L);
 		user.setName("SparKLes");
 		user.setSteamId(7656714444223L);
 		user.setSteamLinkAvatar("this is my link");
 		user.setActive(1);
-		
+
 		User user2 = new User();
 		user2.setId(2L);
 		user2.setName("SandMan");
@@ -116,7 +108,7 @@ public class HibernateModelTest {
 		user3.setSteamId(1111112223L);
 		user3.setSteamLinkAvatar("this is my link");
 		user3.setActive(1);
-		
+
 		List<User> users = new ArrayList<User>();
 		users.add(user);
 		users.add(user2);

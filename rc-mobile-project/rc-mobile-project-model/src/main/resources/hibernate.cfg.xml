@@ -16,5 +16,7 @@
     	<mapping class="pe.com.rc.mobile.model.Clan" />
     	<mapping class="pe.com.rc.mobile.model.Game" />
     	<mapping class="pe.com.rc.mobile.model.ClanComments" />
+    	<mapping class="pe.com.rc.mobile.model.ClanMembers" />
+    	<mapping class="pe.com.rc.mobile.model.MemberType" />
 	</session-factory>
 </hibernate-configuration>

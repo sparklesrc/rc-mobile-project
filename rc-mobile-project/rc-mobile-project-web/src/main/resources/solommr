@@ -51,23 +51,23 @@ CREATE TABLE clan_comments (
 	CONSTRAINT `clan_comments_fk_3` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
 );
 
-CREATE TABLE clan_members (
-    `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
-    `user_id` BIGINT NOT NULL,
-    `clan_id` BIGINT NOT NULL,
-    `member_type_id` INTEGER NOT NULL,
-    `create_date` DATETIME NULL DEFAULT NULL,
-    `update_date` DATETIME NULL DEFAULT NULL,
-    `active` INTEGER NOT NULL DEFAULT 0,
-    PRIMARY KEY (`id`),
-	CONSTRAINT `clan_members_fk_1` FOREIGN KEY (`clan_id`) REFERENCES `clan` (`id`),
-	CONSTRAINT `clan_members_fk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
-	CONSTRAINT `clan_members_fk_3` FOREIGN KEY (`member_type_id`) REFERENCES `member_type` (`id`)
+CREATE TABLE `clan_members` (
+  `user_id` BIGINT NOT NULL,
+  `clan_id` BIGINT NOT NULL,
+  `member_type_id` BIGINT NOT NULL,
+  `create_date` DATETIME NULL DEFAULT NULL,
+  `update_date` DATETIME NULL DEFAULT NULL,
+  `active` INTEGER NOT NULL DEFAULT 0,
+  KEY `fk_user` (`user_id`),
+  KEY `fk_clan` (`clan_id`),
+  CONSTRAINT `fk_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
+  CONSTRAINT `fk_clan` FOREIGN KEY (`clan_id`) REFERENCES `clan` (`id`),
+  CONSTRAINT `fk_member_type` FOREIGN KEY (`member_type_id`) REFERENCES `member_type` (`id`)
 );
 
 CREATE TABLE member_type (
     `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
-    `description` BIGINT NOT NULL,
+    `description` VARCHAR(200) NOT NULL,
     `create_date` DATETIME NULL DEFAULT NULL,
     `update_date` DATETIME NULL DEFAULT NULL,
     `active` INTEGER NOT NULL DEFAULT 0,
@@ -134,11 +134,7 @@ CREATE TABLE match_making_comments (
 	CONSTRAINT `match_making_comments_fk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
 );
 
-CREATE TABLE `clan_members` (
-  `user_id` bigint NOT NULL,
-  `clan_id` bigint NOT NULL,
-  PRIMARY KEY (`user_id`,`clan_id`),
-  KEY `clan_id` (`clan_id`),
-  CONSTRAINT `clan_members_fk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
-  CONSTRAINT `clan_members_fk_2` FOREIGN KEY (`clan_id`) REFERENCES `clan` (`id`)
-);
+
+INSERT INTO member_type (description, create_date, update_date, active) VALUES ('Team Leader', now(), null, 1);
+INSERT INTO member_type (description, create_date, update_date, active) VALUES ('Member', now(), null, 1);
+INSERT INTO member_type (description, create_date, update_date, active) VALUES ('Standing', now(), null, 1);
