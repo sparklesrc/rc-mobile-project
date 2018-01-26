@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import pe.com.rc.mobile.core.exception.ServiceException;
 import pe.com.rc.mobile.model.Clan;
 import pe.com.rc.mobile.model.User;
+import pe.com.rc.mobile.model.clan.BuildClanRequest;
 import pe.com.rc.mobile.service.clan.ClanService;
 import pe.com.rc.mobile.web.util.Constants;
 
@@ -21,13 +22,20 @@ public class ClanController {
 	@Autowired
 	private ClanService clanService;
 
-	@RequestMapping(value = Constants.URL_CLAN + Constants.URL_GET_CLAN_MEMBERS, method = RequestMethod.POST, produces = { "application/json" })
-	public @ResponseBody List<User> listarLugaresDefault(
-			@RequestBody Clan clan) throws ServiceException {
+	@RequestMapping(value = Constants.URL_CLAN
+			+ Constants.URL_GET_CLAN_MEMBERS, method = RequestMethod.POST, produces = { "application/json" })
+	public @ResponseBody List<User> listarLugaresDefault(@RequestBody Clan clan) throws ServiceException {
 
 		List<User> members = clanService.getMembersByClan(clan);
 
 		return members;
 
+	}
+
+	// CREAR CLAN
+	@RequestMapping(value = Constants.URL_CLAN
+			+ Constants.URL_BUILD, method = RequestMethod.POST, produces = { "application/json" })
+	public void buildClan(@RequestBody BuildClanRequest request) throws ServiceException {
+		clanService.buildClan(request);
 	}
 }

@@ -18,4 +18,5 @@ public class Constants {
 	
 	public static final String URL_CLAN = "/clan";
 	public static final String URL_GET_CLAN_MEMBERS = "/getClanMembers";
+	public static final String URL_BUILD = "/build";
 }

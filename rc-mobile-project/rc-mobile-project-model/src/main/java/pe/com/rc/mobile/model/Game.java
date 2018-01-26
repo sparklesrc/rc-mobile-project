@@ -15,6 +15,14 @@ public class Game extends Record implements Serializable {
 	@Column(name = "steam_app")
 	private Integer steamApp;
 
+	public Game() {
+
+	}
+
+	public Game(Long id) {
+		this.setId(id);
+	}
+
 	public String getName() {
 		return name;
 	}
