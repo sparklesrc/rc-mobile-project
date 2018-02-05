@@ -29,7 +29,7 @@ public class LugarServiceImpl implements LugarService {
 	private static final Logger logger = LoggerFactory
 			.getLogger(LugarServiceImpl.class);
 
-	@Autowired
+//	@Autowired
 	LugarRepository lugarRepository;
 
 	/**

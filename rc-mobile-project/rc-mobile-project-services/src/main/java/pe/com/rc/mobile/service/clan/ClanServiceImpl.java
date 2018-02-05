@@ -16,9 +16,9 @@ import pe.com.rc.mobile.model.clan.Clan;
 @Service
 public class ClanServiceImpl implements ClanService {
 
-	@Autowired
+//	@Autowired
 	private ClanDAO clanDAO;
-	@Autowired
+//	@Autowired
 	private GameDAO gameDAO;
 
 	public List<User> getMembersByClan(Clan clan) {

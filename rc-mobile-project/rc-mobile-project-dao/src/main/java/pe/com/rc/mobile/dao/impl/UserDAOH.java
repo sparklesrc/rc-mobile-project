@@ -9,7 +9,7 @@ import pe.com.rc.mobile.dao.UserDAO;
 import pe.com.rc.mobile.dao.helper.BaseHibernateDAO;
 import pe.com.rc.mobile.model.User;
 
-@Repository
+//@Repository
 public class UserDAOH extends BaseHibernateDAO implements UserDAO {
 
 	public User find(User t) {

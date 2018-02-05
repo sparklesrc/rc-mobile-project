@@ -19,7 +19,7 @@ import pe.com.rc.mobile.web.util.Constants;
 @RequestMapping(Constants.URL_BASE)
 public class ClanController {
 
-	@Autowired
+//	@Autowired
 	private ClanService clanService;
 
 	// GET MEMBERS BY CLAN

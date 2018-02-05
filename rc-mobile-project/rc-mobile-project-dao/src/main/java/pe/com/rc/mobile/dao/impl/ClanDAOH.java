@@ -9,7 +9,7 @@ import pe.com.rc.mobile.dao.helper.BaseHibernateDAO;
 import pe.com.rc.mobile.model.User;
 import pe.com.rc.mobile.model.clan.Clan;
 
-@Repository
+//@Repository
 public class ClanDAOH extends BaseHibernateDAO implements ClanDAO {
 
 	public Clan find(Clan t) {

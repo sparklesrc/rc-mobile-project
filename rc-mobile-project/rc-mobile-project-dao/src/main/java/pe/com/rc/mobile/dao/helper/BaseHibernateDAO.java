@@ -7,7 +7,7 @@ import org.springframework.orm.hibernate4.support.HibernateDaoSupport;
 
 public class BaseHibernateDAO extends HibernateDaoSupport {
 
-	@Autowired
+//	@Autowired
 	public void initSession(SessionFactory sessionFactory) {
 		setSessionFactory(sessionFactory);
 	}
