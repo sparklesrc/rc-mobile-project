@@ -5,10 +5,14 @@ import java.util.List;
 import pe.com.rc.mobile.model.User;
 import pe.com.rc.mobile.model.clan.BuildClanRequest;
 import pe.com.rc.mobile.model.clan.Clan;
+import pe.com.rc.mobile.model.clan.ClanMembersResponse;
+import pe.com.rc.mobile.model.clan.ListClanResponse;
 
 public interface ClanService {
 
-	List<User> getMembersByClan(Clan clan);
+	List<ClanMembersResponse> getMembersByClan(Long clanId);
 
 	void buildClan(BuildClanRequest request);
+	
+	List<ListClanResponse> listClanes();
 }

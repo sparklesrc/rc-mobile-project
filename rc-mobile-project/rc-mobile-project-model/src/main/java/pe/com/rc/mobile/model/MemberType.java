@@ -13,6 +13,14 @@ public class MemberType extends Record implements Serializable {
 	@Column(name = "description")
 	private String description;
 
+	public MemberType() {
+
+	}
+
+	public MemberType(Long id) {
+		this.setId(id);
+	}
+
 	public String getDescription() {
 		return description;
 	}

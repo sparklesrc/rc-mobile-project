@@ -32,4 +32,13 @@ public class UserClanId implements Serializable {
 		this.clan = clan;
 	}
 
+	public UserClanId() {
+
+	}
+
+	public UserClanId(User user, Clan clan) {
+		this.user = user;
+		this.clan = clan;
+	}
+
 }

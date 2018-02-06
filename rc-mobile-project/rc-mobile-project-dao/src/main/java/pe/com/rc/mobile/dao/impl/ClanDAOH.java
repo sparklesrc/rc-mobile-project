@@ -4,12 +4,14 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
 import pe.com.rc.mobile.dao.ClanDAO;
 import pe.com.rc.mobile.dao.helper.BaseHibernateDAO;
 import pe.com.rc.mobile.model.User;
 import pe.com.rc.mobile.model.clan.Clan;
 
-//@Repository
+@Repository
 public class ClanDAOH extends BaseHibernateDAO implements ClanDAO {
 
 	public Clan find(Clan t) {
@@ -35,9 +37,9 @@ public class ClanDAOH extends BaseHibernateDAO implements ClanDAO {
 		this.getSession().delete(t);
 	}
 
-	public List<User> getMembersByClan(Clan clan) {
-		Criteria criteria = this.getSession().createCriteria(User.class);
-		criteria.add(Restrictions.eq("members", clan));
+	public List<User> getMembersByClan(Integer clanId) {
+		Criteria criteria = this.getSession().createCriteria(Clan.class);
+		criteria.add(Restrictions.eq("members", clanId));
 		return criteria.list();
 	}
 

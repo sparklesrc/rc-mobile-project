@@ -32,6 +32,10 @@ public class User extends Record implements Serializable {
 	public User() {
 	}
 
+	public User(Long id) {
+		this.setId(id);
+	}
+	
 	public void addClan(ClanMembers clan) {
 		this.clanMembers.add(clan);
 	}

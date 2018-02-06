@@ -15,6 +15,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import pe.com.rc.mobile.model.ClanComments;
 import pe.com.rc.mobile.model.ClanMembers;
 import pe.com.rc.mobile.model.Game;
@@ -35,9 +37,12 @@ public class Clan extends Record implements Serializable {
 	private Integer starsNumber;
 	@OneToMany(mappedBy = "clan", fetch = FetchType.LAZY)
 	private List<ClanComments> comments;
-
 	@OneToMany(mappedBy = "primaryKey.clan", cascade = CascadeType.ALL)
 	private Set<ClanMembers> clanMembers = new HashSet<ClanMembers>();
+
+	public Clan(Long id) {
+		this.setId(id);
+	}
 
 	public Clan() {
 

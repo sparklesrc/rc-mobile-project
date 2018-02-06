@@ -8,5 +8,5 @@ import pe.com.rc.mobile.model.clan.Clan;
 
 public interface ClanDAO extends GenericDAO<Clan> {
 
-	List<User> getMembersByClan(Clan clan);
+	List<User> getMembersByClan(Integer clanId);
 }

@@ -53,20 +53,20 @@ public class ClanMembers {
 
 	@Transient
 	public User getUser() {
-		return getPrimaryKey().getUser();
+		return this.getPrimaryKey().getUser();
 	}
 
 	public void setUser(User user) {
-		getPrimaryKey().setUser(user);
+		this.getPrimaryKey().setUser(user);
 	}
 
 	@Transient
 	public Clan getClan() {
-		return getPrimaryKey().getClan();
+		return this.getPrimaryKey().getClan();
 	}
 
 	public void setClan(Clan clan) {
-		getPrimaryKey().setClan(clan);
+		this.getPrimaryKey().setClan(clan);
 	}
 
 	public Date getCreateDate() {

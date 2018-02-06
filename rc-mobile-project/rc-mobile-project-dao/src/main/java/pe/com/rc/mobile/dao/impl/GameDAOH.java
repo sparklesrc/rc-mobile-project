@@ -8,7 +8,7 @@ import pe.com.rc.mobile.dao.GameDAO;
 import pe.com.rc.mobile.dao.helper.BaseHibernateDAO;
 import pe.com.rc.mobile.model.Game;
 
-//@Repository
+@Repository
 public class GameDAOH extends BaseHibernateDAO implements GameDAO {
 
 	public Game find(Game t) {

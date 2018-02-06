@@ -45,7 +45,7 @@ public class MatchMaking extends Record implements Serializable {
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "state_id")
 	private State state;
-	@OneToMany(mappedBy = "match_making", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "matchMaking", fetch = FetchType.LAZY)
 	private List<MatchMakingComments> comments;
 
 	public Clan getTeamA() {
