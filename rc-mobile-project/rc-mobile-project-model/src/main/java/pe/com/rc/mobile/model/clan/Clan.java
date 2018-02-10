@@ -37,7 +37,9 @@ public class Clan extends Record implements Serializable {
 	private Integer starsNumber;
 	@OneToMany(mappedBy = "clan", fetch = FetchType.LAZY)
 	private List<ClanComments> comments;
-	@OneToMany(mappedBy = "primaryKey.clan", cascade = CascadeType.ALL)
+
+//	@OneToMany(mappedBy = "primaryKey.clan", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy= "clan")
 	private Set<ClanMembers> clanMembers = new HashSet<ClanMembers>();
 
 	public Clan(Long id) {

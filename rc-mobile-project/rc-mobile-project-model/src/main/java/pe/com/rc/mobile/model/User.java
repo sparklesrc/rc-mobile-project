@@ -26,7 +26,8 @@ public class User extends Record implements Serializable {
 	@Column(name = "last_login")
 	private Date lastLogin;
 
-	@OneToMany(mappedBy = "primaryKey.user", cascade = CascadeType.ALL)
+//	@OneToMany(mappedBy = "primaryKey.user", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "user")
 	private Set<ClanMembers> clanMembers = new HashSet<ClanMembers>();
 
 	public User() {
