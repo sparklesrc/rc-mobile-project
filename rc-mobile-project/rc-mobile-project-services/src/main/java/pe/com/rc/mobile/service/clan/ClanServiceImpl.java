@@ -139,9 +139,9 @@ public class ClanServiceImpl implements ClanService {
 			List<TeamMembers> lista = new ArrayList();
 			for (ClanMembers member : clan.getClanMembers()) {
 				TeamMembers teamMember = new TeamMembers();
-//				teamMember.setName(member.getUser().getName());
-//				teamMember.setType(member.getMemberType().getDescription());
-//				teamMember.setUserId(member.getUser().getId());
+				teamMember.setName(member.getUser().getName());
+				teamMember.setType(member.getMemberType().getDescription());
+				teamMember.setUserId(member.getUser().getId());
 				lista.add(teamMember);
 			}
 			response.setMembers(lista);
@@ -154,36 +154,26 @@ public class ClanServiceImpl implements ClanService {
 		Game game = gameDAO.find(new Game(request.getGameId()));
 		User user = userDAO.find(new User(request.getUserId()));
 		MemberType memberType = memberTypeDAO.find(new MemberType(1L));
-		
-		
-		
-//		Clan clan = new Clan();
-//		clan.setName(request.getNombre());
-//		clan.setGame(game);
-//		clan.setDecription(request.getDescripcion());
-//		clan.setStarsNumber(0);
-//		clan.setCreateDate(new Date());
-//		clan.setActive(1);
-		
-		Clan clan = clanDAO.find(new Clan(14L));
-		
+
+		Clan clan = new Clan();
+		clan.setName(request.getNombre());
+		clan.setGame(game);
+		clan.setDecription(request.getDescripcion());
+		clan.setStarsNumber(0);
+		clan.setCreateDate(new Date());
+		clan.setActive(1);
+
+		clanDAO.save(clan);
+
 		ClanMembers members = new ClanMembers();
 		members.setMemberType(memberType);
 		members.setCreateDate(new Date());
 		members.setClan(clan);
 		members.setUser(user);
 		members.setActive(1);
-
 		clan.getClanMembers().add(members);
 
-		System.out.println("FRAMIREZ :: clan " + clan.getId());
-		System.out.println("FRAMIREZ :: user " + user.getId());
-		logger.info("FRAMIREZ :: clan " + clan.getId());
-		logger.info("FRAMIREZ :: user " + user.getId());
-		
-		
-		clanDAO.update(clan);
-//		clanMembersDAO.save(members);
+		clanDAO.insertMember(members);
 	}
 
 }

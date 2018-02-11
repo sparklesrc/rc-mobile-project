@@ -1,10 +1,8 @@
 package pe.com.rc.mobile.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -26,8 +24,7 @@ public class User extends Record implements Serializable {
 	@Column(name = "last_login")
 	private Date lastLogin;
 
-//	@OneToMany(mappedBy = "primaryKey.user", cascade = CascadeType.ALL)
-	@OneToMany(mappedBy = "user")
+	@OneToMany(mappedBy = "primaryKey.user", cascade = CascadeType.ALL)
 	private Set<ClanMembers> clanMembers = new HashSet<ClanMembers>();
 
 	public User() {

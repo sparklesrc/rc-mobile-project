@@ -1,7 +1,6 @@
 package pe.com.rc.mobile.model.clan;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -14,8 +13,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import pe.com.rc.mobile.model.ClanComments;
 import pe.com.rc.mobile.model.ClanMembers;
@@ -38,8 +35,7 @@ public class Clan extends Record implements Serializable {
 	@OneToMany(mappedBy = "clan", fetch = FetchType.LAZY)
 	private List<ClanComments> comments;
 
-//	@OneToMany(mappedBy = "primaryKey.clan", cascade = CascadeType.ALL)
-	@OneToMany(mappedBy= "clan")
+	@OneToMany(mappedBy = "primaryKey.clan", cascade = CascadeType.ALL)
 	private Set<ClanMembers> clanMembers = new HashSet<ClanMembers>();
 
 	public Clan(Long id) {
