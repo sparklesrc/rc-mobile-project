@@ -17,6 +17,7 @@ import pe.com.rc.mobile.model.clan.Clan;
 import pe.com.rc.mobile.model.clan.ClanMembersResponse;
 import pe.com.rc.mobile.model.clan.ListClanResponse;
 import pe.com.rc.mobile.model.clan.TeamSearch.TeamBuildRequest;
+import pe.com.rc.mobile.model.clan.TeamSearch.TeamDeleteRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.TeamSearchRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.TeamSearchResponse;
 import pe.com.rc.mobile.service.clan.ClanService;
@@ -63,5 +64,12 @@ public class ClanController {
 	public void buildTeam(@RequestBody TeamBuildRequest request)
 			throws ServiceException {
 		clanService.buildTeam(request);
+	}
+
+	@RequestMapping(value = "/team/eliminar", method = RequestMethod.POST, produces = { "application/json" })
+	public void deleteTeam(@RequestBody TeamDeleteRequest request)
+			throws ServiceException {
+		System.out.println("DELETE TEAM :: ");
+		clanService.deleteTeam(request);
 	}
 }

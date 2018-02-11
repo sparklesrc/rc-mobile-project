@@ -8,6 +8,7 @@ import pe.com.rc.mobile.model.clan.Clan;
 import pe.com.rc.mobile.model.clan.ClanMembersResponse;
 import pe.com.rc.mobile.model.clan.ListClanResponse;
 import pe.com.rc.mobile.model.clan.TeamSearch.TeamBuildRequest;
+import pe.com.rc.mobile.model.clan.TeamSearch.TeamDeleteRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.TeamSearchRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.TeamSearchResponse;
 
@@ -22,4 +23,6 @@ public interface ClanService {
 	TeamSearchResponse getTeam(TeamSearchRequest request);
 	
 	void buildTeam(TeamBuildRequest request);
+
+	void deleteTeam(TeamDeleteRequest request);
 }

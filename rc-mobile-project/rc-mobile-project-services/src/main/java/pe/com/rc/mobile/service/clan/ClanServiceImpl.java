@@ -26,6 +26,7 @@ import pe.com.rc.mobile.model.clan.Clan;
 import pe.com.rc.mobile.model.clan.ClanMembersResponse;
 import pe.com.rc.mobile.model.clan.ListClanResponse;
 import pe.com.rc.mobile.model.clan.TeamSearch.TeamBuildRequest;
+import pe.com.rc.mobile.model.clan.TeamSearch.TeamDeleteRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.TeamMembers;
 import pe.com.rc.mobile.model.clan.TeamSearch.TeamSearchRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.TeamSearchResponse;
@@ -41,27 +42,28 @@ public class ClanServiceImpl implements ClanService {
 	private UserDAO userDAO;
 	@Autowired
 	private MemberTypeDAO memberTypeDAO;
-	
+
 	@Autowired
 	private ClanMembersDAO clanMembersDAO;
 
-	private static final Logger logger = LoggerFactory.getLogger(ClanServiceImpl.class);
-	
+	private static final Logger logger = LoggerFactory
+			.getLogger(ClanServiceImpl.class);
+
 	public List<ClanMembersResponse> getMembersByClan(Long clanId) {
 		Clan clan = clanDAO.find(new Clan(clanId));
 
 		System.out.println("FRAMIREZ :: " + clan.getName());
 
 		List<ClanMembersResponse> miembros = new ArrayList<ClanMembersResponse>();
-//		for (ClanMembers cm : clan.getClanMembers()) {
-//			ClanMembersResponse cmr = new ClanMembersResponse();
-//			cmr.setClanName(cm.getClan().getName());
-//			cmr.setSteamName(cm.getUser().getName());
-//			cmr.setMemberType(cm.getMemberType().getDescription());
-//			cmr.setSteamId(cm.getUser().getSteamId().toString());
-//			cmr.setSteamAvatar(cm.getUser().getSteamLinkAvatar());
-//			miembros.add(cmr);
-//		}
+		// for (ClanMembers cm : clan.getClanMembers()) {
+		// ClanMembersResponse cmr = new ClanMembersResponse();
+		// cmr.setClanName(cm.getClan().getName());
+		// cmr.setSteamName(cm.getUser().getName());
+		// cmr.setMemberType(cm.getMemberType().getDescription());
+		// cmr.setSteamId(cm.getUser().getSteamId().toString());
+		// cmr.setSteamAvatar(cm.getUser().getSteamLinkAvatar());
+		// miembros.add(cmr);
+		// }
 		return miembros;
 	}
 
@@ -85,8 +87,8 @@ public class ClanServiceImpl implements ClanService {
 
 		ClanMembers clanMembers = new ClanMembers();
 		System.out.println("clan.getId() " + clan.getId());
-//		clanMembers.setClan(new Clan(clan.getId()));
-//		clanMembers.setUser(user);
+		// clanMembers.setClan(new Clan(clan.getId()));
+		// clanMembers.setUser(user);
 		clanMembers.setMemberType(new MemberType(1L)); // TEAM LEADER BY DEFAULT
 		clanMembers.setCreateDate(new Date());
 		clanMembers.setActive(1);
@@ -176,4 +178,23 @@ public class ClanServiceImpl implements ClanService {
 		clanDAO.insertMember(members);
 	}
 
+	public void deleteTeam(TeamDeleteRequest request) {
+		// Validate if the user is TEAM LEADER
+		System.out.println("VALIDATE");
+		if (isUserTL(request)) {
+			System.out.println("TRUE");
+			clanDAO.delete(clanDAO.find(new Clan(request.getClanId())));
+		}
+	}
+
+	private boolean isUserTL(TeamDeleteRequest request) {
+		Clan clan = clanDAO.find(new Clan(request.getClanId()));
+		for (ClanMembers member : clan.getClanMembers()) {
+			if (member.getUser().getId().equals(request.getUserId()))
+				return true;
+
+		}
+		System.out.println("FALSE");
+		return false;
+	}
 }
