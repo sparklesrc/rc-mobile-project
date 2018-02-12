@@ -6,7 +6,15 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "state")
-public class State extends Record{
+public class State extends Record {
+
+	public State() {
+
+	}
+
+	public State(Long id) {
+		this.setId(id);
+	}
 
 	@Column(name = "description")
 	private String description;

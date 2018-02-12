@@ -16,6 +16,10 @@ import pe.com.rc.mobile.model.clan.BuildClanRequest;
 import pe.com.rc.mobile.model.clan.Clan;
 import pe.com.rc.mobile.model.clan.ClanMembersResponse;
 import pe.com.rc.mobile.model.clan.ListClanResponse;
+import pe.com.rc.mobile.model.clan.TeamSearch.AcceptMemberRequest;
+import pe.com.rc.mobile.model.clan.TeamSearch.CandidatesRequest;
+import pe.com.rc.mobile.model.clan.TeamSearch.CandidatesResponse;
+import pe.com.rc.mobile.model.clan.TeamSearch.RecruitRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.TeamBuildRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.TeamDeleteRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.TeamSearchRequest;
@@ -45,10 +49,6 @@ public class ClanController {
 		clanService.buildClan(request);
 	}
 
-	// ACCEPT CLAN MEMBER
-
-	// DROP CLAN MEMBER
-
 	@RequestMapping(value = Constants.URL_CLAN + "/list", method = RequestMethod.POST, produces = { "application/json" })
 	public List<ListClanResponse> listClan() throws ServiceException {
 		return clanService.listClanes();
@@ -71,5 +71,30 @@ public class ClanController {
 			throws ServiceException {
 		System.out.println("DELETE TEAM :: ");
 		clanService.deleteTeam(request);
+	}
+
+	// POSTULAR
+	
+	// RECLUTAR
+	@RequestMapping(value = "/team/recruit", method = RequestMethod.POST, produces = { "application/json" })
+	public void recruit(@RequestBody RecruitRequest request)
+			throws ServiceException {
+		clanService.recruitPlayer(request);
+	}
+
+	// ACCEPT CLAN MEMBER
+	@RequestMapping(value = "/team/acceptMember", method = RequestMethod.POST, produces = { "application/json" })
+	public void acceptMember(@RequestBody AcceptMemberRequest request)
+			throws ServiceException {
+		clanService.acceptPlayer(request);
+	}
+
+	// DROP CLAN MEMBER
+	
+	// GET CANDIDATES
+	@RequestMapping(value = "/team/candidates", method = RequestMethod.POST, produces = { "application/json" })
+	public List<CandidatesResponse> getCandidates(@RequestBody CandidatesRequest request)
+			throws ServiceException {
+		return clanService.getCandidates(request);
 	}
 }

@@ -77,7 +77,7 @@ CREATE TABLE `clan_members` (
 
 CREATE TABLE state (
     `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
-    `description` BIGINT NOT NULL,
+    `description` VARCHAR(200) NOT NULL,
     `create_date` DATETIME NULL DEFAULT NULL,
     `update_date` DATETIME NULL DEFAULT NULL,
     `active` INTEGER NOT NULL DEFAULT 0,
@@ -138,6 +138,19 @@ CREATE TABLE match_making_comments (
 );
 
 
+CREATE TABLE solicitude_type (
+    `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
+    `description` VARCHAR(200) NOT NULL,
+    `create_date` DATETIME NULL DEFAULT NULL,
+    `update_date` DATETIME NULL DEFAULT NULL,
+    `active` INTEGER NOT NULL DEFAULT 0,
+    PRIMARY KEY (`id`)
+);
+
+ALTER TABLE SOLICITUDE ADD COLUMN solicitude_type_id BIGINT NOT NULL, ADD CONSTRAINT `fk_solicitude_type` FOREIGN KEY (`solicitude_type_id`)  REFERENCES `solommr`.`solicitude_type`(`id`);
+
+
+
 INSERT INTO member_type (description, create_date, update_date, active) VALUES ('Team Leader', now(), null, 1);
 INSERT INTO member_type (description, create_date, update_date, active) VALUES ('Member', now(), null, 1);
 INSERT INTO member_type (description, create_date, update_date, active) VALUES ('Standing', now(), null, 1);
@@ -164,3 +177,10 @@ INSERT INTO clan_members (user_id, clan_id, member_type_id, create_date, active)
 VALUES(1, 1, 1, now(), 1);
 INSERT INTO clan_members (user_id, clan_id, member_type_id, create_date, active)
 VALUES(2, 1, 1, now(), 1);
+
+INSERT INTO solicitude_type (description, create_date, active) VALUES ('RECLUTAR', now(), 1);
+INSERT INTO solicitude_type (description, create_date, active) VALUES ('POSTULAR', now(), 1);
+
+INSERT INTO state (description, create_date, active) VALUES ('PENDIENTE', now(), 1);
+INSERT INTO state (description, create_date, active) VALUES ('FINALIZADO', now(), 1);
+INSERT INTO state (description, create_date, active) VALUES ('CANCELADO', now(), 1);

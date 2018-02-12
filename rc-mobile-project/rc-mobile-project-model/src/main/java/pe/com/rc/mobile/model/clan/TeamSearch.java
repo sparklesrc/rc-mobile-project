@@ -193,4 +193,137 @@ public class TeamSearch {
 		}
 
 	}
+
+	public static class RecruitRequest {
+		private Long userId;
+		private Long clanId;
+		private String description;
+
+		public Long getUserId() {
+			return userId;
+		}
+
+		public void setUserId(Long userId) {
+			this.userId = userId;
+		}
+
+		public Long getClanId() {
+			return clanId;
+		}
+
+		public void setClanId(Long clanId) {
+			this.clanId = clanId;
+		}
+
+		public String getDescription() {
+			return description;
+		}
+
+		public void setDescription(String description) {
+			this.description = description;
+		}
+
+	}
+
+	public static class AcceptMemberRequest {
+		private Long clanId;
+		private Long userId;
+		private Long solicitudeId;
+		private Long state;
+		private String description;
+
+		public Long getSolicitudeId() {
+			return solicitudeId;
+		}
+
+		public void setSolicitudeId(Long solicitudeId) {
+			this.solicitudeId = solicitudeId;
+		}
+
+		public String getDescription() {
+			return description;
+		}
+
+		public void setDescription(String description) {
+			this.description = description;
+		}
+
+		public Long getState() {
+			return state;
+		}
+
+		public void setState(Long state) {
+			this.state = state;
+		}
+
+		public Long getClanId() {
+			return clanId;
+		}
+
+		public void setClanId(Long clanId) {
+			this.clanId = clanId;
+		}
+
+		public Long getUserId() {
+			return userId;
+		}
+
+		public void setUserId(Long userId) {
+			this.userId = userId;
+		}
+
+	}
+
+	public static class CandidatesRequest {
+		private Long clanId;
+
+		public Long getClanId() {
+			return clanId;
+		}
+
+		public void setClanId(Long clanId) {
+			this.clanId = clanId;
+		}
+
+	}
+
+	public static class CandidatesResponse {
+		private Long userId;
+		private Long clanId;
+		private String clanName;
+		private String userName;
+
+		public Long getUserId() {
+			return userId;
+		}
+
+		public void setUserId(Long userId) {
+			this.userId = userId;
+		}
+
+		public Long getClanId() {
+			return clanId;
+		}
+
+		public void setClanId(Long clanId) {
+			this.clanId = clanId;
+		}
+
+		public String getClanName() {
+			return clanName;
+		}
+
+		public void setClanName(String clanName) {
+			this.clanName = clanName;
+		}
+
+		public String getUserName() {
+			return userName;
+		}
+
+		public void setUserName(String userName) {
+			this.userName = userName;
+		}
+
+	}
 }

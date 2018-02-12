@@ -2,29 +2,33 @@ package pe.com.rc.mobile.service.clan;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import pe.com.rc.mobile.dao.ClanDAO;
-import pe.com.rc.mobile.dao.ClanMembersDAO;
 import pe.com.rc.mobile.dao.GameDAO;
 import pe.com.rc.mobile.dao.MemberTypeDAO;
+import pe.com.rc.mobile.dao.SolicitudeDAO;
+import pe.com.rc.mobile.dao.SolicitudeTypeDAO;
+import pe.com.rc.mobile.dao.StateDAO;
 import pe.com.rc.mobile.dao.UserDAO;
-import pe.com.rc.mobile.dao.impl.LugarRepositoryImpl;
 import pe.com.rc.mobile.model.ClanMembers;
 import pe.com.rc.mobile.model.Game;
 import pe.com.rc.mobile.model.MemberType;
+import pe.com.rc.mobile.model.Solicitude;
+import pe.com.rc.mobile.model.SolicitudeType;
+import pe.com.rc.mobile.model.State;
 import pe.com.rc.mobile.model.User;
 import pe.com.rc.mobile.model.clan.BuildClanRequest;
 import pe.com.rc.mobile.model.clan.Clan;
 import pe.com.rc.mobile.model.clan.ClanMembersResponse;
 import pe.com.rc.mobile.model.clan.ListClanResponse;
+import pe.com.rc.mobile.model.clan.TeamSearch.AcceptMemberRequest;
+import pe.com.rc.mobile.model.clan.TeamSearch.CandidatesRequest;
+import pe.com.rc.mobile.model.clan.TeamSearch.CandidatesResponse;
+import pe.com.rc.mobile.model.clan.TeamSearch.RecruitRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.TeamBuildRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.TeamDeleteRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.TeamMembers;
@@ -42,10 +46,13 @@ public class ClanServiceImpl implements ClanService {
 	private UserDAO userDAO;
 	@Autowired
 	private MemberTypeDAO memberTypeDAO;
-
 	@Autowired
-	private ClanMembersDAO clanMembersDAO;
-
+	private SolicitudeDAO solicitudeDAO;
+	@Autowired
+	private SolicitudeTypeDAO solicitudeTypeDAO;
+	@Autowired
+	private StateDAO stateDAO;
+	
 	private static final Logger logger = LoggerFactory
 			.getLogger(ClanServiceImpl.class);
 
@@ -196,5 +203,55 @@ public class ClanServiceImpl implements ClanService {
 		}
 		System.out.println("FALSE");
 		return false;
+	}
+
+	public void recruitPlayer(RecruitRequest request) {
+		// INSERT SOLICITUDE TABLE
+		Solicitude solicitude = new Solicitude();
+		solicitude.setClan(clanDAO.find(new Clan(request.getClanId())));
+		solicitude.setUser(userDAO.find(new User(request.getUserId())));
+		solicitude.setSolicitudeType(solicitudeTypeDAO.find(new SolicitudeType(1L))); // RECLUTAR
+		solicitude.setState(stateDAO.find(new State(1L))); // PENDIENTE
+		solicitude.setActive(1);
+		solicitude.setCreateDate(new Date());
+		solicitudeDAO.save(solicitude);
+	}
+
+	public void acceptPlayer(AcceptMemberRequest request) {
+		// ACTUALIZA SOLICITUDE
+		Solicitude solicitude = solicitudeDAO.find(new Solicitude(request.getSolicitudeId()));
+		if (solicitude != null && (request.getState().equals(2L) || request.getState().equals(3L))) {
+			solicitude.setState(stateDAO.find(new State(request.getState())));
+			solicitude.setUpdateDate(new Date());
+			solicitudeDAO.update(solicitude);
+			// INSERT CLAN MEMBER
+			MemberType memberType = memberTypeDAO.find(new MemberType(2L));
+			Clan clan = clanDAO.find(new Clan(request.getClanId()));
+			User user = userDAO.find(new User(request.getUserId()));
+			ClanMembers members = new ClanMembers();
+			members.setMemberType(memberType);
+			members.setCreateDate(new Date());
+			members.setClan(clan);
+			members.setUser(user);
+			members.setActive(1);
+			clanDAO.insertMember(members);
+		}
+	}
+
+	public List<CandidatesResponse> getCandidates(CandidatesRequest request) {
+		// GET CANDIDATES
+		List<CandidatesResponse> candidates = new ArrayList();
+		Clan clan = clanDAO.find(new Clan(request.getClanId()));
+		State state = stateDAO.find(new State(1L)); // PENDIENTE
+		List<Solicitude> solicitudes = solicitudeDAO.getSolicitudesByClanAndState(clan, state, 1);
+		for (Solicitude solicitude : solicitudes) {
+			CandidatesResponse can = new CandidatesResponse();
+			can.setClanId(solicitude.getClan().getId());
+			can.setUserId(solicitude.getUser().getId());
+			can.setClanName(solicitude.getClan().getName());
+			can.setUserName(solicitude.getUser().getName());
+			candidates.add(can);
+		}
+		return candidates;
 	}
 }

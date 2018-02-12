@@ -1,8 +1,6 @@
 package pe.com.rc.mobile.model;
 
 import java.io.Serializable;
-
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -25,6 +23,18 @@ public class Solicitude extends Record implements Serializable {
 	@JoinColumn(name = "state_id")
 	private State state;
 
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "solicitude_type_id")
+	private SolicitudeType solicitudeType;
+
+	public Solicitude() {
+		
+	}
+	
+	public Solicitude(Long id) {
+		this.setId(id);
+	}
+	
 	public User getUser() {
 		return user;
 	}
@@ -47,6 +57,14 @@ public class Solicitude extends Record implements Serializable {
 
 	public void setState(State state) {
 		this.state = state;
+	}
+
+	public SolicitudeType getSolicitudeType() {
+		return solicitudeType;
+	}
+
+	public void setSolicitudeType(SolicitudeType solicitudeType) {
+		this.solicitudeType = solicitudeType;
 	}
 
 }

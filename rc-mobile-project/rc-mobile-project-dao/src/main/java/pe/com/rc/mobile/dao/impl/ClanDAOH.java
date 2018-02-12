@@ -2,28 +2,18 @@ package pe.com.rc.mobile.dao.impl;
 
 import java.util.Date;
 import java.util.List;
-
 import org.hibernate.Criteria;
 import org.hibernate.Query;
-import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
 import pe.com.rc.mobile.dao.ClanDAO;
-import pe.com.rc.mobile.dao.ClanMembersDAO;
 import pe.com.rc.mobile.dao.helper.BaseHibernateDAO;
 import pe.com.rc.mobile.model.ClanMembers;
-import pe.com.rc.mobile.model.MemberType;
 import pe.com.rc.mobile.model.User;
 import pe.com.rc.mobile.model.clan.Clan;
 
 @Repository
 public class ClanDAOH extends BaseHibernateDAO implements ClanDAO {
-
-	@Autowired
-	ClanMembersDAO clanMembersDAO;
 	
 	public Clan find(Clan t) {
 		Criteria criteria = this.getSession().createCriteria(Clan.class);
