@@ -326,4 +326,66 @@ public class TeamSearch {
 		}
 
 	}
+
+	public static class DropMemberRequest {
+		private Long leaderId;
+		private Long memberId;
+		private Long clanId;
+
+		public Long getClanId() {
+			return clanId;
+		}
+
+		public void setClanId(Long clanId) {
+			this.clanId = clanId;
+		}
+
+		public Long getLeaderId() {
+			return leaderId;
+		}
+
+		public void setLeaderId(Long leaderId) {
+			this.leaderId = leaderId;
+		}
+
+		public Long getMemberId() {
+			return memberId;
+		}
+
+		public void setMemberId(Long memberId) {
+			this.memberId = memberId;
+		}
+
+	}
+
+	public static class PostularRequest {
+		private Long userId;
+		private Long clanId;
+		private String description;
+
+		public Long getUserId() {
+			return userId;
+		}
+
+		public void setUserId(Long userId) {
+			this.userId = userId;
+		}
+
+		public Long getClanId() {
+			return clanId;
+		}
+
+		public void setClanId(Long clanId) {
+			this.clanId = clanId;
+		}
+
+		public String getDescription() {
+			return description;
+		}
+
+		public void setDescription(String description) {
+			this.description = description;
+		}
+
+	}
 }

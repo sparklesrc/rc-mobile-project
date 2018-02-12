@@ -28,6 +28,8 @@ import pe.com.rc.mobile.model.clan.ListClanResponse;
 import pe.com.rc.mobile.model.clan.TeamSearch.AcceptMemberRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.CandidatesRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.CandidatesResponse;
+import pe.com.rc.mobile.model.clan.TeamSearch.DropMemberRequest;
+import pe.com.rc.mobile.model.clan.TeamSearch.PostularRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.RecruitRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.TeamBuildRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.TeamDeleteRequest;
@@ -253,5 +255,27 @@ public class ClanServiceImpl implements ClanService {
 			candidates.add(can);
 		}
 		return candidates;
+	}
+
+	public void dropMember(DropMemberRequest request) {
+		Clan clan = clanDAO.find(new Clan(request.getClanId()));
+		User teamLeader = clanDAO.getLeader(clan);
+		User userToDrop = userDAO.find(new User(request.getMemberId()));
+		
+		// User that asks is leader but member to drop cant be leader
+		if(request.getLeaderId().equals(teamLeader.getId()) && !request.getMemberId().equals(teamLeader.getId())) {
+			clanDAO.dropMember(clan, userToDrop);
+		}
+	}
+
+	public void postular(PostularRequest request) {
+		Solicitude solicitude = new Solicitude();
+		solicitude.setClan(clanDAO.find(new Clan(request.getClanId())));
+		solicitude.setUser(userDAO.find(new User(request.getUserId())));
+		solicitude.setSolicitudeType(solicitudeTypeDAO.find(new SolicitudeType(2L))); // POSTULAR
+		solicitude.setState(stateDAO.find(new State(1L))); // PENDIENTE
+		solicitude.setActive(1);
+		solicitude.setCreateDate(new Date());
+		solicitudeDAO.save(solicitude);
 	}
 }

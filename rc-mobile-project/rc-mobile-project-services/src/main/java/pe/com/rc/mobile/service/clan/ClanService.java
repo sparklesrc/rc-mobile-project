@@ -10,6 +10,8 @@ import pe.com.rc.mobile.model.clan.ListClanResponse;
 import pe.com.rc.mobile.model.clan.TeamSearch.AcceptMemberRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.CandidatesRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.CandidatesResponse;
+import pe.com.rc.mobile.model.clan.TeamSearch.DropMemberRequest;
+import pe.com.rc.mobile.model.clan.TeamSearch.PostularRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.RecruitRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.TeamBuildRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.TeamDeleteRequest;
@@ -35,4 +37,8 @@ public interface ClanService {
 	void acceptPlayer(AcceptMemberRequest request);
 
 	List<CandidatesResponse> getCandidates(CandidatesRequest request);
+
+	void dropMember(DropMemberRequest request);
+
+	void postular(PostularRequest request);
 }

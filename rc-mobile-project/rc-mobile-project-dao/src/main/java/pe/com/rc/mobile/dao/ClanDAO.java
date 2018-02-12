@@ -15,4 +15,8 @@ public interface ClanDAO extends GenericDAO<Clan> {
 	Clan getClanByNameAndGame(String name, Long gameId);
 
 	void insertMember(ClanMembers member);
+
+	User getLeader(Clan clan);
+
+	void dropMember(Clan clan, User user);
 }

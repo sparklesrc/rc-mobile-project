@@ -19,6 +19,8 @@ import pe.com.rc.mobile.model.clan.ListClanResponse;
 import pe.com.rc.mobile.model.clan.TeamSearch.AcceptMemberRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.CandidatesRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.CandidatesResponse;
+import pe.com.rc.mobile.model.clan.TeamSearch.DropMemberRequest;
+import pe.com.rc.mobile.model.clan.TeamSearch.PostularRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.RecruitRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.TeamBuildRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.TeamDeleteRequest;
@@ -74,6 +76,11 @@ public class ClanController {
 	}
 
 	// POSTULAR
+	@RequestMapping(value = "/team/postular", method = RequestMethod.POST, produces = { "application/json" })
+	public void getCandidates(@RequestBody PostularRequest request)
+			throws ServiceException {
+		clanService.postular(request);
+	}
 	
 	// RECLUTAR
 	@RequestMapping(value = "/team/recruit", method = RequestMethod.POST, produces = { "application/json" })
@@ -90,6 +97,10 @@ public class ClanController {
 	}
 
 	// DROP CLAN MEMBER
+	@RequestMapping(value = "/team/dropMember", method = RequestMethod.POST, produces = { "application/json" })
+	public void dropMember(@RequestBody DropMemberRequest request) throws ServiceException {
+		clanService.dropMember(request);
+	}
 	
 	// GET CANDIDATES
 	@RequestMapping(value = "/team/candidates", method = RequestMethod.POST, produces = { "application/json" })
