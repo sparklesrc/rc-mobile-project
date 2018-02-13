@@ -16,14 +16,19 @@ import pe.com.rc.mobile.model.clan.Clan;
 @Table(name = "clan_comments")
 public class ClanComments extends Record implements Serializable {
 
-	@ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name = "clan_id")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "clan_id")
 	private Clan clan;
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	private User user;
 	@Column(name = "desciption")
 	private String description;
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "game_id")
+	private Game game;
+	@Column(name = "stars_num")
+	private Integer starsNum;
 
 	public Clan getClan() {
 		return clan;
@@ -47,6 +52,22 @@ public class ClanComments extends Record implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public Game getGame() {
+		return game;
+	}
+
+	public void setGame(Game game) {
+		this.game = game;
+	}
+
+	public Integer getStarsNum() {
+		return starsNum;
+	}
+
+	public void setStarsNum(Integer starsNum) {
+		this.starsNum = starsNum;
 	}
 
 }

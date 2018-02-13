@@ -388,4 +388,44 @@ public class TeamSearch {
 		}
 
 	}
+
+	public static class RankTeamRequest {
+		private Long userId;
+		private Long clanToRank;
+		private Integer numStars;
+		private String description;
+
+		public Long getUserId() {
+			return userId;
+		}
+
+		public void setUserId(Long userId) {
+			this.userId = userId;
+		}
+
+		public Integer getNumStars() {
+			return numStars;
+		}
+
+		public void setNumStars(Integer numStars) {
+			this.numStars = numStars;
+		}
+
+		public String getDescription() {
+			return description;
+		}
+
+		public void setDescription(String description) {
+			this.description = description;
+		}
+
+		public Long getClanToRank() {
+			return clanToRank;
+		}
+
+		public void setClanToRank(Long clanToRank) {
+			this.clanToRank = clanToRank;
+		}
+
+	}
 }

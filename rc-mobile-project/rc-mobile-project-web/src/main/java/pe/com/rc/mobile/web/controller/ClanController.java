@@ -13,6 +13,7 @@ import pe.com.rc.mobile.model.clan.TeamSearch.CandidatesRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.CandidatesResponse;
 import pe.com.rc.mobile.model.clan.TeamSearch.DropMemberRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.PostularRequest;
+import pe.com.rc.mobile.model.clan.TeamSearch.RankTeamRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.RecruitRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.TeamBuildRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.TeamDeleteRequest;
@@ -80,5 +81,11 @@ public class ClanController {
 	@RequestMapping(value = "/team/candidates", method = RequestMethod.POST, produces = { "application/json" })
 	public List<CandidatesResponse> getCandidates(@RequestBody CandidatesRequest request) throws ServiceException {
 		return clanService.getCandidates(request);
+	}
+
+	// RANK CLAN
+	@RequestMapping(value = "/team/rank", method = RequestMethod.POST, produces = { "application/json" })
+	public void rankClan(@RequestBody RankTeamRequest request) throws ServiceException {
+		clanService.rankTeam(request);
 	}
 }

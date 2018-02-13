@@ -8,6 +8,8 @@ import org.hibernate.criterion.Restrictions;
 import pe.com.rc.mobile.dao.ClanCommentsDAO;
 import pe.com.rc.mobile.dao.helper.BaseHibernateDAO;
 import pe.com.rc.mobile.model.ClanComments;
+import pe.com.rc.mobile.model.User;
+import pe.com.rc.mobile.model.clan.Clan;
 
 public class ClanCommentsDAOH extends BaseHibernateDAO implements ClanCommentsDAO {
 
@@ -19,7 +21,7 @@ public class ClanCommentsDAOH extends BaseHibernateDAO implements ClanCommentsDA
 
 	public List<ClanComments> all() {
 		Criteria criteria = this.getSession().createCriteria(ClanComments.class);
-        return criteria.list();
+		return criteria.list();
 	}
 
 	public void save(ClanComments t) {
@@ -34,4 +36,16 @@ public class ClanCommentsDAOH extends BaseHibernateDAO implements ClanCommentsDA
 		this.getSession().delete(t);
 	}
 
+	public ClanComments findByClanAndUser(Clan clan, User user) {
+		Criteria criteria = this.getSession().createCriteria(ClanComments.class);
+		criteria.add(Restrictions.eq("clan.id", clan.getId())).add(Restrictions.eq("user.id", user.getId()))
+				.add(Restrictions.eq("game.id", clan.getGame().getId()));
+		return (ClanComments) criteria.uniqueResult();
+	}
+
+	public List<ClanComments> listCommentsByClan(Clan clan) {
+		Criteria criteria = this.getSession().createCriteria(ClanComments.class);
+		criteria.add(Restrictions.eq("clan.id", clan.getId())).add(Restrictions.eq("game.id", clan.getGame().getId()));
+		return criteria.list();
+	}
 }

@@ -7,6 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import pe.com.rc.mobile.dao.ClanCommentsDAO;
 import pe.com.rc.mobile.dao.ClanDAO;
 import pe.com.rc.mobile.dao.GameDAO;
 import pe.com.rc.mobile.dao.MemberTypeDAO;
@@ -14,6 +16,7 @@ import pe.com.rc.mobile.dao.SolicitudeDAO;
 import pe.com.rc.mobile.dao.SolicitudeTypeDAO;
 import pe.com.rc.mobile.dao.StateDAO;
 import pe.com.rc.mobile.dao.UserDAO;
+import pe.com.rc.mobile.model.ClanComments;
 import pe.com.rc.mobile.model.ClanMembers;
 import pe.com.rc.mobile.model.Game;
 import pe.com.rc.mobile.model.MemberType;
@@ -30,6 +33,7 @@ import pe.com.rc.mobile.model.clan.TeamSearch.CandidatesRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.CandidatesResponse;
 import pe.com.rc.mobile.model.clan.TeamSearch.DropMemberRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.PostularRequest;
+import pe.com.rc.mobile.model.clan.TeamSearch.RankTeamRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.RecruitRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.TeamBuildRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.TeamDeleteRequest;
@@ -54,6 +58,8 @@ public class ClanServiceImpl implements ClanService {
 	private SolicitudeTypeDAO solicitudeTypeDAO;
 	@Autowired
 	private StateDAO stateDAO;
+	@Autowired
+	private ClanCommentsDAO clanCommentsDAO;
 
 	private static final Logger logger = LoggerFactory.getLogger(ClanServiceImpl.class);
 
@@ -221,5 +227,49 @@ public class ClanServiceImpl implements ClanService {
 		solicitude.setActive(1);
 		solicitude.setCreateDate(new Date());
 		solicitudeDAO.save(solicitude);
+	}
+
+	public void rankTeam(RankTeamRequest request) {
+		User user = userDAO.find(new User(request.getUserId()));
+		Clan clanToRank = clanDAO.find(new Clan(request.getClanToRank()));
+		// VALIDAR SI EL USUARIO YA RANKEO EL MISMO EQUIPO - INSERT O UPDATE
+		ClanComments clanComments = clanCommentsDAO.findByClanAndUser(clanToRank, user);
+		if (clanComments != null) {
+			clanComments.setStarsNum(request.getNumStars());
+			clanComments.setDescription(request.getDescription());
+			clanComments.setUpdateDate(new Date());
+			clanCommentsDAO.update(clanComments);
+		} else {
+			clanCommentsDAO
+					.save(prepareClanComments(clanToRank, user, request.getDescription(), request.getNumStars()));
+		}
+		// ACTUALIZAR PERFIL DEL TEAM
+		updateClanProfileStarsRank(clanToRank);
+	}
+
+	private ClanComments prepareClanComments(Clan clan, User user, String description, Integer starsNum) {
+		ClanComments comment = new ClanComments();
+		comment.setClan(clan);
+		comment.setUser(user);
+		comment.setGame(clan.getGame());
+		comment.setDescription(description);
+		comment.setStarsNum(starsNum);
+		return comment;
+	}
+
+	private void updateClanProfileStarsRank(Clan clan) {
+		List<ClanComments> comments = clanCommentsDAO.listCommentsByClan(clan);
+		if (comments != null) {
+			Integer totalVotes = comments.size();
+			Integer countStars = 0;
+			for (ClanComments cc : comments) {
+				countStars += cc.getStarsNum();
+			}
+			if (totalVotes != 0) {
+				Integer newStars = countStars / totalVotes;
+				clan.setStarsNumber(newStars);
+				clanDAO.update(clan);
+			}
+		}
 	}
 }
