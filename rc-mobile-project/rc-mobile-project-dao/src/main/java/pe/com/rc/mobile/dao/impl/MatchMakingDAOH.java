@@ -48,5 +48,4 @@ public class MatchMakingDAOH extends BaseHibernateDAO implements MatchMakingDAO 
 		}
 		return items;
 	}
-
 }

@@ -33,6 +33,7 @@ public class MatchMakingController {
 		mmrService.acceptMMR(request);
 	}
 
+	// TODO: DEFINIR CRITERIOS DE BUSQUEDA
 	// SEARCH MATCHMAKING
 	@RequestMapping(value = "/mmr/list", method = RequestMethod.POST, produces = { "application/json" })
 	public List<MMRSearchResponse> searchMMR(@RequestBody MMRSearchRequest request) throws ServiceException {

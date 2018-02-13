@@ -20,10 +20,6 @@ import pe.com.rc.mobile.model.clan.TeamSearch.TeamSearchResponse;
 
 public interface ClanService {
 
-	List<ClanMembersResponse> getMembersByClan(Long clanId);
-
-	void buildClan(BuildClanRequest request);
-
 	List<ListClanResponse> listClanes();
 
 	TeamSearchResponse getTeam(TeamSearchRequest request);

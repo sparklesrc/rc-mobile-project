@@ -54,63 +54,8 @@ public class ClanServiceImpl implements ClanService {
 	private SolicitudeTypeDAO solicitudeTypeDAO;
 	@Autowired
 	private StateDAO stateDAO;
-	
-	private static final Logger logger = LoggerFactory
-			.getLogger(ClanServiceImpl.class);
 
-	public List<ClanMembersResponse> getMembersByClan(Long clanId) {
-		Clan clan = clanDAO.find(new Clan(clanId));
-
-		System.out.println("FRAMIREZ :: " + clan.getName());
-
-		List<ClanMembersResponse> miembros = new ArrayList<ClanMembersResponse>();
-		// for (ClanMembers cm : clan.getClanMembers()) {
-		// ClanMembersResponse cmr = new ClanMembersResponse();
-		// cmr.setClanName(cm.getClan().getName());
-		// cmr.setSteamName(cm.getUser().getName());
-		// cmr.setMemberType(cm.getMemberType().getDescription());
-		// cmr.setSteamId(cm.getUser().getSteamId().toString());
-		// cmr.setSteamAvatar(cm.getUser().getSteamLinkAvatar());
-		// miembros.add(cmr);
-		// }
-		return miembros;
-	}
-
-	// public void buildClan(BuildClanRequest request) {
-	// clanDAO.save(prepareClan(request));
-	// }
-
-	public void buildClan(BuildClanRequest request) {
-		Game game = gameDAO.find(new Game(request.getGameId()));
-		User user = userDAO.find(new User(request.getUserId()));
-
-		Clan clan = new Clan();
-		clan.setGame(game);
-		clan.setActive(1);
-		clan.setName(request.getName());
-		clan.setDecription(request.getDescription());
-		clan.setStarsNumber(0);
-		clan.setCreateDate(new Date());
-
-		clanDAO.save(clan);
-
-		ClanMembers clanMembers = new ClanMembers();
-		System.out.println("clan.getId() " + clan.getId());
-		// clanMembers.setClan(new Clan(clan.getId()));
-		// clanMembers.setUser(user);
-		clanMembers.setMemberType(new MemberType(1L)); // TEAM LEADER BY DEFAULT
-		clanMembers.setCreateDate(new Date());
-		clanMembers.setActive(1);
-
-		clan.getClanMembers().add(clanMembers);
-
-		try {
-			clanDAO.update(clan);
-		} catch (Exception e) {
-			System.out.println("FALLO");
-		}
-
-	}
+	private static final Logger logger = LoggerFactory.getLogger(ClanServiceImpl.class);
 
 	public List<ListClanResponse> listClanes() {
 		List<ListClanResponse> lista = new ArrayList<ListClanResponse>();
@@ -136,8 +81,7 @@ public class ClanServiceImpl implements ClanService {
 			clan = clanDAO.find(new Clan(new Long(request.getCriteria())));
 		} else {
 			// POR NAME
-			clan = clanDAO.getClanByNameAndGame(request.getCriteria(),
-					game.getId());
+			clan = clanDAO.getClanByNameAndGame(request.getCriteria(), game.getId());
 		}
 
 		if (clan != null) {
@@ -261,9 +205,9 @@ public class ClanServiceImpl implements ClanService {
 		Clan clan = clanDAO.find(new Clan(request.getClanId()));
 		User teamLeader = clanDAO.getLeader(clan);
 		User userToDrop = userDAO.find(new User(request.getMemberId()));
-		
+
 		// User that asks is leader but member to drop cant be leader
-		if(request.getLeaderId().equals(teamLeader.getId()) && !request.getMemberId().equals(teamLeader.getId())) {
+		if (request.getLeaderId().equals(teamLeader.getId()) && !request.getMemberId().equals(teamLeader.getId())) {
 			clanDAO.dropMember(clan, userToDrop);
 		}
 	}

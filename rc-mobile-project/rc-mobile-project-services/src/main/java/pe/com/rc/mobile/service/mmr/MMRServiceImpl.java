@@ -100,6 +100,7 @@ public class MMRServiceImpl implements MMRService {
 	}
 
 	public void acceptMMR(MMRBuildRequest request) {
+		// GET VALUES FROM MMR
 		MatchMaking mmr = matchMakingDAO.find(new MatchMaking(request.getMmrId()));
 		Clan clanWhoAccepts = clanDAO.find(new Clan(request.getClanBId()));
 		User userWhoAccepts = userDAO.find(new User(request.getUserAcceptId()));
@@ -125,7 +126,15 @@ public class MMRServiceImpl implements MMRService {
 	}
 
 	public void cancelMMR(MMRCancelRequest request) {
-		// TODO Auto-generated method stub
+		// SOLO EL USUARIO Q CREO EL MMR PUEDE CANCELAR
+		User user = userDAO.find(new User(request.getUserId()));
+		MatchMaking mmr = matchMakingDAO.find(new MatchMaking(request.getMmrId()));
+		if (mmr.getUserCreate().getId().equals(user.getId())) {
+			State state = stateDAO.find(new State(3L)); // CANCELADO
+			mmr.setState(state);
+			mmr.setUpdateDate(new Date());
+			matchMakingDAO.update(mmr);
+		}
 	}
 
 }

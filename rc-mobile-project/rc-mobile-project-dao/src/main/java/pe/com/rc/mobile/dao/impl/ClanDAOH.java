@@ -26,7 +26,6 @@ public class ClanDAOH extends BaseHibernateDAO implements ClanDAO {
 		return criteria.list();
 	}
 
-//	@Transactional
 	public void save(Clan t) {
 		this.getSession().save(t);
 	}
