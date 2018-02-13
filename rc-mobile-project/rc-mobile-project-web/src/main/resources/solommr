@@ -150,7 +150,8 @@ CREATE TABLE solicitude_type (
 ALTER TABLE SOLICITUDE ADD COLUMN solicitude_type_id BIGINT NOT NULL, ADD CONSTRAINT `fk_solicitude_type` FOREIGN KEY (`solicitude_type_id`)  REFERENCES `solommr`.`solicitude_type`(`id`);
 ALTER TABLE match_making ADD COLUMN hours BIGINT NOT NULL;
 ALTER TABLE match_making ADD COLUMN temp_date_end DATETIME NULL DEFAULT NULL;
-
+ALTER TABLE match_making MODIFY team_b BIGINT;
+ALTER TABLE match_making MODIFY user_accept BIGINT;
 
 INSERT INTO member_type (description, create_date, update_date, active) VALUES ('Team Leader', now(), null, 1);
 INSERT INTO member_type (description, create_date, update_date, active) VALUES ('Member', now(), null, 1);
