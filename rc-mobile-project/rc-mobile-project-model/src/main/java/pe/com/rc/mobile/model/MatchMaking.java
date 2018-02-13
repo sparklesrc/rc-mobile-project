@@ -48,6 +48,14 @@ public class MatchMaking extends Record implements Serializable {
 	@OneToMany(mappedBy = "matchMaking", fetch = FetchType.LAZY)
 	private List<MatchMakingComments> comments;
 
+	public MatchMaking() {
+		
+	}
+
+	public MatchMaking(Long id) {
+		this.setId(id);
+	}
+	
 	public Clan getTeamA() {
 		return teamA;
 	}
