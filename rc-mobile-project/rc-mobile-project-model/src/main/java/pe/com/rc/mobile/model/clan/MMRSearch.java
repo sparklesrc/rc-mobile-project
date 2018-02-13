@@ -14,6 +14,7 @@ public class MMRSearch {
 		private String description;
 		private String phone;
 		private String mail;
+		private Integer hours;
 
 		public Long getClanAId() {
 			return clanAId;
@@ -101,6 +102,14 @@ public class MMRSearch {
 
 		public void setMmrId(Long mmrId) {
 			this.mmrId = mmrId;
+		}
+
+		public Integer getHours() {
+			return hours;
+		}
+
+		public void setHours(Integer hours) {
+			this.hours = hours;
 		}
 
 	}

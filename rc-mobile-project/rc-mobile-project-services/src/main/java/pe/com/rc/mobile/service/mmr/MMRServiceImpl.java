@@ -2,6 +2,7 @@ package pe.com.rc.mobile.service.mmr;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -40,9 +41,26 @@ public class MMRServiceImpl implements MMRService {
 		Clan clanWhoCreates = clanDAO.find(new Clan(request.getClanAId()));
 		User userWhoCreates = userDAO.find(new User(request.getUserCreateId()));
 
-		if (clanWhoCreates != null && userWhoCreates != null) {
+		if (clanWhoCreates != null && userWhoCreates != null
+				&& isAvailable(clanWhoCreates, getDateFromString(request.getTempDate()), request.getHours())) {
 			matchMakingDAO.save(prepareMatchMaking(clanWhoCreates, userWhoCreates, request));
 		}
+	}
+
+	private boolean isAvailable(Clan clan, Date inicioMMR, Integer hours) {
+		List<MatchMaking> activeMMRS = matchMakingDAO.getMMRsByClan(clan);
+		Date finMMR = getGameTime(inicioMMR, hours);
+		for (MatchMaking mmr : activeMMRS) {
+			if (!(inicioMMR.before(mmr.getTempDate()) || inicioMMR.after(mmr.getTempDateEnd()))
+					|| !(finMMR.before(mmr.getTempDate()) || finMMR.after(mmr.getTempDateEnd()))) {
+				if (inicioMMR.getTime() == mmr.getTempDateEnd().getTime()) {
+					return true;
+				} else {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 
 	private MatchMaking prepareMatchMaking(Clan clanWhoCreates, User userWhoCreates, MMRBuildRequest request) {
@@ -50,6 +68,8 @@ public class MMRServiceImpl implements MMRService {
 		mmr.setTeamA(clanWhoCreates);
 		mmr.setUserCreate(userWhoCreates);
 		mmr.setTempDate(getDateFromString(request.getTempDate()));
+		mmr.setTempDateEnd(getGameTime(getDateFromString(request.getTempDate()), request.getHours()));
+		mmr.setHours(request.getHours());
 		mmr.setIpServ(request.getIpServ());
 		mmr.setDescription(request.getDescription());
 		mmr.setPhone(request.getPhone());
@@ -72,11 +92,20 @@ public class MMRServiceImpl implements MMRService {
 		return null;
 	}
 
+	private Date getGameTime(Date date, Integer hours) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.add(Calendar.HOUR_OF_DAY, hours);
+		return cal.getTime();
+	}
+
 	public void acceptMMR(MMRBuildRequest request) {
 		MatchMaking mmr = matchMakingDAO.find(new MatchMaking(request.getMmrId()));
 		Clan clanWhoAccepts = clanDAO.find(new Clan(request.getClanBId()));
 		User userWhoAccepts = userDAO.find(new User(request.getUserAcceptId()));
-		matchMakingDAO.update(prepareAcceptMatchMaking(clanWhoAccepts, userWhoAccepts, mmr));
+		if (isAvailable(clanWhoAccepts, mmr.getTempDate(), mmr.getHours())) {
+			matchMakingDAO.update(prepareAcceptMatchMaking(clanWhoAccepts, userWhoAccepts, mmr));
+		}
 	}
 
 	private MatchMaking prepareAcceptMatchMaking(Clan clanWhoAccepts, User userWhoAccepts, MatchMaking request) {
@@ -97,7 +126,6 @@ public class MMRServiceImpl implements MMRService {
 
 	public void cancelMMR(MMRCancelRequest request) {
 		// TODO Auto-generated method stub
-		
 	}
 
 }

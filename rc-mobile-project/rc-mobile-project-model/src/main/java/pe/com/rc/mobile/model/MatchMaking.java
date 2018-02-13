@@ -48,14 +48,19 @@ public class MatchMaking extends Record implements Serializable {
 	@OneToMany(mappedBy = "matchMaking", fetch = FetchType.LAZY)
 	private List<MatchMakingComments> comments;
 
+	@Column(name = "temp_date_end")
+	private Date tempDateEnd;
+	@Column(name = "hours")
+	private Integer hours;
+
 	public MatchMaking() {
-		
+
 	}
 
 	public MatchMaking(Long id) {
 		this.setId(id);
 	}
-	
+
 	public Clan getTeamA() {
 		return teamA;
 	}
@@ -142,6 +147,22 @@ public class MatchMaking extends Record implements Serializable {
 
 	public void setState(State state) {
 		this.state = state;
+	}
+
+	public Date getTempDateEnd() {
+		return tempDateEnd;
+	}
+
+	public void setTempDateEnd(Date tempDateEnd) {
+		this.tempDateEnd = tempDateEnd;
+	}
+
+	public Integer getHours() {
+		return hours;
+	}
+
+	public void setHours(Integer hours) {
+		this.hours = hours;
 	}
 
 }
