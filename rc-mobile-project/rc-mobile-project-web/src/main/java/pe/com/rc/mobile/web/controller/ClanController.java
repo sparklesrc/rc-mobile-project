@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import pe.com.rc.mobile.core.exception.ServiceException;
 import pe.com.rc.mobile.model.clan.ListClanResponse;
 import pe.com.rc.mobile.model.clan.TeamSearch.AcceptMemberRequest;
+import pe.com.rc.mobile.model.clan.TeamSearch.AssignRoleRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.CandidatesRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.CandidatesResponse;
 import pe.com.rc.mobile.model.clan.TeamSearch.DropMemberRequest;
@@ -89,5 +90,13 @@ public class ClanController {
 		clanService.rankTeam(request);
 	}
 
+	// CAMBIAR ROL
+	@RequestMapping(value = "/team/assign", method = RequestMethod.POST, produces = { "application/json" })
+	public void assignRole(@RequestBody AssignRoleRequest request) throws ServiceException {
+		clanService.assignRole(request);
+	}
+
 	// LISTAR ULTIMOS COMENTARIOS
+
+	// USER ACCPETS REQUEST
 }

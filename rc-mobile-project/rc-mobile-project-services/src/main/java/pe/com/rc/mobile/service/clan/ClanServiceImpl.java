@@ -3,6 +3,8 @@ package pe.com.rc.mobile.service.clan;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,7 @@ import pe.com.rc.mobile.model.clan.Clan;
 import pe.com.rc.mobile.model.clan.ClanMembersResponse;
 import pe.com.rc.mobile.model.clan.ListClanResponse;
 import pe.com.rc.mobile.model.clan.TeamSearch.AcceptMemberRequest;
+import pe.com.rc.mobile.model.clan.TeamSearch.AssignRoleRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.CandidatesRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.CandidatesResponse;
 import pe.com.rc.mobile.model.clan.TeamSearch.DropMemberRequest;
@@ -153,14 +156,18 @@ public class ClanServiceImpl implements ClanService {
 				return true;
 
 		}
-		System.out.println("FALSE");
 		return false;
 	}
 
 	public void recruitPlayer(RecruitRequest request) {
+		Clan clan = clanDAO.find(new Clan(request.getClanId()));
+		// VALIDAR ROOM EN EL TEAM
+		if (clan.getClanMembers().size() == 10) {
+			return;
+		}
 		// INSERT SOLICITUDE TABLE
 		Solicitude solicitude = new Solicitude();
-		solicitude.setClan(clanDAO.find(new Clan(request.getClanId())));
+		solicitude.setClan(clan);
 		solicitude.setUser(userDAO.find(new User(request.getUserId())));
 		solicitude.setSolicitudeType(solicitudeTypeDAO.find(new SolicitudeType(1L))); // RECLUTAR
 		solicitude.setState(stateDAO.find(new State(1L))); // PENDIENTE
@@ -172,21 +179,27 @@ public class ClanServiceImpl implements ClanService {
 	public void acceptPlayer(AcceptMemberRequest request) {
 		// ACTUALIZA SOLICITUDE
 		Solicitude solicitude = solicitudeDAO.find(new Solicitude(request.getSolicitudeId()));
+		// VALIDAR LOS ESTADOS
 		if (solicitude != null && (request.getState().equals(2L) || request.getState().equals(3L))) {
 			solicitude.setState(stateDAO.find(new State(request.getState())));
 			solicitude.setUpdateDate(new Date());
 			solicitudeDAO.update(solicitude);
 			// INSERT CLAN MEMBER
-			MemberType memberType = memberTypeDAO.find(new MemberType(2L));
 			Clan clan = clanDAO.find(new Clan(request.getClanId()));
 			User user = userDAO.find(new User(request.getUserId()));
-			ClanMembers members = new ClanMembers();
-			members.setMemberType(memberType);
-			members.setCreateDate(new Date());
-			members.setClan(clan);
-			members.setUser(user);
-			members.setActive(1);
-			clanDAO.insertMember(members);
+			MemberType memberType = getMemberType(clan);
+			// VALIDAR CANTIDAD DE USUARIOS Y ASIGNACION DE ROL X DEFAULT
+			// SOLO PUEDEN SER 10 USUARIOS
+			// 1 TL, 4 MEMBERS, 5 SUPLENTES
+			if (memberType != null) {
+				ClanMembers members = new ClanMembers();
+				members.setMemberType(memberType);
+				members.setCreateDate(new Date());
+				members.setClan(clan);
+				members.setUser(user);
+				members.setActive(1);
+				clanDAO.insertMember(members);
+			}
 		}
 	}
 
@@ -271,5 +284,36 @@ public class ClanServiceImpl implements ClanService {
 				clanDAO.update(clan);
 			}
 		}
+	}
+
+	public void assignRole(AssignRoleRequest request) {
+		Clan clan = clanDAO.find(new Clan(request.getClanId()));
+		User teamLeader = clanDAO.getLeader(clan);
+		MemberType memberType = memberTypeDAO.find(new MemberType(request.getNewRolId()));
+
+		// ONLY LEADER CAN ASSIGN ROLES
+		if (request.getLeaderId().equals(teamLeader.getId())) {
+			for (ClanMembers member : clan.getClanMembers()) {
+				if (member.getUser().getId().equals(request.getMemberId())) {
+					// actualizar rol
+					clanDAO.updateMemberRole(memberType.getId(), member.getUser().getId(), clan.getId());
+				}
+			}
+		}
+	}
+
+	private MemberType getMemberType(Clan clan) {
+		Integer cantMembers = clan.getClanMembers().size();
+		MemberType memberType = null;
+		if (cantMembers < 5) {
+			// MIEMBRO
+			memberType = memberTypeDAO.find(new MemberType(2L));
+		} else if (cantMembers < 10) {
+			// SUPLENTE
+			memberType = memberTypeDAO.find(new MemberType(3L));
+		} else {
+			// CLAN FULL
+		}
+		return memberType;
 	}
 }

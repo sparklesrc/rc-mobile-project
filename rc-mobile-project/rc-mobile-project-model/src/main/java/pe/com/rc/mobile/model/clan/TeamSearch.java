@@ -428,4 +428,44 @@ public class TeamSearch {
 		}
 
 	}
+
+	public static class AssignRoleRequest {
+		private Long leaderId;
+		private Long memberId;
+		private Long clanId;
+		private Long newRolId;
+
+		public Long getLeaderId() {
+			return leaderId;
+		}
+
+		public void setLeaderId(Long leaderId) {
+			this.leaderId = leaderId;
+		}
+
+		public Long getMemberId() {
+			return memberId;
+		}
+
+		public void setMemberId(Long memberId) {
+			this.memberId = memberId;
+		}
+
+		public Long getClanId() {
+			return clanId;
+		}
+
+		public void setClanId(Long clanId) {
+			this.clanId = clanId;
+		}
+
+		public Long getNewRolId() {
+			return newRolId;
+		}
+
+		public void setNewRolId(Long newRolId) {
+			this.newRolId = newRolId;
+		}
+
+	}
 }

@@ -8,6 +8,7 @@ import pe.com.rc.mobile.model.clan.Clan;
 import pe.com.rc.mobile.model.clan.ClanMembersResponse;
 import pe.com.rc.mobile.model.clan.ListClanResponse;
 import pe.com.rc.mobile.model.clan.TeamSearch.AcceptMemberRequest;
+import pe.com.rc.mobile.model.clan.TeamSearch.AssignRoleRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.CandidatesRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.CandidatesResponse;
 import pe.com.rc.mobile.model.clan.TeamSearch.DropMemberRequest;
@@ -40,4 +41,6 @@ public interface ClanService {
 	void postular(PostularRequest request);
 
 	void rankTeam(RankTeamRequest request);
+
+	void assignRole(AssignRoleRequest request);
 }

@@ -91,4 +91,13 @@ public class ClanDAOH extends BaseHibernateDAO implements ClanDAO {
 		q.setParameter("clanId", clan.getId());
 		q.executeUpdate();
 	}
+
+	public void updateMemberRole(Long memberTypeId, Long userId, Long clanId) {
+        Query query = getSession().createSQLQuery("UPDATE CLAN_MEMBERS SET member_type_id = :valor1, update_date = :valor2 where user_id :userId and clan_id = :clanId");
+        query.setParameter("valor1", memberTypeId);
+        query.setParameter("valor2", new Date());
+        query.setParameter("userId", userId);
+        query.setParameter("clanId", clanId);
+        query.executeUpdate();
+	}
 }
