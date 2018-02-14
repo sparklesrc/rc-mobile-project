@@ -88,4 +88,6 @@ public class ClanController {
 	public void rankClan(@RequestBody RankTeamRequest request) throws ServiceException {
 		clanService.rankTeam(request);
 	}
+
+	// LISTAR ULTIMOS COMENTARIOS
 }

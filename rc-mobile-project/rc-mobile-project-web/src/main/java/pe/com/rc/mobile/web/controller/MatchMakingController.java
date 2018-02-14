@@ -45,4 +45,6 @@ public class MatchMakingController {
 	public void cancelMMR(@RequestBody MMRCancelRequest request) throws ServiceException {
 		mmrService.cancelMMR(request);
 	}
+
+	// MOSTRAR MATCHS PENDIENTES DE JUEGO CERCA A LA ZONA
 }
