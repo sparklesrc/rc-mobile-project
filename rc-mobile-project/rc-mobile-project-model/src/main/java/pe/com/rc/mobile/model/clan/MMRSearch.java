@@ -224,6 +224,18 @@ public class MMRSearch {
 		public void setMmrId(Long mmrId) {
 			this.mmrId = mmrId;
 		}
+	}
+
+	public static class PendingMMRByTeam {
+		private Long clanId;
+
+		public Long getClanId() {
+			return clanId;
+		}
+
+		public void setClanId(Long clanId) {
+			this.clanId = clanId;
+		}
 
 	}
 }

@@ -187,3 +187,12 @@ INSERT INTO solicitude_type (description, create_date, active) VALUES ('POSTULAR
 INSERT INTO state (description, create_date, active) VALUES ('PENDIENTE', now(), 1);
 INSERT INTO state (description, create_date, active) VALUES ('FINALIZADO', now(), 1);
 INSERT INTO state (description, create_date, active) VALUES ('CANCELADO', now(), 1);
+
+
+UPDATE STATE SET description = 'PENDIENTE_APROBACION' where ID = 1;
+UPDATE STATE SET description = 'PENDIENTE_JUEGO' where ID = 2;
+UPDATE STATE SET description = 'FINALIZADO' where ID = 3;
+
+INSERT INTO STATE (description, create_date, update_date, active) VALUES ('CANCELADO', now(), null, 1);
+INSERT INTO STATE (description, create_date, update_date, active) VALUES ('ACEPTAR', now(), null, 1);
+INSERT INTO STATE (description, create_date, update_date, active) VALUES ('RECHAZAR', now(), null, 1);

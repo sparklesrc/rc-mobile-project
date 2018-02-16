@@ -2,6 +2,7 @@ package pe.com.rc.mobile.service.mmr;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -22,6 +23,7 @@ import pe.com.rc.mobile.model.clan.MMRSearch.MMRBuildRequest;
 import pe.com.rc.mobile.model.clan.MMRSearch.MMRCancelRequest;
 import pe.com.rc.mobile.model.clan.MMRSearch.MMRSearchRequest;
 import pe.com.rc.mobile.model.clan.MMRSearch.MMRSearchResponse;
+import pe.com.rc.mobile.model.clan.MMRSearch.PendingMMRByTeam;
 
 @Service
 public class MMRServiceImpl implements MMRService {
@@ -130,11 +132,37 @@ public class MMRServiceImpl implements MMRService {
 		User user = userDAO.find(new User(request.getUserId()));
 		MatchMaking mmr = matchMakingDAO.find(new MatchMaking(request.getMmrId()));
 		if (mmr.getUserCreate().getId().equals(user.getId())) {
-			State state = stateDAO.find(new State(3L)); // CANCELADO
+			State state = stateDAO.find(new State(4L)); // CANCELADO
 			mmr.setState(state);
 			mmr.setUpdateDate(new Date());
-			matchMakingDAO.update(mmr);
+			matchMakingDAO.updateMMRState(mmr, state);
 		}
 	}
 
+	public List<MMRSearchResponse> listPendingMMR(PendingMMRByTeam request) {
+		Clan clan = clanDAO.find(new Clan(request.getClanId()));
+		List<MatchMaking> pendingMMRSToApprove = matchMakingDAO.getMMRsByClan(clan);
+		
+		List<MMRSearchResponse> resp = new ArrayList();
+		for(MatchMaking mmr : pendingMMRSToApprove) {
+			MMRSearchResponse r = new MMRSearchResponse();
+			r.setClanNameWhoCreates(mmr.getTeamA().getName());
+			r.setDescription(mmr.getDescription());
+			r.setGame(mmr.getTeamA().getGame().getName());
+			r.setIpServ(mmr.getIpServ());
+			r.setMail(mmr.getMail());
+			r.setMmrId(mmr.getId());
+			r.setPhone(mmr.getPhone());
+			r.setTempDate(getTime(mmr.getTempDate()));
+			r.setUserNameWhoCreate(mmr.getUserCreate().getName());
+			resp.add(r);
+		}
+
+		return resp;
+	}
+
+	private String getTime(Date date) {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		return format.format(date);
+	}
 }

@@ -11,6 +11,7 @@ import pe.com.rc.mobile.model.clan.MMRSearch.MMRBuildRequest;
 import pe.com.rc.mobile.model.clan.MMRSearch.MMRCancelRequest;
 import pe.com.rc.mobile.model.clan.MMRSearch.MMRSearchRequest;
 import pe.com.rc.mobile.model.clan.MMRSearch.MMRSearchResponse;
+import pe.com.rc.mobile.model.clan.MMRSearch.PendingMMRByTeam;
 import pe.com.rc.mobile.service.mmr.MMRService;
 import pe.com.rc.mobile.web.util.Constants;
 
@@ -47,4 +48,10 @@ public class MatchMakingController {
 	}
 
 	// MOSTRAR MATCHS PENDIENTES DE JUEGO CERCA A LA ZONA
+	
+	// LISTAR MMR PENDIENTES POR CLAN
+	@RequestMapping(value = "/mmr/team", method = RequestMethod.POST, produces = { "application/json" })
+	public List<MMRSearchResponse> mmrByTeam(@RequestBody PendingMMRByTeam request) throws ServiceException {
+		return mmrService.listPendingMMR(request);
+	}
 }

@@ -1,6 +1,7 @@
 package pe.com.rc.mobile.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,7 +19,7 @@ public class UserController {
 
 	// ACEPTAR o RECHAZAR INVITACION
 	@RequestMapping(value = "/user/processClanRequest", method = RequestMethod.POST, produces = { "application/json" })
-	public void processClanRequest(AcceptClanRequest request) throws ServiceException {
+	public void processClanRequest(@RequestBody AcceptClanRequest request) throws ServiceException {
 		userService.processClanRequest(request);
 	}
 
