@@ -81,7 +81,7 @@ public class ClanServiceImpl implements ClanService {
 				lista.add(c);
 			}
 		} catch (DaoException e) {
-			throw new ServiceException(e.getMessage());
+			throw new ServiceException(e.getMessage(), e);
 		} catch (Exception e) {
 			throw new ServiceException("Error in " + e.getMessage());
 		}

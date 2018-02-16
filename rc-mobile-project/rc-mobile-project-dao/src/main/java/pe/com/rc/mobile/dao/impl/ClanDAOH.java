@@ -30,15 +30,15 @@ public class ClanDAOH extends BaseHibernateDAO implements ClanDAO {
 	public List<Clan> all() throws DaoException {
 		List<Clan> clanes = null;
 		try {
-//			Criteria criteria = this.getSession().createCriteria(Clan.class);
-//			clanes = criteria.list();
+			Criteria criteria = this.getSession().createCriteria(Clan.class);
+			clanes = criteria.list();
 //			logger.error("Error trying to list all clans.", e);
-			throw new DaoException("Error trying to list all clans.");
+//			throw new DaoException("Error trying to list all clans.");
 		} catch (Exception e) {
 			logger.error("Error trying to list all clans.", e);
-			throw new DaoException("Error trying to list all clans.");
+			throw new DaoException("Error trying to list all clans.", e);
 		}
-//		return clanes;
+		return clanes;
 	}
 
 	public void save(Clan t) {
