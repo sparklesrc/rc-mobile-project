@@ -2,10 +2,7 @@ package pe.com.rc.mobile.service.clan;
 
 import java.util.List;
 
-import pe.com.rc.mobile.model.User;
-import pe.com.rc.mobile.model.clan.BuildClanRequest;
-import pe.com.rc.mobile.model.clan.Clan;
-import pe.com.rc.mobile.model.clan.ClanMembersResponse;
+import pe.com.rc.mobile.core.exception.ServiceException;
 import pe.com.rc.mobile.model.clan.ListClanResponse;
 import pe.com.rc.mobile.model.clan.TeamSearch.AcceptMemberRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.AssignRoleRequest;
@@ -22,7 +19,7 @@ import pe.com.rc.mobile.model.clan.TeamSearch.TeamSearchResponse;
 
 public interface ClanService {
 
-	List<ListClanResponse> listClanes();
+	List<ListClanResponse> listClanes() throws ServiceException;
 
 	TeamSearchResponse getTeam(TeamSearchRequest request);
 

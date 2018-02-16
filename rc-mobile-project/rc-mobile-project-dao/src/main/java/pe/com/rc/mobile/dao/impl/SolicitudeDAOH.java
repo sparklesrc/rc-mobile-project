@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Repository;
 
 import pe.com.rc.mobile.dao.SolicitudeDAO;
 import pe.com.rc.mobile.dao.helper.BaseHibernateDAO;
@@ -12,6 +13,7 @@ import pe.com.rc.mobile.model.Solicitude;
 import pe.com.rc.mobile.model.State;
 import pe.com.rc.mobile.model.clan.Clan;
 
+@Repository
 public class SolicitudeDAOH extends BaseHibernateDAO implements SolicitudeDAO{
 
 	public Solicitude find(Solicitude t) {

@@ -6,11 +6,14 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Repository;
+
 import pe.com.rc.mobile.dao.MatchMakingDAO;
 import pe.com.rc.mobile.dao.helper.BaseHibernateDAO;
 import pe.com.rc.mobile.model.MatchMaking;
 import pe.com.rc.mobile.model.clan.Clan;
 
+@Repository
 public class MatchMakingDAOH extends BaseHibernateDAO implements MatchMakingDAO {
 
 	public MatchMaking find(MatchMaking t) {

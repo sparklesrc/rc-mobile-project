@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import pe.com.rc.mobile.core.exception.DaoException;
+import pe.com.rc.mobile.core.exception.ServiceException;
 import pe.com.rc.mobile.dao.ClanCommentsDAO;
 import pe.com.rc.mobile.dao.ClanDAO;
 import pe.com.rc.mobile.dao.GameDAO;
@@ -66,16 +68,22 @@ public class ClanServiceImpl implements ClanService {
 
 	private static final Logger logger = LoggerFactory.getLogger(ClanServiceImpl.class);
 
-	public List<ListClanResponse> listClanes() {
+	public List<ListClanResponse> listClanes() throws ServiceException {
 		List<ListClanResponse> lista = new ArrayList<ListClanResponse>();
-		List<Clan> clanes = clanDAO.all();
-		for (Clan clan : clanes) {
-			ListClanResponse c = new ListClanResponse();
-			c.setName(clan.getName());
-			c.setDescription(clan.getDecription());
-			c.setStarsNum(clan.getStarsNumber());
-			c.setGame(clan.getGame().getName());
-			lista.add(c);
+		try {
+			List<Clan> clanes = clanDAO.all();
+			for (Clan clan : clanes) {
+				ListClanResponse c = new ListClanResponse();
+				c.setName(clan.getName());
+				c.setDescription(clan.getDecription());
+				c.setStarsNum(clan.getStarsNumber());
+				c.setGame(clan.getGame().getName());
+				lista.add(c);
+			}
+		} catch (DaoException e) {
+			throw new ServiceException(e.getMessage());
+		} catch (Exception e) {
+			throw new ServiceException("Error in " + e.getMessage());
 		}
 		return lista;
 	}
@@ -293,10 +301,17 @@ public class ClanServiceImpl implements ClanService {
 
 		// ONLY LEADER CAN ASSIGN ROLES
 		if (request.getLeaderId().equals(teamLeader.getId())) {
+			// GET MEMBER TO ASSIGN
 			for (ClanMembers member : clan.getClanMembers()) {
 				if (member.getUser().getId().equals(request.getMemberId())) {
+					// IS LEADER LEAVING
+					if (memberType.getId().equals(1L)) {
+						// Old leader becomes a member
+						clanDAO.updateMemberRole(2L, teamLeader.getId(), clan.getId());
+					}
 					// actualizar rol
 					clanDAO.updateMemberRole(memberType.getId(), member.getUser().getId(), clan.getId());
+					break;
 				}
 			}
 		}

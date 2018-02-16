@@ -4,11 +4,13 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Repository;
 
 import pe.com.rc.mobile.dao.StateDAO;
 import pe.com.rc.mobile.dao.helper.BaseHibernateDAO;
 import pe.com.rc.mobile.model.State;
 
+@Repository
 public class StateDAOH extends BaseHibernateDAO implements StateDAO {
 
 	public State find(State t) {

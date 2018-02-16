@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Repository;
 
 import pe.com.rc.mobile.dao.ClanCommentsDAO;
 import pe.com.rc.mobile.dao.helper.BaseHibernateDAO;
@@ -11,6 +12,7 @@ import pe.com.rc.mobile.model.ClanComments;
 import pe.com.rc.mobile.model.User;
 import pe.com.rc.mobile.model.clan.Clan;
 
+@Repository
 public class ClanCommentsDAOH extends BaseHibernateDAO implements ClanCommentsDAO {
 
 	public ClanComments find(ClanComments t) {
