@@ -51,10 +51,7 @@ public class ClanDAOH extends BaseHibernateDAO implements ClanDAO {
 
 	public void delete(Clan t) {
 		// delete members
-		System.out.println("DELETE");
 		for (ClanMembers member : t.getClanMembers()) {
-			System.out.println("BORRANDO USERS " + member.getUser().getName() + " id " + member.getUser().getId());
-			System.out.println("BORRANDO USERS " + member.getClan().getName() + " id " + member.getClan().getId());
 			Query q = this.getSession()
 					.createSQLQuery("delete from CLAN_MEMBERS where user_id = :userId and clan_id = :clanId");
 			q.setParameter("userId", member.getUser().getId());
@@ -62,7 +59,6 @@ public class ClanDAOH extends BaseHibernateDAO implements ClanDAO {
 			q.executeUpdate();
 		}
 		// delete clan
-		System.out.println("BORRANDO CLAN " + t.getName());
 		Query q = this.getSession().createSQLQuery("delete from CLAN where id = :clanId");
 		q.setParameter("clanId", t.getId());
 		q.executeUpdate();

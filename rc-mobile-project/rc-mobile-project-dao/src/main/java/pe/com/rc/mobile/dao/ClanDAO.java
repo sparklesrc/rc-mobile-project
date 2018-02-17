@@ -19,4 +19,6 @@ public interface ClanDAO extends GenericDAO<Clan> {
 	void dropMember(Clan clan, User user);
 
 	void updateMemberRole(Long memberTypeId, Long userId, Long clanId);
+
+	
 }

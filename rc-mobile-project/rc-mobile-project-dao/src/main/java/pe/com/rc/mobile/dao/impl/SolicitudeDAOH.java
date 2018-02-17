@@ -7,10 +7,15 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
+
+import pe.com.rc.mobile.core.exception.DaoException;
 import pe.com.rc.mobile.dao.SolicitudeDAO;
 import pe.com.rc.mobile.dao.helper.BaseHibernateDAO;
+import pe.com.rc.mobile.model.Game;
 import pe.com.rc.mobile.model.Solicitude;
+import pe.com.rc.mobile.model.SolicitudeType;
 import pe.com.rc.mobile.model.State;
+import pe.com.rc.mobile.model.User;
 import pe.com.rc.mobile.model.clan.Clan;
 
 @Repository
@@ -23,8 +28,8 @@ public class SolicitudeDAOH extends BaseHibernateDAO implements SolicitudeDAO {
 	}
 
 	public List<Solicitude> all() {
-		// TODO Auto-generated method stub
-		return null;
+		Criteria criteria = this.getSession().createCriteria(Solicitude.class);
+		return criteria.list();
 	}
 
 	public void save(Solicitude t) {
@@ -32,8 +37,9 @@ public class SolicitudeDAOH extends BaseHibernateDAO implements SolicitudeDAO {
 	}
 
 	public void update(Solicitude t) {
-		Query query = getSession().createSQLQuery(
-				"UPDATE SOLICITUDE SET state_id = :stateId, update_date = :updateDate where user_id = :userId and clan_id = :clanId");
+		Query query = getSession()
+				.createSQLQuery(
+						"UPDATE SOLICITUDE SET state_id = :stateId, update_date = :updateDate where user_id = :userId and clan_id = :clanId");
 		query.setParameter("stateId", t.getState().getId());
 		query.setParameter("updateDate", new Date());
 		query.setParameter("userId", t.getUser().getId());
@@ -46,9 +52,22 @@ public class SolicitudeDAOH extends BaseHibernateDAO implements SolicitudeDAO {
 
 	}
 
-	public List<Solicitude> getSolicitudesByClanAndState(Clan clan, State state, Integer active) {
+	public List<Solicitude> getSolicitudesByClanAndState(Clan clan,
+			State state, Integer active) {
 		Criteria criteria = this.getSession().createCriteria(Solicitude.class);
-		criteria.add(Restrictions.eq("clan.id", clan.getId())).add(Restrictions.eq("state.id", state.getId()))
+		criteria.add(Restrictions.eq("clan.id", clan.getId()))
+				.add(Restrictions.eq("state.id", state.getId()))
+				.add(Restrictions.eq("active", 1));
+		return criteria.list();
+	}
+
+	public List<Solicitude> getSolicitudesByUserAndGameAndStateAndType(User user, Game game,
+			State state, SolicitudeType type) throws DaoException {
+		Criteria criteria = this.getSession().createCriteria(Solicitude.class);
+		criteria.add(Restrictions.eq("user.id", user.getId()))
+				.add(Restrictions.eq("game.id", game.getId()))
+				.add(Restrictions.eq("state.id", state.getId()))
+				.add(Restrictions.eq("solicitudeType.id", type.getId()))
 				.add(Restrictions.eq("active", 1));
 		return criteria.list();
 	}

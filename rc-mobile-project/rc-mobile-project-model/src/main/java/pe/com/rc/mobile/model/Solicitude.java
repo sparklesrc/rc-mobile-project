@@ -27,14 +27,18 @@ public class Solicitude extends Record implements Serializable {
 	@JoinColumn(name = "solicitude_type_id")
 	private SolicitudeType solicitudeType;
 
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "game_id")
+	private Game game;
+
 	public Solicitude() {
-		
+
 	}
-	
+
 	public Solicitude(Long id) {
 		this.setId(id);
 	}
-	
+
 	public User getUser() {
 		return user;
 	}
@@ -65,6 +69,14 @@ public class Solicitude extends Record implements Serializable {
 
 	public void setSolicitudeType(SolicitudeType solicitudeType) {
 		this.solicitudeType = solicitudeType;
+	}
+
+	public Game getGame() {
+		return game;
+	}
+
+	public void setGame(Game game) {
+		this.game = game;
 	}
 
 }
