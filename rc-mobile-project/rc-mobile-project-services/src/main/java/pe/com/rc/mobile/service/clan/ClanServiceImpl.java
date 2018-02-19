@@ -45,6 +45,7 @@ import pe.com.rc.mobile.model.clan.TeamSearch.TeamDeleteRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.TeamMembers;
 import pe.com.rc.mobile.model.clan.TeamSearch.TeamSearchRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.TeamSearchResponse;
+import pe.com.rc.mobile.service.mail.Mail;
 
 @Service
 public class ClanServiceImpl implements ClanService {
