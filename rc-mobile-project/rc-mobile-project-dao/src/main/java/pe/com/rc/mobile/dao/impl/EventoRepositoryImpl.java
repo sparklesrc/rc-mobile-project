@@ -11,11 +11,11 @@ import org.springframework.stereotype.Repository;
 import pe.com.rc.mobile.dao.EventoRepository;
 import pe.com.rc.mobile.model.Evento;
 
-@Repository
+//@Repository
 public class EventoRepositoryImpl implements EventoRepository {
 
-	@Autowired
-	@Qualifier("dbDataSource")
+//	@Autowired
+//	@Qualifier("dbDataSource")
 	private DataSource dataSource;
 
 	public List<Evento> listarEventosPorLugar(String idLugar) {

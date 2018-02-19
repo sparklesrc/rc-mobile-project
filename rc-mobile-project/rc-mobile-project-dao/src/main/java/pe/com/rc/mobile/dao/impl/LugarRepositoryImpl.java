@@ -19,14 +19,14 @@ import pe.com.rc.mobile.model.Lugar;
 import pe.com.rc.mobile.model.MusicaLugar;
 import pe.com.rc.mobile.model.TipoLugar;
 
-@Repository
+//@Repository
 public class LugarRepositoryImpl implements LugarRepository {
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(LugarRepositoryImpl.class);
 
-	@Autowired
-	@Qualifier("dbDataSource")
+//	@Autowired
+//	@Qualifier("dbDataSource")
 	private DataSource dataSource;
 
 	private LugarHelper lugarHelper;
