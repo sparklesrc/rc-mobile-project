@@ -33,7 +33,6 @@ public class ClanController {
 	// LISTAR TODOS LOS CLANES
 	@RequestMapping(value = "/team/list", method = RequestMethod.POST, produces = { "application/json" })
 	public List<ListClanResponse> listClan() throws ServiceException {
-		//ADDING
 		return clanService.listClanes();
 	}
 
