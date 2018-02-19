@@ -1,0 +1,199 @@
+CREATE TABLE user (
+    `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
+    `steam_id` BIGINT NOT NULL,
+    `steam_name` VARCHAR(200) NOT NULL,
+    `steam_link_avatar` VARCHAR(500) NOT NULL,
+    `create_date` DATETIME NULL DEFAULT NULL,
+    `update_date` DATETIME NULL DEFAULT NULL,
+    `last_login` DATETIME NULL DEFAULT NULL,
+    `active` INTEGER NOT NULL DEFAULT 0,
+    PRIMARY KEY (`id`)
+);
+ALTER TABLE `solommr`.`user` ADD INDEX `idx_steam_id` (`steam_id`);
+
+CREATE TABLE game (
+    `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(100) NOT NULL,
+    `steam_app` VARCHAR(50) NULL,
+    `create_date` DATETIME NULL DEFAULT NULL,
+    `update_date` DATETIME NULL DEFAULT NULL,
+    `active` INTEGER NOT NULL DEFAULT 0,
+    PRIMARY KEY (`id`)
+);
+ALTER TABLE `solommr`.`game` ADD INDEX `idx_name` (`name`);
+
+CREATE TABLE clan (
+    `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(100) NULL,
+    `game_id` BIGINT NOT NULL,
+    `description` VARCHAR(50) NULL,
+    `stars_num` INTEGER NOT NULL DEFAULT 0,
+    `create_date` DATETIME NULL DEFAULT NULL,
+    `update_date` DATETIME NULL DEFAULT NULL,
+    `active` INTEGER NOT NULL DEFAULT 0,
+    PRIMARY KEY (`id`),
+    CONSTRAINT `clan_fk_1` FOREIGN KEY (`game_id`) REFERENCES `game` (`id`)
+);
+ALTER TABLE `solommr`.`clan` ADD INDEX `idx_name` (`name`);
+
+CREATE TABLE clan_comments (
+    `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
+    `clan_id` BIGINT NOT NULL,
+    `game_id` BIGINT NOT NULL,
+    `user_id` BIGINT NOT NULL,
+    `description` VARCHAR(200) NOT NULL,
+    `create_date` DATETIME NULL DEFAULT NULL,
+    `update_date` DATETIME NULL DEFAULT NULL,
+    `active` INTEGER NOT NULL DEFAULT 0,
+    PRIMARY KEY (`id`),
+	CONSTRAINT `clan_comments_fk_1` FOREIGN KEY (`clan_id`) REFERENCES `clan` (`id`),
+	CONSTRAINT `clan_comments_fk_2` FOREIGN KEY (`game_id`) REFERENCES `game` (`id`),
+	CONSTRAINT `clan_comments_fk_3` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+);
+
+CREATE TABLE member_type (
+    `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
+    `description` VARCHAR(200) NOT NULL,
+    `create_date` DATETIME NULL DEFAULT NULL,
+    `update_date` DATETIME NULL DEFAULT NULL,
+    `active` INTEGER NOT NULL DEFAULT 0,
+    PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `clan_members` (
+  `user_id` BIGINT NOT NULL,
+  `clan_id` BIGINT NOT NULL,
+  `member_type_id` BIGINT NOT NULL,
+  `create_date` DATETIME NULL DEFAULT NULL,
+  `update_date` DATETIME NULL DEFAULT NULL,
+  `active` INTEGER NOT NULL DEFAULT 0,
+  KEY `fk_user` (`user_id`),
+  KEY `fk_clan` (`clan_id`),
+  CONSTRAINT `fk_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
+  CONSTRAINT `fk_clan` FOREIGN KEY (`clan_id`) REFERENCES `clan` (`id`),
+  CONSTRAINT `fk_member_type` FOREIGN KEY (`member_type_id`) REFERENCES `member_type` (`id`)
+);
+
+
+CREATE TABLE state (
+    `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
+    `description` VARCHAR(200) NOT NULL,
+    `create_date` DATETIME NULL DEFAULT NULL,
+    `update_date` DATETIME NULL DEFAULT NULL,
+    `active` INTEGER NOT NULL DEFAULT 0,
+    PRIMARY KEY (`id`)
+);
+
+CREATE TABLE solicitude (
+    `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
+    `user_id` BIGINT NOT NULL,
+    `clan_id` BIGINT NOT NULL,
+    `state_id` BIGINT NOT NULL,
+    `create_date` DATETIME NULL DEFAULT NULL,
+    `update_date` DATETIME NULL DEFAULT NULL,
+    `active` INTEGER NOT NULL DEFAULT 0,
+    PRIMARY KEY (`id`),
+	CONSTRAINT `solicitude_fk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
+	CONSTRAINT `solicitude_fk_2` FOREIGN KEY (`clan_id`) REFERENCES `clan` (`id`),
+	CONSTRAINT `solicitude_fk_3` FOREIGN KEY (`state_id`) REFERENCES `state` (`id`)
+);
+
+
+
+CREATE TABLE match_making (
+    `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
+    `team_a` BIGINT NOT NULL,
+    `team_b` BIGINT NOT NULL,
+    `user_create` BIGINT NOT NULL,
+    `user_accept` BIGINT NOT NULL,
+    `temp_date` DATETIME NULL DEFAULT NULL,
+    `approved_date` DATETIME NULL DEFAULT NULL,
+    `ip_serv` VARCHAR(100),
+    `description` VARCHAR(500),
+    `phone` VARCHAR(20),
+    `mail` VARCHAR(100),
+    `state_id` BIGINT NOT NULL,
+    `create_date` DATETIME NULL DEFAULT NULL,
+    `update_date` DATETIME NULL DEFAULT NULL,
+    `active` INTEGER NOT NULL DEFAULT 0,
+    PRIMARY KEY (`id`),
+	CONSTRAINT `match_making_fk_1` FOREIGN KEY (`team_a`) REFERENCES `clan` (`id`),
+	CONSTRAINT `match_making_fk_2` FOREIGN KEY (`team_b`) REFERENCES `clan` (`id`),
+	CONSTRAINT `match_making_fk_3` FOREIGN KEY (`user_create`) REFERENCES `user` (`id`),
+	CONSTRAINT `match_making_fk_4` FOREIGN KEY (`user_accept`) REFERENCES `user` (`id`),
+	CONSTRAINT `match_making_fk_5` FOREIGN KEY (`state_id`) REFERENCES `state` (`id`)
+);
+
+CREATE TABLE match_making_comments (
+    `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
+    `match_making_id` BIGINT NOT NULL,
+    `user_id` BIGINT NOT NULL,
+    `description` BIGINT NOT NULL,
+    `create_date` DATETIME NULL DEFAULT NULL,
+    `update_date` DATETIME NULL DEFAULT NULL,
+    `active` INTEGER NOT NULL DEFAULT 0,
+    PRIMARY KEY (`id`),
+	CONSTRAINT `match_making_comments_fk_1` FOREIGN KEY (`match_making_id`) REFERENCES `match_making` (`id`),
+	CONSTRAINT `match_making_comments_fk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+);
+
+
+CREATE TABLE solicitude_type (
+    `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
+    `description` VARCHAR(200) NOT NULL,
+    `create_date` DATETIME NULL DEFAULT NULL,
+    `update_date` DATETIME NULL DEFAULT NULL,
+    `active` INTEGER NOT NULL DEFAULT 0,
+    PRIMARY KEY (`id`)
+);
+
+ALTER TABLE SOLICITUDE ADD COLUMN solicitude_type_id BIGINT NOT NULL, ADD CONSTRAINT `fk_solicitude_type` FOREIGN KEY (`solicitude_type_id`)  REFERENCES `solommr`.`solicitude_type`(`id`);
+ALTER TABLE SOLICITUDE ADD COLUMN game_id BIGINT NOT NULL, ADD CONSTRAINT `fk_game` FOREIGN KEY (`game_id`)  REFERENCES `solommr`.`game`(`id`);
+ALTER TABLE match_making ADD COLUMN hours BIGINT NOT NULL;
+ALTER TABLE match_making ADD COLUMN temp_date_end DATETIME NULL DEFAULT NULL;
+ALTER TABLE match_making MODIFY team_b BIGINT;
+ALTER TABLE match_making MODIFY user_accept BIGINT;
+ALTER TABLE clan_comments ADD COLUMN stars_num INTEGER NOT NULL;
+
+INSERT INTO member_type (description, create_date, update_date, active) VALUES ('Team Leader', now(), null, 1);
+INSERT INTO member_type (description, create_date, update_date, active) VALUES ('Member', now(), null, 1);
+INSERT INTO member_type (description, create_date, update_date, active) VALUES ('Standing', now(), null, 1);
+
+
+
+INSERT INTO USER (steam_id, steam_name, steam_link_avatar, create_date, last_login, active)
+VALUES(7005200, 'SparKLesRC', 'this is my url', now(), now(), 1);
+
+INSERT INTO USER (steam_id, steam_name, steam_link_avatar, create_date, last_login, active)
+VALUES(7005201, 'SandMan', 'this is my url', now(), now(), 1);
+
+INSERT INTO USER (steam_id, steam_name, steam_link_avatar, create_date, last_login, active)
+VALUES(7005202, 'Liz', 'this is my url', now(), now(), 1);
+
+
+INSERT INTO GAME(name, steam_app, create_date, active)
+VALUES ('CSGO', 730, NOW(), 1);
+
+INSERT INTO CLAN (name, game_id, description, stars_num, create_date, active)
+VALUES('aIR', 1, 'Solo AKs and above', 0, now(), 1);
+
+INSERT INTO clan_members (user_id, clan_id, member_type_id, create_date, active)
+VALUES(1, 1, 1, now(), 1);
+INSERT INTO clan_members (user_id, clan_id, member_type_id, create_date, active)
+VALUES(2, 1, 1, now(), 1);
+
+INSERT INTO solicitude_type (description, create_date, active) VALUES ('RECLUTAR', now(), 1);
+INSERT INTO solicitude_type (description, create_date, active) VALUES ('POSTULAR', now(), 1);
+
+INSERT INTO state (description, create_date, active) VALUES ('PENDIENTE', now(), 1);
+INSERT INTO state (description, create_date, active) VALUES ('FINALIZADO', now(), 1);
+INSERT INTO state (description, create_date, active) VALUES ('CANCELADO', now(), 1);
+
+
+UPDATE STATE SET description = 'PENDIENTE_APROBACION' where ID = 1;
+UPDATE STATE SET description = 'PENDIENTE_JUEGO' where ID = 2;
+UPDATE STATE SET description = 'FINALIZADO' where ID = 3;
+
+INSERT INTO STATE (description, create_date, update_date, active) VALUES ('CANCELADO', now(), null, 1);
+INSERT INTO STATE (description, create_date, update_date, active) VALUES ('ACEPTAR', now(), null, 1);
+INSERT INTO STATE (description, create_date, update_date, active) VALUES ('RECHAZAR', now(), null, 1);

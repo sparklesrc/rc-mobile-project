@@ -11,7 +11,7 @@
 
 	<artifactId>rc-mobile-project-web</artifactId>
 	<packaging>war</packaging>
-	<name>rc-mobile-project-web Maven Webapp</name>
+	<name>rc-mobile-project-web</name>
 
 	<properties>
 		<jdk.version>1.7</jdk.version>

@@ -22,31 +22,31 @@ import pe.com.rc.mobile.web.util.Constants;
 @RequestMapping(Constants.URL_BASE)
 public class LugarController {
 
-	private static final Logger logger = LoggerFactory
-			.getLogger(LugarController.class);
-
-	@Autowired
-	LugarService lugarService;
-
-	/**
-	 * Metodo que obtiene al logar los lugares mas cercanos en base a la lista
-	 * de preferencias segun el distrito de ubicacion
-	 * 
-	 * @param lugarRq
-	 * @return List<LugarRs>
-	 * @author framirez
-	 * @since 26/09/2016
-	 */
-	@RequestMapping(value = Constants.URL_LUGAR + Constants.URL_LIST_DEFAULT, method = RequestMethod.POST, produces = { "application/json" })
-	public @ResponseBody LugarRs listarLugaresDefault(
-			@RequestBody LugarRq lugarRq) throws ServiceException {
-		logger.info("Obtener Lugares - LugarController.listarLugaresDefault");
-
-		List<Lugar> lugares = lugarService.listarLugaresByDefault(lugarRq);
-
-		LugarRs respo = new LugarRs();
-		respo.setLugar(lugares);
-		return respo;
-
-	}
+//	private static final Logger logger = LoggerFactory
+//			.getLogger(LugarController.class);
+//
+//	@Autowired
+//	LugarService lugarService;
+//
+//	/**
+//	 * Metodo que obtiene al logar los lugares mas cercanos en base a la lista
+//	 * de preferencias segun el distrito de ubicacion
+//	 * 
+//	 * @param lugarRq
+//	 * @return List<LugarRs>
+//	 * @author framirez
+//	 * @since 26/09/2016
+//	 */
+//	@RequestMapping(value = Constants.URL_LUGAR + Constants.URL_LIST_DEFAULT, method = RequestMethod.POST, produces = { "application/json" })
+//	public @ResponseBody LugarRs listarLugaresDefault(
+//			@RequestBody LugarRq lugarRq) throws ServiceException {
+//		logger.info("Obtener Lugares - LugarController.listarLugaresDefault");
+//
+//		List<Lugar> lugares = lugarService.listarLugaresByDefault(lugarRq);
+//
+//		LugarRs respo = new LugarRs();
+//		respo.setLugar(lugares);
+//		return respo;
+//
+//	}
 }
