@@ -147,8 +147,8 @@ CREATE TABLE solicitude_type (
     PRIMARY KEY (`id`)
 );
 
-ALTER TABLE SOLICITUDE ADD COLUMN solicitude_type_id BIGINT NOT NULL, ADD CONSTRAINT `fk_solicitude_type` FOREIGN KEY (`solicitude_type_id`)  REFERENCES `solommr`.`solicitude_type`(`id`);
-ALTER TABLE SOLICITUDE ADD COLUMN game_id BIGINT NOT NULL, ADD CONSTRAINT `fk_game` FOREIGN KEY (`game_id`)  REFERENCES `solommr`.`game`(`id`);
+ALTER TABLE solicitude ADD COLUMN solicitude_type_id BIGINT NOT NULL, ADD CONSTRAINT `fk_solicitude_type` FOREIGN KEY (`solicitude_type_id`)  REFERENCES `solommr`.`solicitude_type`(`id`);
+ALTER TABLE solicitude ADD COLUMN game_id BIGINT NOT NULL, ADD CONSTRAINT `fk_game` FOREIGN KEY (`game_id`)  REFERENCES `solommr`.`game`(`id`);
 ALTER TABLE match_making ADD COLUMN hours BIGINT NOT NULL;
 ALTER TABLE match_making ADD COLUMN temp_date_end DATETIME NULL DEFAULT NULL;
 ALTER TABLE match_making MODIFY team_b BIGINT;
@@ -161,20 +161,20 @@ INSERT INTO member_type (description, create_date, update_date, active) VALUES (
 
 
 
-INSERT INTO USER (steam_id, steam_name, steam_link_avatar, create_date, last_login, active)
+INSERT INTO user (steam_id, steam_name, steam_link_avatar, create_date, last_login, active)
 VALUES(7005200, 'SparKLesRC', 'this is my url', now(), now(), 1);
 
-INSERT INTO USER (steam_id, steam_name, steam_link_avatar, create_date, last_login, active)
+INSERT INTO user (steam_id, steam_name, steam_link_avatar, create_date, last_login, active)
 VALUES(7005201, 'SandMan', 'this is my url', now(), now(), 1);
 
-INSERT INTO USER (steam_id, steam_name, steam_link_avatar, create_date, last_login, active)
+INSERT INTO user (steam_id, steam_name, steam_link_avatar, create_date, last_login, active)
 VALUES(7005202, 'Liz', 'this is my url', now(), now(), 1);
 
 
-INSERT INTO GAME(name, steam_app, create_date, active)
+INSERT INTO game(name, steam_app, create_date, active)
 VALUES ('CSGO', 730, NOW(), 1);
 
-INSERT INTO CLAN (name, game_id, description, stars_num, create_date, active)
+INSERT INTO clan (name, game_id, description, stars_num, create_date, active)
 VALUES('aIR', 1, 'Solo AKs and above', 0, now(), 1);
 
 INSERT INTO clan_members (user_id, clan_id, member_type_id, create_date, active)
@@ -190,10 +190,10 @@ INSERT INTO state (description, create_date, active) VALUES ('FINALIZADO', now()
 INSERT INTO state (description, create_date, active) VALUES ('CANCELADO', now(), 1);
 
 
-UPDATE STATE SET description = 'PENDIENTE_APROBACION' where ID = 1;
-UPDATE STATE SET description = 'PENDIENTE_JUEGO' where ID = 2;
-UPDATE STATE SET description = 'FINALIZADO' where ID = 3;
+UPDATE state SET description = 'PENDIENTE_APROBACION' where ID = 1;
+UPDATE state SET description = 'PENDIENTE_JUEGO' where ID = 2;
+UPDATE state SET description = 'FINALIZADO' where ID = 3;
 
-INSERT INTO STATE (description, create_date, update_date, active) VALUES ('CANCELADO', now(), null, 1);
-INSERT INTO STATE (description, create_date, update_date, active) VALUES ('ACEPTAR', now(), null, 1);
-INSERT INTO STATE (description, create_date, update_date, active) VALUES ('RECHAZAR', now(), null, 1);
+INSERT INTO state (description, create_date, update_date, active) VALUES ('CANCELADO', now(), null, 1);
+INSERT INTO state (description, create_date, update_date, active) VALUES ('ACEPTAR', now(), null, 1);
+INSERT INTO state (description, create_date, update_date, active) VALUES ('RECHAZAR', now(), null, 1);
