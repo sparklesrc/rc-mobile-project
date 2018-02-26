@@ -286,7 +286,7 @@ public class ClanServiceImpl implements ClanService {
 				+ request.getLeaderId());
 		try {
 			Clan clan = clanDAO.find(new Clan(request.getClanId()));
-			User teamLeader = clanDAO.getLeader(clan);
+			User teamLeader = getLeader(clan);
 			User userToDrop = userDAO.find(new User(request.getMemberId()));
 
 			// User that asks is leader but member to drop cant be leader
@@ -397,7 +397,7 @@ public class ClanServiceImpl implements ClanService {
 				+ request.getClanId() + " by TL " + request.getLeaderId());
 		try {
 			Clan clan = clanDAO.find(new Clan(request.getClanId()));
-			User teamLeader = clanDAO.getLeader(clan);
+			User teamLeader = getLeader(clan);
 			MemberType memberType = memberTypeDAO.find(new MemberType(request.getNewRolId()));
 
 			// ONLY LEADER CAN ASSIGN ROLES
@@ -450,5 +450,14 @@ public class ClanServiceImpl implements ClanService {
 			logger.error("Exception get Available Member Type for Clan " + clan.getId(), e);
 			throw new ServiceException("Error in " + e.getMessage());
 		}
+	}
+
+	private User getLeader(Clan clan) {
+		for (ClanMembers member : clan.getClanMembers()) {
+			if (member.getMemberType().getId().equals(1L)) {
+				return member.getUser();
+			}
+		}
+		return null;
 	}
 }
