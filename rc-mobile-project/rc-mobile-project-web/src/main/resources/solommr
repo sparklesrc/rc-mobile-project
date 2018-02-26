@@ -180,7 +180,7 @@ VALUES('aIR', 1, 'Solo AKs and above', 0, now(), 1);
 INSERT INTO clan_members (user_id, clan_id, member_type_id, create_date, active)
 VALUES(1, 1, 1, now(), 1);
 INSERT INTO clan_members (user_id, clan_id, member_type_id, create_date, active)
-VALUES(2, 1, 1, now(), 1);
+VALUES(2, 2, 1, now(), 1);
 
 INSERT INTO solicitude_type (description, create_date, active) VALUES ('RECLUTAR', now(), 1);
 INSERT INTO solicitude_type (description, create_date, active) VALUES ('POSTULAR', now(), 1);
