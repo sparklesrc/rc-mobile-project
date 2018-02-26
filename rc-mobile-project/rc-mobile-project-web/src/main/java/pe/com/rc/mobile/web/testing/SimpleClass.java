@@ -1,14 +1,14 @@
 package pe.com.rc.mobile.web.testing;
 
 import java.util.List;
-
-import org.apache.log4j.Logger;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pe.com.rc.mobile.model.TipoLugar;
+import pe.com.rc.mobile.service.clan.ClanServiceImpl;
 
 public class SimpleClass {
 
-	private Logger logger = Logger.getLogger(SimpleClass.class);
+	private static final Logger logger = LoggerFactory.getLogger(ClanServiceImpl.class);
 
 	void printLog() {
 		System.out.println("Valores...");

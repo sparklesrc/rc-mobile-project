@@ -44,6 +44,7 @@ public class LogTest {
 		tipoLugar.add(e);
 
 		String aaa = sc.getValores(tipoLugar);
+		sc.printLog();
 		System.out.println(aaa);
 	}
 }
