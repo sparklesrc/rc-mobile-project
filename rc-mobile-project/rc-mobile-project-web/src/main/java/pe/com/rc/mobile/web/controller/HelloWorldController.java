@@ -14,7 +14,7 @@ public class HelloWorldController {
 	@RequestMapping(value = "/holaMundo", method = RequestMethod.POST, produces = { "application/json" })
 	public @ResponseBody App prueba() {
 		App p = new App();
-		p.setMessage("hola");
+		p.setMessage("holasdasdasd");
 		return p;
 	}
 }

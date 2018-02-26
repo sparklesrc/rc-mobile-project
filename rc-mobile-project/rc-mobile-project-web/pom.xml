@@ -14,7 +14,7 @@
 	<name>rc-mobile-project-web</name>
 
 	<properties>
-		<jdk.version>1.7</jdk.version>
+		<jdk.version>1.8</jdk.version>
 		<context.path>MobileRcServices</context.path>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
