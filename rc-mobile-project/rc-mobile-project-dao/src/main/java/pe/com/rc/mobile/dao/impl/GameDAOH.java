@@ -4,6 +4,8 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
+
+import pe.com.rc.mobile.core.exception.DaoException;
 import pe.com.rc.mobile.dao.GameDAO;
 import pe.com.rc.mobile.dao.helper.BaseHibernateDAO;
 import pe.com.rc.mobile.model.Game;
@@ -11,15 +13,20 @@ import pe.com.rc.mobile.model.Game;
 @Repository
 public class GameDAOH extends BaseHibernateDAO implements GameDAO {
 
-	public Game find(Game t) {
-		Criteria criteria = this.getSession().createCriteria(Game.class);
-		criteria.add(Restrictions.eq("id", t.getId()));
-		return (Game) criteria.uniqueResult();
+	public Game find(Game t) throws DaoException {
+		try {
+			Criteria criteria = this.getSession().createCriteria(Game.class);
+			criteria.add(Restrictions.eq("id", t.getId()));
+			return (Game) criteria.uniqueResult();
+		} catch (Exception e) {
+			logger.error("Error trying to find Game.", e);
+			throw new DaoException("Error trying to find Game.", e);
+		}
 	}
 
 	public List<Game> all() {
 		Criteria criteria = this.getSession().createCriteria(Game.class);
-		 return criteria.list();
+		return criteria.list();
 	}
 
 	public void save(Game t) {

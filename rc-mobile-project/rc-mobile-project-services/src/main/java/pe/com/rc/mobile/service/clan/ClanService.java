@@ -21,23 +21,23 @@ public interface ClanService {
 
 	List<ListClanResponse> listClanes() throws ServiceException;
 
-	TeamSearchResponse getTeam(TeamSearchRequest request);
+	TeamSearchResponse getTeam(TeamSearchRequest request) throws ServiceException;
 
-	void buildTeam(TeamBuildRequest request);
+	void buildTeam(TeamBuildRequest request) throws ServiceException;
 
-	void deleteTeam(TeamDeleteRequest request);
+	void deleteTeam(TeamDeleteRequest request) throws ServiceException;
 
-	void recruitPlayer(RecruitRequest request);
+	void recruitPlayer(RecruitRequest request) throws ServiceException;
 
-	void acceptPlayer(AcceptMemberRequest request);
+	void acceptPlayer(AcceptMemberRequest request) throws ServiceException;
 
-	List<CandidatesResponse> getCandidates(CandidatesRequest request);
+	List<CandidatesResponse> getCandidates(CandidatesRequest request) throws ServiceException;
 
-	void dropMember(DropMemberRequest request);
+	void dropMember(DropMemberRequest request) throws ServiceException;
 
-	void postular(PostularRequest request);
+	void postular(PostularRequest request) throws ServiceException;
 
-	void rankTeam(RankTeamRequest request);
+	void rankTeam(RankTeamRequest request) throws ServiceException;
 
-	void assignRole(AssignRoleRequest request);
+	void assignRole(AssignRoleRequest request) throws ServiceException;
 }

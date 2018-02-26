@@ -6,13 +6,13 @@ import pe.com.rc.mobile.core.exception.DaoException;
 
 public interface GenericDAO<T> {
 
-	public T find(T t);
+	public T find(T t) throws DaoException;
 
 	public List<T> all() throws DaoException;
 
-	public void save(T t);
+	public void save(T t) throws DaoException;
 
-	public void update(T t);
+	public void update(T t) throws DaoException;
 
-	public void delete(T t);
+	public void delete(T t) throws DaoException;
 }
