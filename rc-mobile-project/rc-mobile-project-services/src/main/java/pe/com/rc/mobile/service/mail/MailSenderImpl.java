@@ -1,21 +1,21 @@
 package pe.com.rc.mobile.service.mail;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+//@Service
 public class MailSenderImpl {
 
-	@Autowired
-	private Mail mail;
-
-	public void sendMail(String to) {
-		String sender = "info-solommr@gmail.com";
-		mail.sendMail(sender, to, "Asunto", prepareMessage());
-
-	}
-
-	private String prepareMessage() {
-		return "Welcome";
-	}
+//	@Autowired
+//	private Mail mail;
+//
+//	public void sendMail(String to) {
+//		String sender = "info-solommr@gmail.com";
+//		mail.sendMail(sender, to, "Asunto", prepareMessage());
+//
+//	}
+//
+//	private String prepareMessage() {
+//		return "Welcome";
+//	}
 }

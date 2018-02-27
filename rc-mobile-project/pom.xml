@@ -209,5 +209,12 @@
 			<version>4.1.6.RELEASE</version>
 		</dependency>
 
+
+		<!-- Java Mail API -->
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4.3</version>
+		</dependency>
 	</dependencies>
 </project>
