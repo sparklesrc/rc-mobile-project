@@ -217,10 +217,10 @@ ALTER TABLE user ADD COLUMN password VARCHAR(200) NOT NULL;
 
 ALTER TABLE user ADD COLUMN rol_id BIGINT NOT NULL;
 
-UPDATE USER SET mail = 'fbramirezc@gmail.com' , password = '$2a$10$DPjIcQE4OCXIyETHEFsA4OgdZxKZpgtlysrG2IBDNQRPoYZh3EYI6' where id = 1;
-UPDATE USER SET mail = 'sandman@gmail.com' , password = '$2a$10$DPjIcQE4OCXIyETHEFsA4OgdZxKZpgtlysrG2IBDNQRPoYZh3EYI6' where id = 2;
-UPDATE USER SET mail = 'kevin@gmail.com' , password = '$2a$10$DPjIcQE4OCXIyETHEFsA4OgdZxKZpgtlysrG2IBDNQRPoYZh3EYI6' where id = 3;
+UPDATE user SET mail = 'fbramirezc@gmail.com' , password = '$2a$10$DPjIcQE4OCXIyETHEFsA4OgdZxKZpgtlysrG2IBDNQRPoYZh3EYI6' where id = 1;
+UPDATE user SET mail = 'sandman@gmail.com' , password = '$2a$10$DPjIcQE4OCXIyETHEFsA4OgdZxKZpgtlysrG2IBDNQRPoYZh3EYI6' where id = 2;
+UPDATE user SET mail = 'liz@gmail.com' , password = '$2a$10$DPjIcQE4OCXIyETHEFsA4OgdZxKZpgtlysrG2IBDNQRPoYZh3EYI6' where id = 3;
 
-UPDATE USER SET rol_id = 1;
+UPDATE user SET rol_id = 1;
 
 ALTER TABLE user ADD CONSTRAINT `fk_rol` FOREIGN KEY (`rol_id`)  REFERENCES `solommr`.`rol`(`id`);

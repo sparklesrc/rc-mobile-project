@@ -140,6 +140,19 @@ public class UserReqRes {
 
 	}
 
+	public static class UserByMailReq {
+		private String mail;
+
+		public String getMail() {
+			return mail;
+		}
+
+		public void setMail(String mail) {
+			this.mail = mail;
+		}
+
+	}
+
 	public static class UserByMailResp {
 		private String steamId;
 		private String steamName;
