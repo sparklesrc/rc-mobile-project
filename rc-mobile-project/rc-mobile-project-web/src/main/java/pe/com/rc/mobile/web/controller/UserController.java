@@ -12,6 +12,7 @@ import pe.com.rc.mobile.core.exception.ServiceException;
 import pe.com.rc.mobile.model.clan.UserReqRes.AcceptClanRequest;
 import pe.com.rc.mobile.model.clan.UserReqRes.InvitationsToTeamRequest;
 import pe.com.rc.mobile.model.clan.UserReqRes.InvitationsToTeamResponse;
+import pe.com.rc.mobile.model.clan.UserReqRes.UserByMailResp;
 import pe.com.rc.mobile.service.user.UserService;
 import pe.com.rc.mobile.web.util.Constants;
 
@@ -43,5 +44,11 @@ public class UserController {
 			@RequestBody InvitationsToTeamRequest request)
 			throws ServiceException {
 		return userService.getInvitationsTeams(request);
+	}
+
+	// USER BY MAIL
+	@RequestMapping(value = "/user/findByMail", method = RequestMethod.POST, produces = { "application/json" })
+	public UserByMailResp getPostulaciones(@RequestBody String mail) throws ServiceException {
+		return userService.getUserByMail(mail);
 	}
 }

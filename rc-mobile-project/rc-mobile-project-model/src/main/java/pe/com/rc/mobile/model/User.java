@@ -8,7 +8,10 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -27,13 +30,22 @@ public class User extends Record implements Serializable {
 	@OneToMany(mappedBy = "primaryKey.user", cascade = CascadeType.ALL)
 	private Set<ClanMembers> clanMembers = new HashSet<ClanMembers>();
 
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "rol_id")
+	private Rol rol;
+
+	@Column(name = "mail")
+	private String mail;
+	@Column(name = "password")
+	private String password;
+
 	public User() {
 	}
 
 	public User(Long id) {
 		this.setId(id);
 	}
-	
+
 	public void addClan(ClanMembers clan) {
 		this.clanMembers.add(clan);
 	}
@@ -80,6 +92,30 @@ public class User extends Record implements Serializable {
 
 	public void addClanMember(ClanMembers clanMember) {
 		this.clanMembers.add(clanMember);
+	}
+
+	public Rol getRol() {
+		return rol;
+	}
+
+	public void setRol(Rol rol) {
+		this.rol = rol;
+	}
+
+	public String getMail() {
+		return mail;
+	}
+
+	public void setMail(String mail) {
+		this.mail = mail;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 }

@@ -28,6 +28,7 @@ import pe.com.rc.mobile.model.clan.Clan;
 import pe.com.rc.mobile.model.clan.UserReqRes.AcceptClanRequest;
 import pe.com.rc.mobile.model.clan.UserReqRes.InvitationsToTeamRequest;
 import pe.com.rc.mobile.model.clan.UserReqRes.InvitationsToTeamResponse;
+import pe.com.rc.mobile.model.clan.UserReqRes.UserByMailResp;
 import pe.com.rc.mobile.service.solicitude.SolicitudeService;
 
 @Service
@@ -50,8 +51,7 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private SolicitudeTypeDAO solicitudeTypeDAO;
 
-	public void processClanRequest(AcceptClanRequest request)
-			throws ServiceException {
+	public void processClanRequest(AcceptClanRequest request) throws ServiceException {
 		// User
 		User user = userDAO.find(new User(request.getUserId()));
 		// User response 5 ACEPTAR - 6 RECHAZAR
@@ -59,8 +59,7 @@ public class UserServiceImpl implements UserService {
 		// Clan
 		Clan clan = clanDAO.find(new Clan(request.getClanId()));
 		// Solicitud
-		Solicitude solicitud = solicitudeService.findSolicitud(new Solicitude(
-				request.getSolicitudeId()));
+		Solicitude solicitud = solicitudeService.findSolicitud(new Solicitude(request.getSolicitudeId()));
 
 		// ACTUALIZAR SOLICITUD
 		solicitud.setState(state);
@@ -106,12 +105,13 @@ public class UserServiceImpl implements UserService {
 			User user = userDAO.find(new User(request.getUserId()));
 			Game game = gameDAO.find(new Game(request.getGameId()));
 			State state = stateDAO.find(new State(1L)); // PENDIENTES DE APROBACION
-			
+
 			// RECLUTAMIENTOS O POSTULACIONES
 			SolicitudeType type = solicitudeTypeDAO.find(new SolicitudeType(request.getSolicitudeType()));
 
-			List<Solicitude> solicitudes = solicitudeDAO.getSolicitudesByUserAndGameAndStateAndType(user, game, state, type);
-			if(solicitudes != null){
+			List<Solicitude> solicitudes = solicitudeDAO.getSolicitudesByUserAndGameAndStateAndType(user, game, state,
+					type);
+			if (solicitudes != null) {
 				return getResponse(solicitudes);
 			}
 		} catch (DaoException e) {
@@ -120,8 +120,7 @@ public class UserServiceImpl implements UserService {
 		return null;
 	}
 
-	private List<InvitationsToTeamResponse> getResponse(
-			List<Solicitude> solicitudes) {
+	private List<InvitationsToTeamResponse> getResponse(List<Solicitude> solicitudes) {
 		List<InvitationsToTeamResponse> resp = new ArrayList();
 		for (Solicitude s : solicitudes) {
 			InvitationsToTeamResponse e = new InvitationsToTeamResponse();
@@ -139,5 +138,25 @@ public class UserServiceImpl implements UserService {
 	private String getTime(Date date) {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		return format.format(date);
+	}
+
+	public UserByMailResp getUserByMail(String mail) throws ServiceException {
+		try {
+			User user = userDAO.findByMail(mail);
+			return prepareUser(user);
+		} catch (DaoException e) {
+			throw new ServiceException("Error al obtener usuario por mail." + mail);
+		}
+	}
+
+	private UserByMailResp prepareUser(User user) {
+		UserByMailResp resp = new UserByMailResp();
+		resp.setMail(user.getMail());
+		resp.setPassword(user.getPassword());
+		resp.setRol(user.getRol().getDescription());
+		resp.setSteamAvatar(user.getSteamLinkAvatar());
+		resp.setSteamId(user.getSteamId() == null ? "" : user.getSteamId().toString());
+		resp.setSteamName(user.getName());
+		return resp;
 	}
 }
