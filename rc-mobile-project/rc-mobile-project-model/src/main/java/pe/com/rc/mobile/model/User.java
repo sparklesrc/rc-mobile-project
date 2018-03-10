@@ -20,10 +20,6 @@ public class User extends Record implements Serializable {
 
 	@Column(name = "steam_id")
 	private Long steamId;
-	@Column(name = "steam_name")
-	private String name;
-	@Column(name = "steam_link_avatar")
-	private String steamLinkAvatar;
 	@Column(name = "last_login")
 	private Date lastLogin;
 
@@ -56,22 +52,6 @@ public class User extends Record implements Serializable {
 
 	public void setSteamId(Long steamId) {
 		this.steamId = steamId;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getSteamLinkAvatar() {
-		return steamLinkAvatar;
-	}
-
-	public void setSteamLinkAvatar(String steamLinkAvatar) {
-		this.steamLinkAvatar = steamLinkAvatar;
 	}
 
 	public Date getLastLogin() {

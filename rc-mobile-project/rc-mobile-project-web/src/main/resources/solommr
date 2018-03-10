@@ -224,3 +224,10 @@ UPDATE user SET mail = 'liz@gmail.com' , password = '$2a$10$DPjIcQE4OCXIyETHEFsA
 UPDATE user SET rol_id = 1;
 
 ALTER TABLE user ADD CONSTRAINT `fk_rol` FOREIGN KEY (`rol_id`)  REFERENCES `solommr`.`rol`(`id`);
+
+
+
+-- Actualizar table Usuario
+ALTER TABLE user MODIFY steam_id BIGINT;
+ALTER TABLE user DROP COLUMN steam_name;
+ALTER TABLE user DROP COLUMN steam_link_avatar;

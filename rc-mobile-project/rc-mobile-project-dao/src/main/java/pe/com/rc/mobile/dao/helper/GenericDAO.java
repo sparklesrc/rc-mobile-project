@@ -12,7 +12,7 @@ public interface GenericDAO<T> {
 
 	public void save(T t);
 
-	public void update(T t);
+	public void update(T t) throws DaoException;
 
 	public void delete(T t);
 }

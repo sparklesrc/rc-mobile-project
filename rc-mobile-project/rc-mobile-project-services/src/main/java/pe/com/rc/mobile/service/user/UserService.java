@@ -15,4 +15,6 @@ public interface UserService {
 	List<InvitationsToTeamResponse> getInvitationsTeams(InvitationsToTeamRequest request) throws ServiceException;
 
 	UserByMailResp getUserByMail(String mail) throws ServiceException;
+
+	UserByMailResp syncSteamUser(Long userId, String steamId) throws ServiceException;
 }

@@ -112,7 +112,7 @@ public class ClanServiceImpl implements ClanService {
 			List<TeamMembers> lista = new ArrayList();
 			for (ClanMembers member : clan.getClanMembers()) {
 				TeamMembers teamMember = new TeamMembers();
-				teamMember.setName(member.getUser().getName());
+				teamMember.setName(member.getUser().getMail());
 				teamMember.setType(member.getMemberType().getDescription());
 				teamMember.setUserId(member.getUser().getId());
 				lista.add(teamMember);
@@ -185,30 +185,36 @@ public class ClanServiceImpl implements ClanService {
 		solicitudeDAO.save(solicitude);
 	}
 
-	public void acceptPlayer(AcceptMemberRequest request) {
-		// ACTUALIZA SOLICITUDE
-		Solicitude solicitude = solicitudeDAO.find(new Solicitude(request.getSolicitudeId()));
-		// VALIDAR LOS ESTADOS
-		if (solicitude != null && (request.getState().equals(2L) || request.getState().equals(3L))) {
-			solicitude.setState(stateDAO.find(new State(request.getState())));
-			solicitude.setUpdateDate(new Date());
-			solicitudeDAO.update(solicitude);
-			// INSERT CLAN MEMBER
-			Clan clan = clanDAO.find(new Clan(request.getClanId()));
-			User user = userDAO.find(new User(request.getUserId()));
-			MemberType memberType = getMemberType(clan);
-			// VALIDAR CANTIDAD DE USUARIOS Y ASIGNACION DE ROL X DEFAULT
-			// SOLO PUEDEN SER 10 USUARIOS
-			// 1 TL, 4 MEMBERS, 5 SUPLENTES
-			if (memberType != null) {
-				ClanMembers members = new ClanMembers();
-				members.setMemberType(memberType);
-				members.setCreateDate(new Date());
-				members.setClan(clan);
-				members.setUser(user);
-				members.setActive(1);
-				clanDAO.insertMember(members);
+	public void acceptPlayer(AcceptMemberRequest request) throws ServiceException{
+		try {
+			// ACTUALIZA SOLICITUDE
+			Solicitude solicitude = solicitudeDAO.find(new Solicitude(request.getSolicitudeId()));
+			// VALIDAR LOS ESTADOS
+			if (solicitude != null && (request.getState().equals(2L) || request.getState().equals(3L))) {
+				solicitude.setState(stateDAO.find(new State(request.getState())));
+				solicitude.setUpdateDate(new Date());
+				solicitudeDAO.update(solicitude);
+				// INSERT CLAN MEMBER
+				Clan clan = clanDAO.find(new Clan(request.getClanId()));
+				User user = userDAO.find(new User(request.getUserId()));
+				MemberType memberType = getMemberType(clan);
+				// VALIDAR CANTIDAD DE USUARIOS Y ASIGNACION DE ROL X DEFAULT
+				// SOLO PUEDEN SER 10 USUARIOS
+				// 1 TL, 4 MEMBERS, 5 SUPLENTES
+				if (memberType != null) {
+					ClanMembers members = new ClanMembers();
+					members.setMemberType(memberType);
+					members.setCreateDate(new Date());
+					members.setClan(clan);
+					members.setUser(user);
+					members.setActive(1);
+					clanDAO.insertMember(members);
+				}
 			}
+		} catch (DaoException e) {
+			throw new ServiceException(e.getMessage(), e);
+		} catch (Exception e) {
+			throw new ServiceException("Error in " + e.getMessage());
 		}
 	}
 
@@ -223,7 +229,7 @@ public class ClanServiceImpl implements ClanService {
 			can.setClanId(solicitude.getClan().getId());
 			can.setUserId(solicitude.getUser().getId());
 			can.setClanName(solicitude.getClan().getName());
-			can.setUserName(solicitude.getUser().getName());
+			can.setUserName(solicitude.getUser().getMail());
 			candidates.add(can);
 		}
 		return candidates;
@@ -251,22 +257,28 @@ public class ClanServiceImpl implements ClanService {
 		solicitudeDAO.save(solicitude);
 	}
 
-	public void rankTeam(RankTeamRequest request) {
-		User user = userDAO.find(new User(request.getUserId()));
-		Clan clanToRank = clanDAO.find(new Clan(request.getClanToRank()));
-		// VALIDAR SI EL USUARIO YA RANKEO EL MISMO EQUIPO - INSERT O UPDATE
-		ClanComments clanComments = clanCommentsDAO.findByClanAndUser(clanToRank, user);
-		if (clanComments != null) {
-			clanComments.setStarsNum(request.getNumStars());
-			clanComments.setDescription(request.getDescription());
-			clanComments.setUpdateDate(new Date());
-			clanCommentsDAO.update(clanComments);
-		} else {
-			clanCommentsDAO
-					.save(prepareClanComments(clanToRank, user, request.getDescription(), request.getNumStars()));
+	public void rankTeam(RankTeamRequest request) throws ServiceException{
+		try {
+			User user = userDAO.find(new User(request.getUserId()));
+			Clan clanToRank = clanDAO.find(new Clan(request.getClanToRank()));
+			// VALIDAR SI EL USUARIO YA RANKEO EL MISMO EQUIPO - INSERT O UPDATE
+			ClanComments clanComments = clanCommentsDAO.findByClanAndUser(clanToRank, user);
+			if (clanComments != null) {
+				clanComments.setStarsNum(request.getNumStars());
+				clanComments.setDescription(request.getDescription());
+				clanComments.setUpdateDate(new Date());
+				clanCommentsDAO.update(clanComments);
+			} else {
+				clanCommentsDAO
+						.save(prepareClanComments(clanToRank, user, request.getDescription(), request.getNumStars()));
+			}
+			// ACTUALIZAR PERFIL DEL TEAM
+			updateClanProfileStarsRank(clanToRank);
+		} catch (DaoException e) {
+			throw new ServiceException(e.getMessage(), e);
+		} catch (Exception e) {
+			throw new ServiceException("Error in " + e.getMessage());
 		}
-		// ACTUALIZAR PERFIL DEL TEAM
-		updateClanProfileStarsRank(clanToRank);
 	}
 
 	private ClanComments prepareClanComments(Clan clan, User user, String description, Integer starsNum) {
@@ -279,19 +291,25 @@ public class ClanServiceImpl implements ClanService {
 		return comment;
 	}
 
-	private void updateClanProfileStarsRank(Clan clan) {
-		List<ClanComments> comments = clanCommentsDAO.listCommentsByClan(clan);
-		if (comments != null) {
-			Integer totalVotes = comments.size();
-			Integer countStars = 0;
-			for (ClanComments cc : comments) {
-				countStars += cc.getStarsNum();
+	private void updateClanProfileStarsRank(Clan clan) throws ServiceException {
+		try {
+			List<ClanComments> comments = clanCommentsDAO.listCommentsByClan(clan);
+			if (comments != null) {
+				Integer totalVotes = comments.size();
+				Integer countStars = 0;
+				for (ClanComments cc : comments) {
+					countStars += cc.getStarsNum();
+				}
+				if (totalVotes != 0) {
+					Integer newStars = countStars / totalVotes;
+					clan.setStarsNumber(newStars);
+					clanDAO.update(clan);
+				}
 			}
-			if (totalVotes != 0) {
-				Integer newStars = countStars / totalVotes;
-				clan.setStarsNumber(newStars);
-				clanDAO.update(clan);
-			}
+		} catch (DaoException e) {
+			throw new ServiceException(e.getMessage(), e);
+		} catch (Exception e) {
+			throw new ServiceException("Error in " + e.getMessage());
 		}
 	}
 

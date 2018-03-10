@@ -154,12 +154,12 @@ public class UserReqRes {
 	}
 
 	public static class UserByMailResp {
+		private Long userId;
 		private String steamId;
-		private String steamName;
-		private String steamAvatar;
 		private String mail;
 		private String password;
 		private String rol;
+		private boolean isUserSyncWithSteam;
 
 		public String getSteamId() {
 			return steamId;
@@ -167,22 +167,6 @@ public class UserReqRes {
 
 		public void setSteamId(String steamId) {
 			this.steamId = steamId;
-		}
-
-		public String getSteamName() {
-			return steamName;
-		}
-
-		public void setSteamName(String steamName) {
-			this.steamName = steamName;
-		}
-
-		public String getSteamAvatar() {
-			return steamAvatar;
-		}
-
-		public void setSteamAvatar(String steamAvatar) {
-			this.steamAvatar = steamAvatar;
 		}
 
 		public String getMail() {
@@ -207,6 +191,44 @@ public class UserReqRes {
 
 		public void setRol(String rol) {
 			this.rol = rol;
+		}
+
+		public boolean isUserSyncWithSteam() {
+			return isUserSyncWithSteam;
+		}
+
+		public void setUserSyncWithSteam(boolean isUserSyncWithSteam) {
+			this.isUserSyncWithSteam = isUserSyncWithSteam;
+		}
+
+		public Long getUserId() {
+			return userId;
+		}
+
+		public void setUserId(Long userId) {
+			this.userId = userId;
+		}
+
+	}
+
+	public static class SyncSteamUser {
+		private Long userId;
+		private String steamId;
+
+		public String getSteamId() {
+			return steamId;
+		}
+
+		public void setSteamId(String steamId) {
+			this.steamId = steamId;
+		}
+
+		public Long getUserId() {
+			return userId;
+		}
+
+		public void setUserId(Long userId) {
+			this.userId = userId;
 		}
 
 	}
