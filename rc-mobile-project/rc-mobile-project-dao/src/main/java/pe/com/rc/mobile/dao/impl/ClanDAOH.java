@@ -79,7 +79,7 @@ public class ClanDAOH extends BaseHibernateDAO implements ClanDAO {
 
 	public void insertMember(ClanMembers member) {
 		Query query = getSession().createSQLQuery(
-				"INSERT INTO CLAN_MEMBERS (USER_ID, CLAN_ID, MEMBER_TYPE_ID, CREATE_DATE, ACTIVE) VALUES (:valor1, :valor2, :valor3, :valor4, :valor5)");
+				"INSERT INTO clan_members (USER_ID, CLAN_ID, MEMBER_TYPE_ID, CREATE_DATE, ACTIVE) VALUES (:valor1, :valor2, :valor3, :valor4, :valor5)");
 		query.setParameter("valor1", member.getUser().getId());
 		query.setParameter("valor2", member.getClan().getId());
 		query.setParameter("valor3", member.getMemberType().getId());
@@ -99,7 +99,7 @@ public class ClanDAOH extends BaseHibernateDAO implements ClanDAO {
 
 	public void dropMember(Clan clan, User user) {
 		Query q = this.getSession()
-				.createSQLQuery("delete from CLAN_MEMBERS where user_id = :userId and clan_id = :clanId");
+				.createSQLQuery("delete from clan_members where user_id = :userId and clan_id = :clanId");
 		q.setParameter("userId", user.getId());
 		q.setParameter("clanId", clan.getId());
 		q.executeUpdate();
@@ -107,7 +107,7 @@ public class ClanDAOH extends BaseHibernateDAO implements ClanDAO {
 
 	public void updateMemberRole(Long memberTypeId, Long userId, Long clanId) {
 		Query query = getSession().createSQLQuery(
-				"UPDATE CLAN_MEMBERS SET member_type_id = :valor1, update_date = :valor2 where user_id :userId and clan_id = :clanId");
+				"UPDATE clan_members SET member_type_id = :valor1, update_date = :valor2 where user_id :userId and clan_id = :clanId");
 		query.setParameter("valor1", memberTypeId);
 		query.setParameter("valor2", new Date());
 		query.setParameter("userId", userId);

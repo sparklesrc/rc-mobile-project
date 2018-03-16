@@ -29,7 +29,7 @@ public interface ClanService {
 
 	void recruitPlayer(RecruitRequest request);
 
-	void acceptPlayer(AcceptMemberRequest request);
+	void acceptPlayer(AcceptMemberRequest request) throws ServiceException;
 
 	List<CandidatesResponse> getCandidates(CandidatesRequest request);
 
@@ -37,7 +37,7 @@ public interface ClanService {
 
 	void postular(PostularRequest request);
 
-	void rankTeam(RankTeamRequest request);
+	void rankTeam(RankTeamRequest request) throws ServiceException;
 
 	void assignRole(AssignRoleRequest request);
 

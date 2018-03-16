@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pe.com.rc.mobile.core.exception.DaoException;
@@ -28,6 +30,7 @@ import pe.com.rc.mobile.model.clan.UserReqRes.InvitationsToTeamRequest;
 import pe.com.rc.mobile.model.clan.UserReqRes.InvitationsToTeamResponse;
 import pe.com.rc.mobile.model.clan.UserReqRes.UserByMailResp;
 import pe.com.rc.mobile.model.clan.UserReqRes.UserTeams;
+import pe.com.rc.mobile.service.clan.ClanServiceImpl;
 import pe.com.rc.mobile.service.solicitude.SolicitudeService;
 
 @Service
@@ -49,6 +52,8 @@ public class UserServiceImpl implements UserService {
 	private GameDAO gameDAO;
 	@Autowired
 	private SolicitudeTypeDAO solicitudeTypeDAO;
+
+	private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
 	public void processClanRequest(AcceptClanRequest request) throws ServiceException {
 		// User
@@ -103,7 +108,8 @@ public class UserServiceImpl implements UserService {
 		try {
 			User user = userDAO.find(new User(request.getUserId()));
 			Game game = gameDAO.find(new Game(request.getGameId()));
-			State state = stateDAO.find(new State(1L)); // PENDIENTES DE APROBACION
+			State state = stateDAO.find(new State(1L)); // PENDIENTES DE
+														// APROBACION
 
 			// RECLUTAMIENTOS O POSTULACIONES
 			SolicitudeType type = solicitudeTypeDAO.find(new SolicitudeType(request.getSolicitudeType()));
@@ -154,13 +160,28 @@ public class UserServiceImpl implements UserService {
 
 	private UserByMailResp prepareUser(User user, List<UserTeams> userTeams) {
 		UserByMailResp resp = new UserByMailResp();
+		resp.setUserId(user.getId());
 		resp.setMail(user.getMail());
 		resp.setPassword(user.getPassword());
 		resp.setRol(user.getRol().getDescription());
-		resp.setSteamAvatar(user.getSteamLinkAvatar());
 		resp.setSteamId(user.getSteamId() == null ? "" : user.getSteamId().toString());
-		resp.setSteamName(user.getName());
 		resp.setUserTeams(userTeams);
+		resp.setUserSyncWithSteam(user.getSteamId() != null && !"".equals(user.getSteamId()));
 		return resp;
+	}
+
+	public UserByMailResp syncSteamUser(Long userId, String steamId) throws ServiceException {
+		try {
+			userDAO.updateSteamId(userId, new Long(steamId));
+			User user = userDAO.find(new User(userId));
+			List<UserTeams> userTeamDetails = null;
+			if (user != null) {
+				userTeamDetails = clanDAO.getTeamsByUser(user.getId());
+			}
+			return prepareUser(user, userTeamDetails);
+		} catch (DaoException e) {
+			logger.error("Error en " + e.getMessage() , e);
+			throw new ServiceException("Error al Syncronizar Steam Account para usuario." + userId + "con SteamId " + steamId);
+		}
 	}
 }

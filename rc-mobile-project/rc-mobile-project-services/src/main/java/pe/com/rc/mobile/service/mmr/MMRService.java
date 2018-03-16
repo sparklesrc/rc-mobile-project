@@ -1,6 +1,7 @@
 package pe.com.rc.mobile.service.mmr;
 
 import java.util.List;
+import pe.com.rc.mobile.core.exception.ServiceException;
 import pe.com.rc.mobile.model.clan.MMRSearch.MMRBuildRequest;
 import pe.com.rc.mobile.model.clan.MMRSearch.MMRCancelRequest;
 import pe.com.rc.mobile.model.clan.MMRSearch.MMRSearchRequest;
@@ -11,7 +12,7 @@ public interface MMRService {
 
 	void buildMMR(MMRBuildRequest request);
 
-	void acceptMMR(MMRBuildRequest request);
+	void acceptMMR(MMRBuildRequest request) throws ServiceException;
 
 	List<MMRSearchResponse> listMMR(MMRSearchRequest request);
 

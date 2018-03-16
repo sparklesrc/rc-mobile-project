@@ -20,7 +20,7 @@ import pe.com.rc.mobile.web.util.Constants;
 public class MatchMakingController {
 
 	@Autowired
-	MMRService mmrService;
+	private MMRService mmrService;
 
 	// CREAR MATCHMAKING
 	@RequestMapping(value = "/mmr/build", method = RequestMethod.POST, produces = { "application/json" })

@@ -11,6 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import pe.com.rc.mobile.core.exception.DaoException;
+import pe.com.rc.mobile.core.exception.ServiceException;
 import pe.com.rc.mobile.dao.ClanDAO;
 import pe.com.rc.mobile.dao.MatchMakingDAO;
 import pe.com.rc.mobile.dao.StateDAO;
@@ -101,13 +104,19 @@ public class MMRServiceImpl implements MMRService {
 		return cal.getTime();
 	}
 
-	public void acceptMMR(MMRBuildRequest request) {
-		// GET VALUES FROM MMR
-		MatchMaking mmr = matchMakingDAO.find(new MatchMaking(request.getMmrId()));
-		Clan clanWhoAccepts = clanDAO.find(new Clan(request.getClanBId()));
-		User userWhoAccepts = userDAO.find(new User(request.getUserAcceptId()));
-		if (isAvailable(clanWhoAccepts, mmr.getTempDate(), mmr.getHours())) {
-			matchMakingDAO.update(prepareAcceptMatchMaking(clanWhoAccepts, userWhoAccepts, mmr));
+	public void acceptMMR(MMRBuildRequest request) throws ServiceException {
+		try {
+			// GET VALUES FROM MMR
+			MatchMaking mmr = matchMakingDAO.find(new MatchMaking(request.getMmrId()));
+			Clan clanWhoAccepts = clanDAO.find(new Clan(request.getClanBId()));
+			User userWhoAccepts = userDAO.find(new User(request.getUserAcceptId()));
+			if (isAvailable(clanWhoAccepts, mmr.getTempDate(), mmr.getHours())) {
+				matchMakingDAO.update(prepareAcceptMatchMaking(clanWhoAccepts, userWhoAccepts, mmr));
+			}
+		} catch (DaoException e) {
+			throw new ServiceException(e.getMessage(), e);
+		} catch (Exception e) {
+			throw new ServiceException("Error in " + e.getMessage());
 		}
 	}
 
@@ -142,9 +151,9 @@ public class MMRServiceImpl implements MMRService {
 	public List<MMRSearchResponse> listPendingMMR(PendingMMRByTeam request) {
 		Clan clan = clanDAO.find(new Clan(request.getClanId()));
 		List<MatchMaking> pendingMMRSToApprove = matchMakingDAO.getMMRsByClan(clan);
-		
+
 		List<MMRSearchResponse> resp = new ArrayList();
-		for(MatchMaking mmr : pendingMMRSToApprove) {
+		for (MatchMaking mmr : pendingMMRSToApprove) {
 			MMRSearchResponse r = new MMRSearchResponse();
 			r.setClanNameWhoCreates(mmr.getTeamA().getName());
 			r.setDescription(mmr.getDescription());
@@ -154,7 +163,7 @@ public class MMRServiceImpl implements MMRService {
 			r.setMmrId(mmr.getId());
 			r.setPhone(mmr.getPhone());
 			r.setTempDate(getTime(mmr.getTempDate()));
-			r.setUserNameWhoCreate(mmr.getUserCreate().getName());
+			r.setUserNameWhoCreate(mmr.getUserCreate().getMail());
 			resp.add(r);
 		}
 

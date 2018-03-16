@@ -2,6 +2,8 @@ package pe.com.rc.mobile.web.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,9 +15,11 @@ import pe.com.rc.mobile.core.exception.ServiceException;
 import pe.com.rc.mobile.model.clan.UserReqRes.AcceptClanRequest;
 import pe.com.rc.mobile.model.clan.UserReqRes.InvitationsToTeamRequest;
 import pe.com.rc.mobile.model.clan.UserReqRes.InvitationsToTeamResponse;
+import pe.com.rc.mobile.model.clan.UserReqRes.SyncSteamUser;
 import pe.com.rc.mobile.model.clan.UserReqRes.UserByMailReq;
 import pe.com.rc.mobile.model.clan.UserReqRes.UserByMailResp;
 import pe.com.rc.mobile.service.user.UserService;
+import pe.com.rc.mobile.service.user.UserServiceImpl;
 import pe.com.rc.mobile.web.util.Constants;
 
 @RestController
@@ -23,7 +27,9 @@ import pe.com.rc.mobile.web.util.Constants;
 public class UserController {
 
 	@Autowired
-	UserService userService;
+	private UserService userService;
+
+	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
 	// ACEPTAR o RECHAZAR INVITACION
 	@RequestMapping(value = "/user/processClanRequest", method = RequestMethod.POST, produces = { "application/json" })
@@ -49,5 +55,11 @@ public class UserController {
 	@RequestMapping(value = "/user/findByMail", method = RequestMethod.POST, produces = { "application/json" })
 	public UserByMailResp getPostulaciones(@RequestBody UserByMailReq user) throws ServiceException {
 		return userService.getUserByMail(user.getMail());
+	}
+
+	// SYNCRONIZE STEAM USER
+	@RequestMapping(value = "/user/syncSteamAccount", method = RequestMethod.POST, produces = { "application/json" })
+	public UserByMailResp syncSteamAccount(@RequestBody SyncSteamUser user) throws ServiceException {
+		return userService.syncSteamUser(user.getUserId(), user.getSteamId());
 	}
 }
