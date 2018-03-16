@@ -1,5 +1,7 @@
 package pe.com.rc.mobile.model.clan;
 
+import java.util.List;
+
 public class UserReqRes {
 
 	public static class AcceptClanRequest {
@@ -160,6 +162,7 @@ public class UserReqRes {
 		private String mail;
 		private String password;
 		private String rol;
+		private List<UserTeams> userTeams;
 
 		public String getSteamId() {
 			return steamId;
@@ -207,6 +210,45 @@ public class UserReqRes {
 
 		public void setRol(String rol) {
 			this.rol = rol;
+		}
+
+		public List<UserTeams> getUserTeams() {
+			return userTeams;
+		}
+
+		public void setUserTeams(List<UserTeams> userTeams) {
+			this.userTeams = userTeams;
+		}
+
+	}
+
+	public static class UserTeams {
+		private Long gameId;
+		private Long teamId;
+		private Long memberTypeId;
+
+		public Long getGameId() {
+			return gameId;
+		}
+
+		public void setGameId(Long gameId) {
+			this.gameId = gameId;
+		}
+
+		public Long getTeamId() {
+			return teamId;
+		}
+
+		public void setTeamId(Long teamId) {
+			this.teamId = teamId;
+		}
+
+		public Long getMemberTypeId() {
+			return memberTypeId;
+		}
+
+		public void setMemberTypeId(Long memberTypeId) {
+			this.memberTypeId = memberTypeId;
 		}
 
 	}

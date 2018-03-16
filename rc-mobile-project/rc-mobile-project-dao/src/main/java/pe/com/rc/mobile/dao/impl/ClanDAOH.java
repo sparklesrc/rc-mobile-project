@@ -8,13 +8,13 @@ import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
-
 import pe.com.rc.mobile.core.exception.DaoException;
 import pe.com.rc.mobile.dao.ClanDAO;
 import pe.com.rc.mobile.dao.helper.BaseHibernateDAO;
 import pe.com.rc.mobile.model.ClanMembers;
 import pe.com.rc.mobile.model.User;
 import pe.com.rc.mobile.model.clan.Clan;
+import pe.com.rc.mobile.model.clan.UserReqRes.UserTeams;
 
 @Repository
 public class ClanDAOH extends BaseHibernateDAO implements ClanDAO {
@@ -113,5 +113,16 @@ public class ClanDAOH extends BaseHibernateDAO implements ClanDAO {
 		query.setParameter("userId", userId);
 		query.setParameter("clanId", clanId);
 		query.executeUpdate();
+	}
+
+	public List<UserTeams> getTeamsByUser(Long userId) throws DaoException {
+		try {
+			Query query = getSession().createSQLQuery(
+					"select c.id as gameId, b.id as teamId, a.member_type_id as memberTypeId from clan_members a inner join clan b on a.clan_id = b.id inner join game c on b.game_id = c.id where a.user_id = :userId");
+			query.setParameter("userId", userId);
+			return query.list();
+		} catch (Exception e) {
+			return null;
+		}
 	}
 }

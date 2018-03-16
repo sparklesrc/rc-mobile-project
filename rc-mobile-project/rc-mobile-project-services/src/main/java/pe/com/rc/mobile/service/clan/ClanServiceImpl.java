@@ -332,4 +332,9 @@ public class ClanServiceImpl implements ClanService {
 		}
 		return memberType;
 	}
+
+	public List<ListClanResponse> getTeamsByUser(Long userId) throws ServiceException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

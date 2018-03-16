@@ -1,10 +1,12 @@
 package pe.com.rc.mobile.dao;
 
 import java.util.List;
+import pe.com.rc.mobile.core.exception.DaoException;
 import pe.com.rc.mobile.dao.helper.GenericDAO;
 import pe.com.rc.mobile.model.ClanMembers;
 import pe.com.rc.mobile.model.User;
 import pe.com.rc.mobile.model.clan.Clan;
+import pe.com.rc.mobile.model.clan.UserReqRes.UserTeams;
 
 public interface ClanDAO extends GenericDAO<Clan> {
 
@@ -20,5 +22,5 @@ public interface ClanDAO extends GenericDAO<Clan> {
 
 	void updateMemberRole(Long memberTypeId, Long userId, Long clanId);
 
-	
+	List<UserTeams> getTeamsByUser(Long userId) throws DaoException;
 }

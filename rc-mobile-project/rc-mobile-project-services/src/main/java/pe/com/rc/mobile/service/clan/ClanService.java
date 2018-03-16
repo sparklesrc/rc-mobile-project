@@ -40,4 +40,6 @@ public interface ClanService {
 	void rankTeam(RankTeamRequest request);
 
 	void assignRole(AssignRoleRequest request);
+
+	List<ListClanResponse> getTeamsByUser(Long userId) throws ServiceException;
 }

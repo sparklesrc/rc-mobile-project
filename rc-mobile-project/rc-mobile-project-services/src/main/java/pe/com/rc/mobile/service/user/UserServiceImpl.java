@@ -4,10 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import pe.com.rc.mobile.core.exception.DaoException;
 import pe.com.rc.mobile.core.exception.ServiceException;
 import pe.com.rc.mobile.dao.ClanDAO;
@@ -29,6 +27,7 @@ import pe.com.rc.mobile.model.clan.UserReqRes.AcceptClanRequest;
 import pe.com.rc.mobile.model.clan.UserReqRes.InvitationsToTeamRequest;
 import pe.com.rc.mobile.model.clan.UserReqRes.InvitationsToTeamResponse;
 import pe.com.rc.mobile.model.clan.UserReqRes.UserByMailResp;
+import pe.com.rc.mobile.model.clan.UserReqRes.UserTeams;
 import pe.com.rc.mobile.service.solicitude.SolicitudeService;
 
 @Service
@@ -142,14 +141,18 @@ public class UserServiceImpl implements UserService {
 
 	public UserByMailResp getUserByMail(String mail) throws ServiceException {
 		try {
+			List<UserTeams> userTeamDetails = null;
 			User user = userDAO.findByMail(mail);
-			return prepareUser(user);
+			if (user != null) {
+				userTeamDetails = clanDAO.getTeamsByUser(user.getId());
+			}
+			return prepareUser(user, userTeamDetails);
 		} catch (DaoException e) {
 			throw new ServiceException("Error al obtener usuario por mail." + mail);
 		}
 	}
 
-	private UserByMailResp prepareUser(User user) {
+	private UserByMailResp prepareUser(User user, List<UserTeams> userTeams) {
 		UserByMailResp resp = new UserByMailResp();
 		resp.setMail(user.getMail());
 		resp.setPassword(user.getPassword());
@@ -157,6 +160,7 @@ public class UserServiceImpl implements UserService {
 		resp.setSteamAvatar(user.getSteamLinkAvatar());
 		resp.setSteamId(user.getSteamId() == null ? "" : user.getSteamId().toString());
 		resp.setSteamName(user.getName());
+		resp.setUserTeams(userTeams);
 		return resp;
 	}
 }
