@@ -65,4 +65,7 @@ public class UserDAOH extends BaseHibernateDAO implements UserDAO {
 		}
 	}
 
+	public List<User> getCandidates() throws DaoException {
+		return null;
+	}
 }

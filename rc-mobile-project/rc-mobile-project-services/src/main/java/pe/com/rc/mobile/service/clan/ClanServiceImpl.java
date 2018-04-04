@@ -40,6 +40,8 @@ import pe.com.rc.mobile.model.clan.TeamSearch.DropMemberRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.PostularRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.RankTeamRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.RecruitRequest;
+import pe.com.rc.mobile.model.clan.TeamSearch.SearchRecruit;
+import pe.com.rc.mobile.model.clan.TeamSearch.SearchRecruitResult;
 import pe.com.rc.mobile.model.clan.TeamSearch.TeamBuildRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.TeamDeleteRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.TeamMembers;
@@ -353,6 +355,10 @@ public class ClanServiceImpl implements ClanService {
 
 	public List<ListClanResponse> getTeamsByUser(Long userId) throws ServiceException {
 		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<SearchRecruitResult> listRecruitResult(SearchRecruit request) throws ServiceException {
 		return null;
 	}
 }

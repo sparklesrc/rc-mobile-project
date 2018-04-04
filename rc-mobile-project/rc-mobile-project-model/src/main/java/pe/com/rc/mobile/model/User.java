@@ -35,6 +35,11 @@ public class User extends Record implements Serializable {
 	@Column(name = "password")
 	private String password;
 
+	@Column(name = "edad")
+	private Integer edad;
+	@Column(name = "pais")
+	private String pais;
+
 	public User() {
 	}
 
@@ -96,6 +101,22 @@ public class User extends Record implements Serializable {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public Integer getEdad() {
+		return edad;
+	}
+
+	public void setEdad(Integer edad) {
+		this.edad = edad;
+	}
+
+	public String getPais() {
+		return pais;
+	}
+
+	public void setPais(String pais) {
+		this.pais = pais;
 	}
 
 }

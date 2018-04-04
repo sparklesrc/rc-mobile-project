@@ -13,8 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import pe.com.rc.mobile.core.exception.ServiceException;
 import pe.com.rc.mobile.model.clan.UserReqRes.AcceptClanRequest;
+import pe.com.rc.mobile.model.clan.UserReqRes.GenericResponse;
 import pe.com.rc.mobile.model.clan.UserReqRes.InvitationsToTeamRequest;
 import pe.com.rc.mobile.model.clan.UserReqRes.InvitationsToTeamResponse;
+import pe.com.rc.mobile.model.clan.UserReqRes.SignUpCode;
+import pe.com.rc.mobile.model.clan.UserReqRes.SignUpRequest;
 import pe.com.rc.mobile.model.clan.UserReqRes.SyncSteamUser;
 import pe.com.rc.mobile.model.clan.UserReqRes.UserByMailReq;
 import pe.com.rc.mobile.model.clan.UserReqRes.UserByMailResp;
@@ -61,5 +64,23 @@ public class UserController {
 	@RequestMapping(value = "/user/syncSteamAccount", method = RequestMethod.POST, produces = { "application/json" })
 	public UserByMailResp syncSteamAccount(@RequestBody SyncSteamUser user) throws ServiceException {
 		return userService.syncSteamUser(user.getUserId(), user.getSteamId());
+	}
+
+	// SIGN UP
+	@RequestMapping(value = "/user/signUp", method = RequestMethod.POST, produces = { "application/json" })
+	public GenericResponse signUpAccount(@RequestBody SignUpRequest request) throws ServiceException {
+		return new GenericResponse(userService.signUp(request));
+	}
+
+	// GENERE VERIFY CODE
+	@RequestMapping(value = "/user/generateCode", method = RequestMethod.POST, produces = { "application/json" })
+	public GenericResponse generateCode(@RequestBody SignUpCode request) throws ServiceException {
+		return new GenericResponse(null);
+	}
+
+	// VERIFY ACCOUNT
+	@RequestMapping(value = "/user/verifyAccount", method = RequestMethod.POST, produces = { "application/json" })
+	public GenericResponse verifyAccount(@RequestBody SignUpCode request) throws ServiceException {
+		return new GenericResponse(null);
 	}
 }

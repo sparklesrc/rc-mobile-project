@@ -17,17 +17,22 @@ import pe.com.rc.mobile.dao.SolicitudeDAO;
 import pe.com.rc.mobile.dao.SolicitudeTypeDAO;
 import pe.com.rc.mobile.dao.StateDAO;
 import pe.com.rc.mobile.dao.UserDAO;
+import pe.com.rc.mobile.dao.UserGameProfileDAO;
 import pe.com.rc.mobile.model.ClanMembers;
 import pe.com.rc.mobile.model.Game;
 import pe.com.rc.mobile.model.MemberType;
+import pe.com.rc.mobile.model.Rol;
 import pe.com.rc.mobile.model.Solicitude;
 import pe.com.rc.mobile.model.SolicitudeType;
 import pe.com.rc.mobile.model.State;
 import pe.com.rc.mobile.model.User;
+import pe.com.rc.mobile.model.UserGameProfile;
 import pe.com.rc.mobile.model.clan.Clan;
 import pe.com.rc.mobile.model.clan.UserReqRes.AcceptClanRequest;
 import pe.com.rc.mobile.model.clan.UserReqRes.InvitationsToTeamRequest;
 import pe.com.rc.mobile.model.clan.UserReqRes.InvitationsToTeamResponse;
+import pe.com.rc.mobile.model.clan.UserReqRes.SignUpGameProfile;
+import pe.com.rc.mobile.model.clan.UserReqRes.SignUpRequest;
 import pe.com.rc.mobile.model.clan.UserReqRes.UserByMailResp;
 import pe.com.rc.mobile.model.clan.UserReqRes.UserTeams;
 import pe.com.rc.mobile.service.clan.ClanServiceImpl;
@@ -52,6 +57,8 @@ public class UserServiceImpl implements UserService {
 	private GameDAO gameDAO;
 	@Autowired
 	private SolicitudeTypeDAO solicitudeTypeDAO;
+	@Autowired
+	private UserGameProfileDAO userGameProfileDAO;
 
 	private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
@@ -166,7 +173,7 @@ public class UserServiceImpl implements UserService {
 		resp.setRol(user.getRol().getDescription());
 		resp.setSteamId(user.getSteamId() == null ? "" : user.getSteamId().toString());
 		resp.setUserTeams(userTeams);
-		resp.setUserSyncWithSteam(user.getSteamId() != null && !"".equals(user.getSteamId()));
+		resp.setUserSyncWithSteam(user.getSteamId() != null && !"".equals(user.getSteamId().toString()));
 		return resp;
 	}
 
@@ -183,5 +190,67 @@ public class UserServiceImpl implements UserService {
 			logger.error("Error en " + e.getMessage() , e);
 			throw new ServiceException("Error al Syncronizar Steam Account para usuario." + userId + "con SteamId " + steamId);
 		}
+	}
+
+	public String signUp(SignUpRequest request) throws ServiceException {
+		try {
+			// Validate if mail is not in use
+			User fromDB = userDAO.findByMail(request.getEmail());
+			if (fromDB != null) {
+				return "user exists";
+			}
+			// Create User
+			User user = new User();
+			user.setMail(request.getEmail());
+			user.setPassword(request.getPassword());
+			user.setEdad(request.getEdad());
+			user.setPais(request.getPais());
+			user.setLastLogin(new Date());
+			user.setCreateDate(new Date());
+			user.setActive(0);
+			user.setRol(new Rol(1L));
+			userDAO.save(user);
+			saveGameProfile(request);
+			generateCode();
+			return "user created";
+		} catch (Exception e) {
+			logger.error("Error en " + e.getMessage() , e);
+			throw new ServiceException("Error al Crear Usuario." + request.getEmail());
+		}
+	}
+
+	private void saveGameProfile(SignUpRequest request) throws ServiceException {
+		// User Created successfully
+		if (request.getGameProfile() != null) {
+			try {
+				SignUpGameProfile reqProfile = request.getGameProfile();
+				Game game = gameDAO.find(new Game(new Long(reqProfile.getGameId())));
+				User user = userDAO.findByMail(request.getEmail());
+
+				UserGameProfile userGameProfile = new UserGameProfile();
+				userGameProfile.setCelular(reqProfile.getCelular());
+				userGameProfile.setDescription(reqProfile.getDescription());
+				userGameProfile.setGame(game);
+				userGameProfile.setNickname(reqProfile.getNickname());
+				userGameProfile.setUser(user);
+				
+				String userRoles = "";
+				for(String rol : reqProfile.getRoles()) {
+					userRoles += rol.concat(", ");
+				}
+				
+				userGameProfile.setRoles(userRoles);
+				userGameProfile.setCreateDate(new Date());
+				userGameProfile.setActive(1);
+				userGameProfileDAO.save(userGameProfile);
+			} catch (Exception e) {
+				logger.error("Error en " + e.getMessage(), e);
+				throw new ServiceException("Error al Crear Game Profile for user." + request.getEmail());
+			}
+		}
+	}
+
+	private void generateCode() throws ServiceException {
+
 	}
 }

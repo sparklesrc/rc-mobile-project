@@ -13,6 +13,14 @@ public class Rol extends Record implements Serializable {
 	@Column(name = "description")
 	private String description;
 
+	public Rol(Long id) {
+		this.setId(id);
+	}
+
+	public Rol() {
+
+	}
+
 	public String getDescription() {
 		return description;
 	}
