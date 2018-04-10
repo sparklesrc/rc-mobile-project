@@ -34,7 +34,7 @@ public class UserDAOH extends BaseHibernateDAO implements UserDAO {
 	}
 
 	public void update(User t) {
-		this.getSession().merge(t);
+		this.getSession().saveOrUpdate(t);
 	}
 
 	public void delete(User t) {
@@ -67,5 +67,15 @@ public class UserDAOH extends BaseHibernateDAO implements UserDAO {
 
 	public List<User> getCandidates() throws DaoException {
 		return null;
+	}
+
+	public User findActiveUserByMail(String mail) throws DaoException {
+		try {
+			Criteria criteria = this.getSession().createCriteria(User.class);
+			criteria.add(Restrictions.eq("mail", mail)).add(Restrictions.eq("active", 1));
+			return (User) criteria.uniqueResult();
+		} catch (Exception e) {
+			throw new DaoException("Error al obtener el usuario por mail." + mail);
+		}
 	}
 }

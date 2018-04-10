@@ -6,6 +6,8 @@ import pe.com.rc.mobile.model.User;
 
 public interface UserDAO extends GenericDAO<User> {
 
+	User findActiveUserByMail(String mail) throws DaoException;
+
 	User findByMail(String mail) throws DaoException;
 
 	void updateSteamId(Long userId, Long steamId) throws DaoException;

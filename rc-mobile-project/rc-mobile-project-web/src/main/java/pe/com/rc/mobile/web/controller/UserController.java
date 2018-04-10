@@ -1,16 +1,13 @@
 package pe.com.rc.mobile.web.controller;
 
 import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import pe.com.rc.mobile.core.exception.ServiceException;
 import pe.com.rc.mobile.model.clan.UserReqRes.AcceptClanRequest;
 import pe.com.rc.mobile.model.clan.UserReqRes.GenericResponse;
@@ -22,7 +19,6 @@ import pe.com.rc.mobile.model.clan.UserReqRes.SyncSteamUser;
 import pe.com.rc.mobile.model.clan.UserReqRes.UserByMailReq;
 import pe.com.rc.mobile.model.clan.UserReqRes.UserByMailResp;
 import pe.com.rc.mobile.service.user.UserService;
-import pe.com.rc.mobile.service.user.UserServiceImpl;
 import pe.com.rc.mobile.web.util.Constants;
 
 @RestController
@@ -56,7 +52,7 @@ public class UserController {
 
 	// USER BY MAIL
 	@RequestMapping(value = "/user/findByMail", method = RequestMethod.POST, produces = { "application/json" })
-	public UserByMailResp getPostulaciones(@RequestBody UserByMailReq user) throws ServiceException {
+	public UserByMailResp findUserByMail(@RequestBody UserByMailReq user) throws ServiceException {
 		return userService.getUserByMail(user.getMail());
 	}
 
@@ -72,15 +68,15 @@ public class UserController {
 		return new GenericResponse(userService.signUp(request));
 	}
 
+	// VERIFY CODE
+	@RequestMapping(value = "/user/verifyCode", method = RequestMethod.POST, produces = { "application/json" })
+	public GenericResponse verifyCode(@RequestBody SignUpCode request) throws ServiceException {
+		return new GenericResponse(userService.verifyCode(request));
+	}
+
 	// GENERE VERIFY CODE
 	@RequestMapping(value = "/user/generateCode", method = RequestMethod.POST, produces = { "application/json" })
 	public GenericResponse generateCode(@RequestBody SignUpCode request) throws ServiceException {
-		return new GenericResponse(null);
-	}
-
-	// VERIFY ACCOUNT
-	@RequestMapping(value = "/user/verifyAccount", method = RequestMethod.POST, produces = { "application/json" })
-	public GenericResponse verifyAccount(@RequestBody SignUpCode request) throws ServiceException {
 		return new GenericResponse(null);
 	}
 }

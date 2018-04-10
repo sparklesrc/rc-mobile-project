@@ -1,11 +1,11 @@
 package pe.com.rc.mobile.service.mail;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Component;
 
-public class Mail {
+@Component
+public class MailComponent {
 
 	private MailSender mailSender;
 

@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import pe.com.rc.mobile.core.exception.DaoException;
 import pe.com.rc.mobile.core.exception.ServiceException;
 import pe.com.rc.mobile.dao.ClanDAO;
 import pe.com.rc.mobile.dao.GameDAO;
+import pe.com.rc.mobile.dao.GeneratedCodeDAO;
 import pe.com.rc.mobile.dao.MemberTypeDAO;
 import pe.com.rc.mobile.dao.SolicitudeDAO;
 import pe.com.rc.mobile.dao.SolicitudeTypeDAO;
@@ -20,6 +23,7 @@ import pe.com.rc.mobile.dao.UserDAO;
 import pe.com.rc.mobile.dao.UserGameProfileDAO;
 import pe.com.rc.mobile.model.ClanMembers;
 import pe.com.rc.mobile.model.Game;
+import pe.com.rc.mobile.model.GeneratedCode;
 import pe.com.rc.mobile.model.MemberType;
 import pe.com.rc.mobile.model.Rol;
 import pe.com.rc.mobile.model.Solicitude;
@@ -31,11 +35,13 @@ import pe.com.rc.mobile.model.clan.Clan;
 import pe.com.rc.mobile.model.clan.UserReqRes.AcceptClanRequest;
 import pe.com.rc.mobile.model.clan.UserReqRes.InvitationsToTeamRequest;
 import pe.com.rc.mobile.model.clan.UserReqRes.InvitationsToTeamResponse;
+import pe.com.rc.mobile.model.clan.UserReqRes.SignUpCode;
 import pe.com.rc.mobile.model.clan.UserReqRes.SignUpGameProfile;
 import pe.com.rc.mobile.model.clan.UserReqRes.SignUpRequest;
 import pe.com.rc.mobile.model.clan.UserReqRes.UserByMailResp;
 import pe.com.rc.mobile.model.clan.UserReqRes.UserTeams;
 import pe.com.rc.mobile.service.clan.ClanServiceImpl;
+import pe.com.rc.mobile.service.mail.MailSenderService;
 import pe.com.rc.mobile.service.solicitude.SolicitudeService;
 
 @Service
@@ -59,6 +65,10 @@ public class UserServiceImpl implements UserService {
 	private SolicitudeTypeDAO solicitudeTypeDAO;
 	@Autowired
 	private UserGameProfileDAO userGameProfileDAO;
+	@Autowired
+	private GeneratedCodeDAO generatedCodeDAO;
+	@Autowired
+	private MailSenderService mailSender;
 
 	private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
@@ -155,7 +165,7 @@ public class UserServiceImpl implements UserService {
 	public UserByMailResp getUserByMail(String mail) throws ServiceException {
 		try {
 			List<UserTeams> userTeamDetails = null;
-			User user = userDAO.findByMail(mail);
+			User user = userDAO.findActiveUserByMail(mail);
 			if (user != null) {
 				userTeamDetails = clanDAO.getTeamsByUser(user.getId());
 			}
@@ -211,7 +221,7 @@ public class UserServiceImpl implements UserService {
 			user.setRol(new Rol(1L));
 			userDAO.save(user);
 			saveGameProfile(request);
-			generateCode();
+			generateCode(user);
 			return "user created";
 		} catch (Exception e) {
 			logger.error("Error en " + e.getMessage() , e);
@@ -250,7 +260,82 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
-	private void generateCode() throws ServiceException {
+	private void generateCode(User user) throws ServiceException {
+		System.out.println("Crear Codigo");
+		// Crear Codigo, Guardar y Enviar
+		try {
+			Random rand = new Random();
+			Integer code = rand.nextInt(999999 + 1);
 
+			GeneratedCode gC = new GeneratedCode();
+			gC.setUser(user);
+			gC.setCode(code);
+			gC.setCreateDate(new Date());
+			gC.setActive(1);
+			System.out.println("Guardar Codigo");
+			generatedCodeDAO.save(gC);
+			
+			System.out.println("Enviar Codigo");
+			sendCode(user, code);
+		} catch (Exception e) {
+			logger.error("Error en Generating Code " + e.getMessage(), e);
+		}
+	}
+
+	private void sendCode(User user, Integer code) {
+		System.out.println("Enviar mail.");
+		try {
+			mailSender.sendMail("fbramirezc@gmail.com", code.toString());
+		} catch (Exception e) {
+			logger.error("Error en Envio de mail. " + e.getMessage(), e);
+		}
+	}
+
+	public String verifyCode(SignUpCode request) throws ServiceException {
+		System.out.println("Verify Code.");
+		try {
+			User user = userDAO.findByMail(request.getMail());
+			System.out.println("User " + user.getId());
+			GeneratedCode gC = generatedCodeDAO.findCodeByUser(user);
+			if (gC == null) {
+				return "code not exists";
+			}
+			// Validate Code
+			if (!gC.getCode().toString().equals(request.getCode())) {
+				return "wrong code";
+			}
+			// If Code is right, then activate User and delete Code
+			activateUser(user);
+			deleteGeneratedCode(gC);
+			return "verified";
+		} catch (Exception e) {
+			logger.error("Error en Verify Code " + e.getMessage(), e);
+			throw new ServiceException("Error en Verify Code " + e.getMessage(), e);
+		}
+	}
+
+	private void activateUser(User user) throws DaoException {
+		user.setActive(1);
+		user.setUpdateDate(new Date());
+		userDAO.update(user);
+	}
+
+	private void deleteGeneratedCode(GeneratedCode gC) {
+		generatedCodeDAO.delete(gC);
+	}
+
+	public String generateCode(SignUpCode request) throws ServiceException {
+		try {
+			User user = userDAO.findByMail(request.getMail());
+			GeneratedCode gC = generatedCodeDAO.findCodeByUser(user);
+			if (gC != null) {
+				deleteGeneratedCode(gC);
+			}
+			generateCode(user);
+			return "code generated";
+		} catch (Exception e) {
+			logger.error("Error en Generate Code " + e.getMessage(), e);
+			throw new ServiceException("Error en Generate Code " + e.getMessage(), e);
+		}
 	}
 }

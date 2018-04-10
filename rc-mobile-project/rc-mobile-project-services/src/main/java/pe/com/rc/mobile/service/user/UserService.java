@@ -6,6 +6,7 @@ import pe.com.rc.mobile.core.exception.ServiceException;
 import pe.com.rc.mobile.model.clan.UserReqRes.AcceptClanRequest;
 import pe.com.rc.mobile.model.clan.UserReqRes.InvitationsToTeamRequest;
 import pe.com.rc.mobile.model.clan.UserReqRes.InvitationsToTeamResponse;
+import pe.com.rc.mobile.model.clan.UserReqRes.SignUpCode;
 import pe.com.rc.mobile.model.clan.UserReqRes.SignUpRequest;
 import pe.com.rc.mobile.model.clan.UserReqRes.UserByMailResp;
 
@@ -20,4 +21,8 @@ public interface UserService {
 	UserByMailResp syncSteamUser(Long userId, String steamId) throws ServiceException;
 
 	String signUp(SignUpRequest request) throws ServiceException;
+
+	String verifyCode(SignUpCode request) throws ServiceException;
+
+	String generateCode(SignUpCode request) throws ServiceException;
 }
