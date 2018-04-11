@@ -283,7 +283,7 @@ public class UserServiceImpl implements UserService {
 
 	private void sendCode(User user, Integer code) {
 		try {
-			mailSender.sendMail("fbramirezc@gmail.com", code.toString());
+			mailSender.sendMail(user.getMail(), code.toString());
 		} catch (Exception e) {
 			logger.error("Error en Envio de mail. " + e.getMessage(), e);
 		}
