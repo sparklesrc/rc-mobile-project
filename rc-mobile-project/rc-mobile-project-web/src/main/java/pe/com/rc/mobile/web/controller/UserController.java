@@ -77,6 +77,6 @@ public class UserController {
 	// GENERE VERIFY CODE
 	@RequestMapping(value = "/user/generateCode", method = RequestMethod.POST, produces = { "application/json" })
 	public GenericResponse generateCode(@RequestBody SignUpCode request) throws ServiceException {
-		return new GenericResponse(null);
+		return new GenericResponse(userService.generateCode(request));
 	}
 }

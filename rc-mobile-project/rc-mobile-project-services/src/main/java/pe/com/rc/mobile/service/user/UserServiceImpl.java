@@ -10,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import pe.com.rc.mobile.core.exception.DaoException;
 import pe.com.rc.mobile.core.exception.ServiceException;
 import pe.com.rc.mobile.dao.ClanDAO;
@@ -261,7 +263,6 @@ public class UserServiceImpl implements UserService {
 	}
 
 	private void generateCode(User user) throws ServiceException {
-		System.out.println("Crear Codigo");
 		// Crear Codigo, Guardar y Enviar
 		try {
 			Random rand = new Random();
@@ -272,10 +273,8 @@ public class UserServiceImpl implements UserService {
 			gC.setCode(code);
 			gC.setCreateDate(new Date());
 			gC.setActive(1);
-			System.out.println("Guardar Codigo");
 			generatedCodeDAO.save(gC);
 			
-			System.out.println("Enviar Codigo");
 			sendCode(user, code);
 		} catch (Exception e) {
 			logger.error("Error en Generating Code " + e.getMessage(), e);
@@ -283,7 +282,6 @@ public class UserServiceImpl implements UserService {
 	}
 
 	private void sendCode(User user, Integer code) {
-		System.out.println("Enviar mail.");
 		try {
 			mailSender.sendMail("fbramirezc@gmail.com", code.toString());
 		} catch (Exception e) {
@@ -291,11 +289,10 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
+	@Transactional
 	public String verifyCode(SignUpCode request) throws ServiceException {
-		System.out.println("Verify Code.");
 		try {
 			User user = userDAO.findByMail(request.getMail());
-			System.out.println("User " + user.getId());
 			GeneratedCode gC = generatedCodeDAO.findCodeByUser(user);
 			if (gC == null) {
 				return "code not exists";
@@ -324,6 +321,7 @@ public class UserServiceImpl implements UserService {
 		generatedCodeDAO.delete(gC);
 	}
 
+	@Transactional
 	public String generateCode(SignUpCode request) throws ServiceException {
 		try {
 			User user = userDAO.findByMail(request.getMail());

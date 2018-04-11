@@ -10,4 +10,5 @@ public class BaseHibernateDAO extends HibernateDaoSupport {
 	public void initSession(SessionFactory sessionFactory) {
 		setSessionFactory(sessionFactory);
 	}
+
 }
