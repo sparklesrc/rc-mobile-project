@@ -34,7 +34,7 @@ public class UserDAOH extends BaseHibernateDAO implements UserDAO {
 	}
 
 	public void update(User t) {
-		this.getSession().saveOrUpdate(t);
+		this.getSession().merge(t);
 	}
 
 	public void delete(User t) {
