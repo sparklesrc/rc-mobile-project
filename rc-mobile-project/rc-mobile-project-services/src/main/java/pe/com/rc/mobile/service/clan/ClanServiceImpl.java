@@ -359,6 +359,29 @@ public class ClanServiceImpl implements ClanService {
 	}
 
 	public List<SearchRecruitResult> listRecruitResult(SearchRecruit request) throws ServiceException {
+		List<User> users = null;
+		try {
+			users = userDAO.searchByCriteria(request);
+		} catch (DaoException e) {
+			System.out.println("ERROR");
+		}
+		return prepareResponse(users);
+	}
+
+	private List<SearchRecruitResult> prepareResponse(List<User> users) {
+		if (users != null && !users.isEmpty()) {
+			List<SearchRecruitResult> result = new ArrayList();
+			for (User user : users) {
+				SearchRecruitResult r = new SearchRecruitResult();
+				r.setEdad(user.getEdad());
+				r.setId(user.getId().intValue());
+				r.setMail(user.getMail());
+				r.setPais(user.getPais());
+
+				result.add(r);
+			}
+			return result;
+		}
 		return null;
 	}
 }

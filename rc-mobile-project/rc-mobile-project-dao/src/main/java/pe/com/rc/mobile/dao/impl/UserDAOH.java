@@ -12,6 +12,7 @@ import pe.com.rc.mobile.core.exception.DaoException;
 import pe.com.rc.mobile.dao.UserDAO;
 import pe.com.rc.mobile.dao.helper.BaseHibernateDAO;
 import pe.com.rc.mobile.model.User;
+import pe.com.rc.mobile.model.clan.TeamSearch.SearchRecruit;
 
 @Repository
 public class UserDAOH extends BaseHibernateDAO implements UserDAO {
@@ -77,5 +78,25 @@ public class UserDAOH extends BaseHibernateDAO implements UserDAO {
 		} catch (Exception e) {
 			throw new DaoException("Error al obtener el usuario por mail." + mail);
 		}
+	}
+
+	public List<User> searchByCriteria(SearchRecruit request) throws DaoException {
+		Criteria criteria = this.getSession().createCriteria(User.class);
+		criteria.add(Restrictions.eq("active", 1));
+		// email absolute search
+		if (request.getEmail() != null) {
+			criteria.add(Restrictions.eq("mail", request.getEmail()));
+			return criteria.list();
+		}
+		if (request.getEdad() != null) {
+			criteria.add(Restrictions.eq("edad", request.getEdad()));
+		}
+		if (request.getPais() != null) {
+			criteria.add(Restrictions.eq("pais", request.getPais()));
+		}
+		// NickName look in user_game_profile
+		// Rol look in user_game_profile
+		// Estado look user not exists on clan_members 
+		return criteria.list();
 	}
 }
