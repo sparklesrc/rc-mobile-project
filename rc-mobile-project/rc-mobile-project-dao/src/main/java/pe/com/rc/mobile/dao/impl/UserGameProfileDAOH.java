@@ -1,9 +1,9 @@
 package pe.com.rc.mobile.dao.impl;
 
 import java.util.List;
-
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
-
 import pe.com.rc.mobile.core.exception.DaoException;
 import pe.com.rc.mobile.dao.UserGameProfileDAO;
 import pe.com.rc.mobile.dao.helper.BaseHibernateDAO;
@@ -34,6 +34,14 @@ public class UserGameProfileDAOH extends BaseHibernateDAO implements UserGamePro
 	public void delete(UserGameProfile t) {
 		// TODO Auto-generated method stub
 
+	}
+
+	public UserGameProfile findByUserIdAndGameId(Long userId, Long gameId) throws DaoException {
+		Criteria criteria = this.getSession().createCriteria(UserGameProfile.class);
+		criteria.add(Restrictions.eq("user.id", userId))
+				.add(Restrictions.eq("game.id", gameId))
+				.add(Restrictions.eq("active", 1));
+		return (UserGameProfile) criteria.uniqueResult();
 	}
 
 }

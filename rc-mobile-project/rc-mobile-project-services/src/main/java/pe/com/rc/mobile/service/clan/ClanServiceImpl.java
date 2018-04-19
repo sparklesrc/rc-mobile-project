@@ -2,7 +2,9 @@ package pe.com.rc.mobile.service.clan;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -20,6 +22,8 @@ import pe.com.rc.mobile.dao.SolicitudeDAO;
 import pe.com.rc.mobile.dao.SolicitudeTypeDAO;
 import pe.com.rc.mobile.dao.StateDAO;
 import pe.com.rc.mobile.dao.UserDAO;
+import pe.com.rc.mobile.dao.UserGameProfileDAO;
+import pe.com.rc.mobile.dao.impl.UserGameProfileDAOH;
 import pe.com.rc.mobile.model.ClanComments;
 import pe.com.rc.mobile.model.ClanMembers;
 import pe.com.rc.mobile.model.Game;
@@ -28,6 +32,7 @@ import pe.com.rc.mobile.model.Solicitude;
 import pe.com.rc.mobile.model.SolicitudeType;
 import pe.com.rc.mobile.model.State;
 import pe.com.rc.mobile.model.User;
+import pe.com.rc.mobile.model.UserGameProfile;
 import pe.com.rc.mobile.model.clan.BuildClanRequest;
 import pe.com.rc.mobile.model.clan.Clan;
 import pe.com.rc.mobile.model.clan.ClanMembersResponse;
@@ -68,6 +73,8 @@ public class ClanServiceImpl implements ClanService {
 	private StateDAO stateDAO;
 	@Autowired
 	private ClanCommentsDAO clanCommentsDAO;
+	@Autowired
+	private UserGameProfileDAO userGameProfileDAO;
 
 	private static final Logger logger = LoggerFactory.getLogger(ClanServiceImpl.class);
 
@@ -360,28 +367,43 @@ public class ClanServiceImpl implements ClanService {
 
 	public List<SearchRecruitResult> listRecruitResult(SearchRecruit request) throws ServiceException {
 		List<User> users = null;
+		Map<Long, Map<String, String>> details = new HashMap<Long, Map<String,String>>();
 		try {
 			users = userDAO.searchByCriteria(request);
+			// if users exists search NickName and Roles
+			for (User user : users) {
+				UserGameProfile ugp = userGameProfileDAO.findByUserIdAndGameId(user.getId(),
+						request.getGameId().longValue());
+				if (ugp != null) {
+					Map<String, String> values = new HashMap<String, String>();
+					values.put("nickName", ugp.getNickname());
+					values.put("roles", ugp.getRoles());
+					details.put(ugp.getUser().getId(), values);
+				}
+			}
 		} catch (DaoException e) {
 			System.out.println("ERROR");
 		}
-		return prepareResponse(users);
+		return prepareResponse(users, details, request.getGameId());
 	}
 
-	private List<SearchRecruitResult> prepareResponse(List<User> users) {
-		if (users != null && !users.isEmpty()) {
-			List<SearchRecruitResult> result = new ArrayList();
-			for (User user : users) {
-				SearchRecruitResult r = new SearchRecruitResult();
-				r.setEdad(user.getEdad());
-				r.setId(user.getId().intValue());
-				r.setMail(user.getMail());
-				r.setPais(user.getPais());
-
-				result.add(r);
+	private List<SearchRecruitResult> prepareResponse(List<User> users, Map<Long, Map<String, String>> details, Integer gameId) {
+		List<SearchRecruitResult> result = new ArrayList();
+		for (User user : users) {
+			SearchRecruitResult r = new SearchRecruitResult();
+			r.setEdad(user.getEdad());
+			r.setId(user.getId().intValue());
+			r.setMail(user.getMail());
+			r.setPais(user.getPais());
+			r.setGameId(gameId);
+			// Nickname and Roles
+			Map<String, String> gameProfile = details.get(user.getId());
+			if (gameProfile != null) {
+				r.setNickName(gameProfile.get("nickName"));
+				r.setRoles(gameProfile.get("roles"));
 			}
-			return result;
+			result.add(r);
 		}
-		return null;
+		return result;
 	}
 }

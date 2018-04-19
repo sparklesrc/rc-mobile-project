@@ -4,14 +4,19 @@ import java.util.Date;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Subqueries;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import pe.com.rc.mobile.core.exception.DaoException;
 import pe.com.rc.mobile.dao.UserDAO;
 import pe.com.rc.mobile.dao.helper.BaseHibernateDAO;
+import pe.com.rc.mobile.model.ClanMembers;
 import pe.com.rc.mobile.model.User;
+import pe.com.rc.mobile.model.UserGameProfile;
 import pe.com.rc.mobile.model.clan.TeamSearch.SearchRecruit;
 
 @Repository
@@ -82,6 +87,8 @@ public class UserDAOH extends BaseHibernateDAO implements UserDAO {
 
 	public List<User> searchByCriteria(SearchRecruit request) throws DaoException {
 		Criteria criteria = this.getSession().createCriteria(User.class);
+		DetachedCriteria sizeCriteria = DetachedCriteria.forClass(ClanMembers.class, "clanMembers");
+		DetachedCriteria sizeCriteria2 = DetachedCriteria.forClass(UserGameProfile.class, "userGameProfile");
 		criteria.add(Restrictions.eq("active", 1));
 		// email absolute search
 		if (request.getEmail() != null) {
@@ -95,8 +102,28 @@ public class UserDAOH extends BaseHibernateDAO implements UserDAO {
 			criteria.add(Restrictions.eq("pais", request.getPais()));
 		}
 		// NickName look in user_game_profile
+		if (request.getNickName() != null) {
+			sizeCriteria2.add(Restrictions.eq("userGameProfile.nickname", request.getNickName()));
+			sizeCriteria2.setProjection(Projections.property("userGameProfile.user.id"));
+			criteria.add(Subqueries.propertyEq("id", sizeCriteria2));
+		}
 		// Rol look in user_game_profile
+		if (request.getRol() != null) {
+			String userRoles = "";
+			for (String rol : request.getRol()) {
+				userRoles += rol.concat(", ");
+			}
+			sizeCriteria2.add(Restrictions.eq("userGameProfile.roles", userRoles));
+			sizeCriteria2.setProjection(Projections.property("userGameProfile.user.id"));
+			criteria.add(Subqueries.propertyEq("id", sizeCriteria2));
+		}
 		// Estado look user not exists on clan_members 
+		if (request.getEstado() != null && request.getEstado() == 1) {
+			criteria.add(Subqueries.notExists(sizeCriteria.setProjection(Projections.property("clanMembers.primaryKey.user.id"))));
+		}
+		if (request.getEstado() != null && request.getEstado() == 2) {
+			criteria.add(Subqueries.exists(sizeCriteria.setProjection(Projections.property("clanMembers.primaryKey.user.id"))));
+		}
 		return criteria.list();
 	}
 }
