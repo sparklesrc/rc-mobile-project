@@ -275,3 +275,8 @@ CREATE TABLE generated_codes (
     PRIMARY KEY (`id`),
 	CONSTRAINT `generated_codes_fk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
 );
+
+
+ALTER TABLE user_game_profile ADD COLUMN roles VARCHAR(20) NULL;
+
+UPDATE user_game_profile set roles = '3, 5,';
