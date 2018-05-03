@@ -161,8 +161,18 @@ public class UserReqRes {
 		private String mail;
 		private String password;
 		private String rol;
+		private String pais;
+		private Integer edad;
 		private boolean isUserSyncWithSteam;
 		private List<UserTeams> userTeams;
+
+		public Integer getEdad() {
+			return edad;
+		}
+
+		public void setEdad(Integer edad) {
+			this.edad = edad;
+		}
 
 		public Long getUserId() {
 			return userId;
@@ -218,6 +228,14 @@ public class UserReqRes {
 
 		public void setUserTeams(List<UserTeams> userTeams) {
 			this.userTeams = userTeams;
+		}
+
+		public String getPais() {
+			return pais;
+		}
+
+		public void setPais(String pais) {
+			this.pais = pais;
 		}
 
 	}

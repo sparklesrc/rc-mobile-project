@@ -186,6 +186,8 @@ public class UserServiceImpl implements UserService {
 		resp.setSteamId(user.getSteamId() == null ? "" : user.getSteamId().toString());
 		resp.setUserTeams(userTeams);
 		resp.setUserSyncWithSteam(user.getSteamId() != null && !"".equals(user.getSteamId().toString()));
+		resp.setEdad(user.getEdad());
+		resp.setPais(user.getPais());
 		return resp;
 	}
 
