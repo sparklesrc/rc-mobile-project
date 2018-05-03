@@ -5,13 +5,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import pe.com.rc.mobile.core.exception.DaoException;
 import pe.com.rc.mobile.core.exception.ServiceException;
 import pe.com.rc.mobile.dao.ClanDAO;
@@ -41,6 +39,7 @@ import pe.com.rc.mobile.model.clan.UserReqRes.SignUpCode;
 import pe.com.rc.mobile.model.clan.UserReqRes.SignUpGameProfile;
 import pe.com.rc.mobile.model.clan.UserReqRes.SignUpRequest;
 import pe.com.rc.mobile.model.clan.UserReqRes.UserByMailResp;
+import pe.com.rc.mobile.model.clan.UserReqRes.UserGame;
 import pe.com.rc.mobile.model.clan.UserReqRes.UserTeams;
 import pe.com.rc.mobile.service.clan.ClanServiceImpl;
 import pe.com.rc.mobile.service.mail.MailSenderService;
@@ -333,6 +332,29 @@ public class UserServiceImpl implements UserService {
 			}
 			generateCode(user);
 			return "code generated";
+		} catch (Exception e) {
+			logger.error("Error en Generate Code " + e.getMessage(), e);
+			throw new ServiceException("Error en Generate Code " + e.getMessage(), e);
+		}
+	}
+
+	public SignUpGameProfile getGameProfile(UserGame request) throws ServiceException {
+		try {
+			UserGameProfile ugP = userGameProfileDAO.findByUserIdAndGameId(request.getUserId(), request.getGameId());
+			if (ugP != null) {
+				SignUpGameProfile gameProfile = new SignUpGameProfile();
+				gameProfile.setCelular(ugP.getCelular());
+				gameProfile.setDescription(ugP.getDescription());
+				gameProfile.setGameId(ugP.getGame().getId().intValue());
+				gameProfile.setNickname(ugP.getNickname());
+				String[] roles = null;
+				if(ugP.getRoles() !=null && !"".equals(ugP.getRoles())) {
+					roles = ugP.getRoles().split(", ");
+				}
+				gameProfile.setRoles(roles);
+				return gameProfile;
+			}
+			return null;
 		} catch (Exception e) {
 			logger.error("Error en Generate Code " + e.getMessage(), e);
 			throw new ServiceException("Error en Generate Code " + e.getMessage(), e);

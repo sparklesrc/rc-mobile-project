@@ -14,10 +14,12 @@ import pe.com.rc.mobile.model.clan.UserReqRes.GenericResponse;
 import pe.com.rc.mobile.model.clan.UserReqRes.InvitationsToTeamRequest;
 import pe.com.rc.mobile.model.clan.UserReqRes.InvitationsToTeamResponse;
 import pe.com.rc.mobile.model.clan.UserReqRes.SignUpCode;
+import pe.com.rc.mobile.model.clan.UserReqRes.SignUpGameProfile;
 import pe.com.rc.mobile.model.clan.UserReqRes.SignUpRequest;
 import pe.com.rc.mobile.model.clan.UserReqRes.SyncSteamUser;
 import pe.com.rc.mobile.model.clan.UserReqRes.UserByMailReq;
 import pe.com.rc.mobile.model.clan.UserReqRes.UserByMailResp;
+import pe.com.rc.mobile.model.clan.UserReqRes.UserGame;
 import pe.com.rc.mobile.service.user.UserService;
 import pe.com.rc.mobile.web.util.Constants;
 
@@ -78,5 +80,11 @@ public class UserController {
 	@RequestMapping(value = "/user/generateCode", method = RequestMethod.POST, produces = { "application/json" })
 	public GenericResponse generateCode(@RequestBody SignUpCode request) throws ServiceException {
 		return new GenericResponse(userService.generateCode(request));
+	}
+
+	// GAME PROFILE BY MAIL AND GAME
+	@RequestMapping(value = "/user/findUserGameProfile", method = RequestMethod.POST, produces = { "application/json" })
+	public SignUpGameProfile findUserGameProfile(@RequestBody UserGame request) throws ServiceException {
+		return userService.getGameProfile(request);
 	}
 }
