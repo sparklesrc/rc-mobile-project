@@ -27,8 +27,7 @@ public class UserGameProfileDAOH extends BaseHibernateDAO implements UserGamePro
 	}
 
 	public void update(UserGameProfile t) throws DaoException {
-		// TODO Auto-generated method stub
-
+		this.getSession().merge(t);
 	}
 
 	public void delete(UserGameProfile t) {

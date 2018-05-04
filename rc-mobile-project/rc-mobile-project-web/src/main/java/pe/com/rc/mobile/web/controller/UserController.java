@@ -87,4 +87,10 @@ public class UserController {
 	public SignUpGameProfile findUserGameProfile(@RequestBody UserGame request) throws ServiceException {
 		return userService.getGameProfile(request);
 	}
+
+	// GAME PROFILE BY MAIL AND GAME
+	@RequestMapping(value = "/user/updateUserGameProfile", method = RequestMethod.POST, produces = { "application/json" })
+	public GenericResponse updateUserGameProfile(@RequestBody SignUpGameProfile request) throws ServiceException {
+		return new GenericResponse(userService.updateGameProfile(request));
+	}
 }

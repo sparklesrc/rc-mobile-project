@@ -28,4 +28,6 @@ public interface UserService {
 	String generateCode(SignUpCode request) throws ServiceException;
 
 	SignUpGameProfile getGameProfile(UserGame request) throws ServiceException;
+
+	String updateGameProfile(SignUpGameProfile request) throws ServiceException;
 }

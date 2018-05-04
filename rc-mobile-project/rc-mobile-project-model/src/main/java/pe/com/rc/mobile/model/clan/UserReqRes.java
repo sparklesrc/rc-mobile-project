@@ -345,6 +345,15 @@ public class UserReqRes {
 		private String celular;
 		private String description;
 		private String[] roles;
+		private Long userId;
+
+		public Long getUserId() {
+			return userId;
+		}
+
+		public void setUserId(Long userId) {
+			this.userId = userId;
+		}
 
 		public Integer getGameId() {
 			return gameId;

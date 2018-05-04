@@ -360,4 +360,28 @@ public class UserServiceImpl implements UserService {
 			throw new ServiceException("Error en Generate Code " + e.getMessage(), e);
 		}
 	}
+
+	@Transactional
+	public String updateGameProfile(SignUpGameProfile request) throws ServiceException {
+		try {
+			if (request != null) {
+				UserGameProfile ugP = userGameProfileDAO.findByUserIdAndGameId(request.getUserId(), request.getGameId().longValue());
+				ugP.setCelular(request.getCelular());
+				String userRoles = "";
+				for(String rol : request.getRoles()) {
+					userRoles += rol.concat(", ");
+				}
+				ugP.setRoles(userRoles);
+				ugP.setNickname(request.getNickname());
+				ugP.setDescription(request.getDescription());
+				ugP.setUpdateDate(new Date());
+				userGameProfileDAO.update(ugP);
+				return "ok";
+			}
+			return "error";
+		} catch (Exception e) {
+			logger.error("Error en Update Game Profile " + e.getMessage(), e);
+			throw new ServiceException("Error en Update Game Profile " + e.getMessage(), e);
+		}
+	}
 }
