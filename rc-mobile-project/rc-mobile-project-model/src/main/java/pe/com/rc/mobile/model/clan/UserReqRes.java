@@ -164,7 +164,7 @@ public class UserReqRes {
 		private String pais;
 		private Integer edad;
 		private boolean isUserSyncWithSteam;
-		private List<UserTeams> userTeams;
+		private List<Object> userTeams;
 
 		public Integer getEdad() {
 			return edad;
@@ -222,11 +222,11 @@ public class UserReqRes {
 			this.rol = rol;
 		}
 
-		public List<UserTeams> getUserTeams() {
+		public List<Object> getUserTeams() {
 			return userTeams;
 		}
 
-		public void setUserTeams(List<UserTeams> userTeams) {
+		public void setUserTeams(List<Object> userTeams) {
 			this.userTeams = userTeams;
 		}
 

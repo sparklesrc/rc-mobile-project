@@ -544,6 +544,24 @@ public class TeamSearch {
 		private String pais;
 		private String roles;
 		private Integer gameId;
+		private String clan;
+		private String memberType;
+
+		public String getClan() {
+			return clan;
+		}
+
+		public void setClan(String clan) {
+			this.clan = clan;
+		}
+
+		public String getMemberType() {
+			return memberType;
+		}
+
+		public void setMemberType(String memberType) {
+			this.memberType = memberType;
+		}
 
 		public Integer getId() {
 			return id;

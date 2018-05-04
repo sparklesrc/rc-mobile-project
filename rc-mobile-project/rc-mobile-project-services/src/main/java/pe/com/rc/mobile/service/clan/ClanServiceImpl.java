@@ -3,6 +3,7 @@ package pe.com.rc.mobile.service.clan;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -52,6 +53,7 @@ import pe.com.rc.mobile.model.clan.TeamSearch.TeamDeleteRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.TeamMembers;
 import pe.com.rc.mobile.model.clan.TeamSearch.TeamSearchRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.TeamSearchResponse;
+import pe.com.rc.mobile.model.clan.UserReqRes.UserTeams;
 import pe.com.rc.mobile.service.mail.MailComponent;
 
 @Service
@@ -374,12 +376,30 @@ public class ClanServiceImpl implements ClanService {
 			for (User user : users) {
 				UserGameProfile ugp = userGameProfileDAO.findByUserIdAndGameId(user.getId(),
 						request.getGameId().longValue());
+				List<Object> result = clanDAO.getTeamsByUser(user.getId());
+				Map<String, String> values = new HashMap<String, String>();
 				if (ugp != null) {
-					Map<String, String> values = new HashMap<String, String>();
 					values.put("nickName", ugp.getNickname());
 					values.put("roles", ugp.getRoles());
-					details.put(ugp.getUser().getId(), values);
 				}
+
+				Long clanId = null;
+				Long memberTypeId = null;
+				Iterator itr = result.iterator();
+				while(itr.hasNext()){
+				   Object[] obj = (Object[]) itr.next();
+				   Long gameId = Long.parseLong(String.valueOf(obj[0]));
+				   if(gameId.equals(request.getGameId().longValue())) {
+					   clanId = Long.parseLong(String.valueOf(obj[1])); 
+					   memberTypeId = Long.parseLong(String.valueOf(obj[2]));
+				   }
+				}
+				
+				if(clanId != null && memberTypeId != null) {
+					values.put("clan" , clanDAO.find(new Clan(clanId)).getName());
+					values.put("typeMember", memberTypeDAO.find(new MemberType(memberTypeId)).getDescription());
+				}
+				details.put(user.getId(), values);
 			}
 		} catch (DaoException e) {
 			System.out.println("ERROR");
@@ -401,6 +421,8 @@ public class ClanServiceImpl implements ClanService {
 			if (gameProfile != null) {
 				r.setNickName(gameProfile.get("nickName"));
 				r.setRoles(gameProfile.get("roles"));
+				r.setClan(gameProfile.get("clan"));
+				r.setMemberType(gameProfile.get("typeMember"));
 			}
 			result.add(r);
 		}

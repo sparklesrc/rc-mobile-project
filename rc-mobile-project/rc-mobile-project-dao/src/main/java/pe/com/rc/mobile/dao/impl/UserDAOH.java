@@ -6,6 +6,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.slf4j.Logger;
@@ -86,7 +87,7 @@ public class UserDAOH extends BaseHibernateDAO implements UserDAO {
 	}
 
 	public List<User> searchByCriteria(SearchRecruit request) throws DaoException {
-		Criteria criteria = this.getSession().createCriteria(User.class);
+		Criteria criteria = this.getSession().createCriteria(User.class, "user");
 		DetachedCriteria sizeCriteria = DetachedCriteria.forClass(ClanMembers.class, "clanMembers");
 		DetachedCriteria sizeCriteria2 = DetachedCriteria.forClass(UserGameProfile.class, "userGameProfile");
 		criteria.add(Restrictions.eq("active", 1));
@@ -119,9 +120,11 @@ public class UserDAOH extends BaseHibernateDAO implements UserDAO {
 		}
 		// Estado look user not exists on clan_members 
 		if (request.getEstado() != null && request.getEstado() == 1) {
+			sizeCriteria.add(Property.forName("clanMembers.primaryKey.user.id").eqProperty("user.id"));
 			criteria.add(Subqueries.notExists(sizeCriteria.setProjection(Projections.property("clanMembers.primaryKey.user.id"))));
 		}
 		if (request.getEstado() != null && request.getEstado() == 2) {
+			sizeCriteria.add(Property.forName("clanMembers.primaryKey.user.id").eqProperty("user.id"));
 			criteria.add(Subqueries.exists(sizeCriteria.setProjection(Projections.property("clanMembers.primaryKey.user.id"))));
 		}
 		return criteria.list();

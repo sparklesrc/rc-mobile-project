@@ -115,7 +115,7 @@ public class ClanDAOH extends BaseHibernateDAO implements ClanDAO {
 		query.executeUpdate();
 	}
 
-	public List<UserTeams> getTeamsByUser(Long userId) throws DaoException {
+	public List<Object> getTeamsByUser(Long userId) throws DaoException {
 		try {
 			Query query = getSession().createSQLQuery(
 					"select c.id as gameId, b.id as teamId, a.member_type_id as memberTypeId from clan_members a inner join clan b on a.clan_id = b.id inner join game c on b.game_id = c.id where a.user_id = :userId");

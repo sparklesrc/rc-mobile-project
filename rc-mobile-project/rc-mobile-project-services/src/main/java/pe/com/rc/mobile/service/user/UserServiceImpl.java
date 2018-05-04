@@ -165,18 +165,18 @@ public class UserServiceImpl implements UserService {
 
 	public UserByMailResp getUserByMail(String mail) throws ServiceException {
 		try {
-			List<UserTeams> userTeamDetails = null;
+			List<Object> result = null;
 			User user = userDAO.findActiveUserByMail(mail);
 			if (user != null) {
-				userTeamDetails = clanDAO.getTeamsByUser(user.getId());
+				result = clanDAO.getTeamsByUser(user.getId());
 			}
-			return prepareUser(user, userTeamDetails);
+			return prepareUser(user, result);
 		} catch (DaoException e) {
 			throw new ServiceException("Error al obtener usuario por mail." + mail);
 		}
 	}
 
-	private UserByMailResp prepareUser(User user, List<UserTeams> userTeams) {
+	private UserByMailResp prepareUser(User user, List<Object> userTeams) {
 		UserByMailResp resp = new UserByMailResp();
 		resp.setUserId(user.getId());
 		resp.setMail(user.getMail());
@@ -194,11 +194,11 @@ public class UserServiceImpl implements UserService {
 		try {
 			userDAO.updateSteamId(userId, new Long(steamId));
 			User user = userDAO.find(new User(userId));
-			List<UserTeams> userTeamDetails = null;
+			List<Object> result = null;
 			if (user != null) {
-				userTeamDetails = clanDAO.getTeamsByUser(user.getId());
+				result = clanDAO.getTeamsByUser(user.getId());
 			}
-			return prepareUser(user, userTeamDetails);
+			return prepareUser(user, result);
 		} catch (DaoException e) {
 			logger.error("Error en " + e.getMessage() , e);
 			throw new ServiceException("Error al Syncronizar Steam Account para usuario." + userId + "con SteamId " + steamId);

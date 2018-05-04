@@ -22,5 +22,5 @@ public interface ClanDAO extends GenericDAO<Clan> {
 
 	void updateMemberRole(Long memberTypeId, Long userId, Long clanId);
 
-	List<UserTeams> getTeamsByUser(Long userId) throws DaoException;
+	List<Object> getTeamsByUser(Long userId) throws DaoException;
 }
