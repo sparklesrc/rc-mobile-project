@@ -366,11 +366,24 @@ public class UserServiceImpl implements UserService {
 		try {
 			if (request != null) {
 				UserGameProfile ugP = userGameProfileDAO.findByUserIdAndGameId(request.getUserId(), request.getGameId().longValue());
-				ugP.setCelular(request.getCelular());
 				String userRoles = "";
 				for(String rol : request.getRoles()) {
 					userRoles += rol.concat(", ");
 				}
+				if (ugP == null) {
+					UserGameProfile t = new UserGameProfile();
+					t.setActive(1);
+					t.setCelular(request.getCelular());
+					t.setCreateDate(new Date());
+					t.setDescription(request.getDescription());
+					t.setGame(gameDAO.find(new Game(new Long(request.getGameId()))));
+					t.setNickname(request.getNickname());
+					t.setRoles(userRoles);
+					t.setUser(userDAO.find(new User(new Long(request.getUserId()))));
+					userGameProfileDAO.save(t);
+					return "ok";
+				}
+				ugP.setCelular(request.getCelular());
 				ugP.setRoles(userRoles);
 				ugP.setNickname(request.getNickname());
 				ugP.setDescription(request.getDescription());
