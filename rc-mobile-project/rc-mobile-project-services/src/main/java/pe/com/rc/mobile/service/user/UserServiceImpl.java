@@ -166,7 +166,7 @@ public class UserServiceImpl implements UserService {
 	public UserByMailResp getUserByMail(String mail) throws ServiceException {
 		try {
 			List<Object> result = null;
-			User user = userDAO.findActiveUserByMail(mail);
+			User user = userDAO.findByMail(mail);
 			if (user != null) {
 				result = clanDAO.getTeamsByUser(user.getId());
 			}
@@ -178,15 +178,22 @@ public class UserServiceImpl implements UserService {
 
 	private UserByMailResp prepareUser(User user, List<Object> userTeams) {
 		UserByMailResp resp = new UserByMailResp();
-		resp.setUserId(user.getId());
-		resp.setMail(user.getMail());
-		resp.setPassword(user.getPassword());
-		resp.setRol(user.getRol().getDescription());
-		resp.setSteamId(user.getSteamId() == null ? "" : user.getSteamId().toString());
-		resp.setUserTeams(userTeams);
-		resp.setUserSyncWithSteam(user.getSteamId() != null && !"".equals(user.getSteamId().toString()));
-		resp.setEdad(user.getEdad());
-		resp.setPais(user.getPais());
+		if (user != null) {
+			resp.setUserId(user.getId());
+			resp.setMail(user.getMail());
+			resp.setPassword(user.getPassword());
+			resp.setRol(user.getRol().getDescription());
+			resp.setSteamId(user.getSteamId() == null ? "" : user.getSteamId().toString());
+			resp.setUserTeams(userTeams);
+			resp.setUserSyncWithSteam(user.getSteamId() != null && !"".equals(user.getSteamId().toString()));
+			resp.setEdad(user.getEdad());
+			resp.setPais(user.getPais());
+			boolean isActive = false;
+			if (user.getActive() != null && 1 == user.getActive()) {
+				isActive = true;
+			}
+			resp.setActive(isActive);
+		}
 		return resp;
 	}
 
@@ -303,9 +310,12 @@ public class UserServiceImpl implements UserService {
 				return "wrong code";
 			}
 			// If Code is right, then activate User and delete Code
-			activateUser(user);
-			deleteGeneratedCode(gC);
-			return "verified";
+			if(gC != null) {
+				activateUser(user);
+				deleteGeneratedCode(gC);
+				return "verified";
+			}
+			return "error";
 		} catch (Exception e) {
 			logger.error("Error en Verify Code " + e.getMessage(), e);
 			throw new ServiceException("Error en Verify Code " + e.getMessage(), e);

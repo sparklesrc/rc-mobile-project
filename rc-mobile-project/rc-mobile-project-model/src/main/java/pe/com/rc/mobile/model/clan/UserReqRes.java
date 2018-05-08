@@ -165,6 +165,15 @@ public class UserReqRes {
 		private Integer edad;
 		private boolean isUserSyncWithSteam;
 		private List<Object> userTeams;
+		private boolean isActive;
+
+		public boolean isActive() {
+			return isActive;
+		}
+
+		public void setActive(boolean isActive) {
+			this.isActive = isActive;
+		}
 
 		public Integer getEdad() {
 			return edad;

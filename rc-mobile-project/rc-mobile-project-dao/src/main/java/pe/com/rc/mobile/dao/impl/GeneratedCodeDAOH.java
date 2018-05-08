@@ -47,22 +47,5 @@ public class GeneratedCodeDAOH extends BaseHibernateDAO implements GeneratedCode
 		criteria.add(Restrictions.eq("user.id", user.getId()))
 				.add(Restrictions.eq("active", 1));
 		return (GeneratedCode) criteria.uniqueResult();
-//		Query query = getSession()
-//				.createSQLQuery("select * from generated_codes where user_id = :userId and active = 1");
-//		query.setParameter("userId", user.getId());
-//		List<Object> result = (List<Object>) query.list();
-//		Iterator itr = result.iterator();
-//		GeneratedCode gc = null;
-//		while (itr.hasNext()) {
-//			Object[] obj = (Object[]) itr.next();
-//			// now you have one array of Object for each row
-//			gc = new GeneratedCode();
-//			Long id = Long.parseLong(String.valueOf(obj[0]));
-//			Integer code = Integer.parseInt(String.valueOf(obj[2]));
-//			gc.setId(id);
-//			gc.setCode(code);
-//		}
-//		return gc;
 	}
-
 }
