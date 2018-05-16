@@ -470,6 +470,7 @@ public class TeamSearch {
 	}
 
 	public static class SearchRecruit {
+		private Long userId;
 		private Integer gameId;
 		private String nickName;
 		private String email;
@@ -532,6 +533,14 @@ public class TeamSearch {
 
 		public void setEstado(Integer estado) {
 			this.estado = estado;
+		}
+
+		public Long getUserId() {
+			return userId;
+		}
+
+		public void setUserId(Long userId) {
+			this.userId = userId;
 		}
 
 	}

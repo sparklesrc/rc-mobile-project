@@ -5,6 +5,7 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
@@ -91,6 +92,7 @@ public class UserDAOH extends BaseHibernateDAO implements UserDAO {
 		DetachedCriteria sizeCriteria = DetachedCriteria.forClass(ClanMembers.class, "clanMembers");
 		DetachedCriteria sizeCriteria2 = DetachedCriteria.forClass(UserGameProfile.class, "userGameProfile");
 		criteria.add(Restrictions.eq("active", 1));
+		criteria.add(Restrictions.ne("id", request.getUserId()));
 		// email absolute search
 		if (request.getEmail() != null) {
 			criteria.add(Restrictions.eq("mail", request.getEmail()));
@@ -110,11 +112,9 @@ public class UserDAOH extends BaseHibernateDAO implements UserDAO {
 		}
 		// Rol look in user_game_profile
 		if (request.getRol() != null) {
-			String userRoles = "";
 			for (String rol : request.getRol()) {
-				userRoles += rol.concat(", ");
+				sizeCriteria2.add(Restrictions.like("userGameProfile.roles", rol, MatchMode.ANYWHERE));
 			}
-			sizeCriteria2.add(Restrictions.eq("userGameProfile.roles", userRoles));
 			sizeCriteria2.setProjection(Projections.property("userGameProfile.user.id"));
 			criteria.add(Subqueries.propertyEq("id", sizeCriteria2));
 		}
