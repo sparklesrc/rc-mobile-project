@@ -29,7 +29,7 @@ public interface ClanService {
 
 	void deleteTeam(TeamDeleteRequest request);
 
-	void recruitPlayer(RecruitRequest request);
+	String recruitPlayer(RecruitRequest request) throws ServiceException;
 
 	void acceptPlayer(AcceptMemberRequest request) throws ServiceException;
 

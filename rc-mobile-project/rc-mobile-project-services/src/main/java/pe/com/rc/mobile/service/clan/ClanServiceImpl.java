@@ -55,6 +55,7 @@ import pe.com.rc.mobile.model.clan.TeamSearch.TeamSearchRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.TeamSearchResponse;
 import pe.com.rc.mobile.model.clan.UserReqRes.UserTeams;
 import pe.com.rc.mobile.service.mail.MailComponent;
+import pe.com.rc.mobile.service.mail.MailSenderService;
 
 @Service
 public class ClanServiceImpl implements ClanService {
@@ -77,6 +78,8 @@ public class ClanServiceImpl implements ClanService {
 	private ClanCommentsDAO clanCommentsDAO;
 	@Autowired
 	private UserGameProfileDAO userGameProfileDAO;
+	@Autowired
+	private MailSenderService mailSender;
 
 	private static final Logger logger = LoggerFactory.getLogger(ClanServiceImpl.class);
 
@@ -179,21 +182,29 @@ public class ClanServiceImpl implements ClanService {
 		return false;
 	}
 
-	public void recruitPlayer(RecruitRequest request) {
-		Clan clan = clanDAO.find(new Clan(request.getClanId()));
-		// VALIDAR ROOM EN EL TEAM
-		if (clan.getClanMembers().size() == 10) {
-			return;
+	public String recruitPlayer(RecruitRequest request) throws ServiceException{
+		try {
+			Clan clan = clanDAO.find(new Clan(request.getClanId()));
+			// VALIDAR ROOM EN EL TEAM
+			if (clan.getClanMembers().size() == 10) {
+				return "full";
+			}
+			// INSERT SOLICITUDE TABLE
+			Solicitude solicitude = new Solicitude();
+			solicitude.setClan(clan);
+			User candidate = userDAO.find(new User(request.getUserId()));
+			solicitude.setUser(candidate);
+			solicitude.setSolicitudeType(solicitudeTypeDAO.find(new SolicitudeType(1L))); // RECLUTAR
+			solicitude.setState(stateDAO.find(new State(1L))); // PENDIENTE
+			solicitude.setActive(1);
+			solicitude.setCreateDate(new Date());
+			solicitudeDAO.save(solicitude);
+			// NOTIFY CANDIDATE BY MAIL
+			mailSender.sendRecruitMail(candidate.getMail(), request.getDescription(), clanDAO.getLeader(clan).getMail(), clan.getName());
+			return "ok";
+		} catch (Exception e) {
+			throw new ServiceException(e.getMessage(), e);
 		}
-		// INSERT SOLICITUDE TABLE
-		Solicitude solicitude = new Solicitude();
-		solicitude.setClan(clan);
-		solicitude.setUser(userDAO.find(new User(request.getUserId())));
-		solicitude.setSolicitudeType(solicitudeTypeDAO.find(new SolicitudeType(1L))); // RECLUTAR
-		solicitude.setState(stateDAO.find(new State(1L))); // PENDIENTE
-		solicitude.setActive(1);
-		solicitude.setCreateDate(new Date());
-		solicitudeDAO.save(solicitude);
 	}
 
 	public void acceptPlayer(AcceptMemberRequest request) throws ServiceException{

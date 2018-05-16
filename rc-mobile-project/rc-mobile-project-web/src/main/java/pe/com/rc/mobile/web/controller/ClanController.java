@@ -22,6 +22,7 @@ import pe.com.rc.mobile.model.clan.TeamSearch.TeamBuildRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.TeamDeleteRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.TeamSearchRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.TeamSearchResponse;
+import pe.com.rc.mobile.model.clan.UserReqRes.GenericResponse;
 import pe.com.rc.mobile.service.clan.ClanService;
 import pe.com.rc.mobile.web.util.Constants;
 
@@ -64,8 +65,8 @@ public class ClanController {
 
 	// RECLUTAR
 	@RequestMapping(value = "/team/recruit", method = RequestMethod.POST, produces = { "application/json" })
-	public void recruit(@RequestBody RecruitRequest request) throws ServiceException {
-		clanService.recruitPlayer(request);
+	public GenericResponse recruit(@RequestBody RecruitRequest request) throws ServiceException {
+		return new GenericResponse(clanService.recruitPlayer(request));
 	}
 
 	// ACCEPT CLAN MEMBER
