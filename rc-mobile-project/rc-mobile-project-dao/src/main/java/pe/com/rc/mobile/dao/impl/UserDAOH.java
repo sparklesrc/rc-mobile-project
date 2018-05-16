@@ -106,7 +106,7 @@ public class UserDAOH extends BaseHibernateDAO implements UserDAO {
 		}
 		// NickName look in user_game_profile
 		if (request.getNickName() != null) {
-			sizeCriteria2.add(Restrictions.eq("userGameProfile.nickname", request.getNickName()));
+			sizeCriteria2.add(Restrictions.like("userGameProfile.nickname", request.getNickName(), MatchMode.ANYWHERE));
 			sizeCriteria2.setProjection(Projections.property("userGameProfile.user.id"));
 			criteria.add(Subqueries.propertyEq("id", sizeCriteria2));
 		}
