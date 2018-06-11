@@ -53,6 +53,7 @@ import pe.com.rc.mobile.model.clan.TeamSearch.TeamDeleteRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.TeamMembers;
 import pe.com.rc.mobile.model.clan.TeamSearch.TeamSearchRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.TeamSearchResponse;
+import pe.com.rc.mobile.model.clan.UserReqRes.GenericResponse;
 import pe.com.rc.mobile.model.clan.UserReqRes.UserTeams;
 import pe.com.rc.mobile.service.mail.MailComponent;
 import pe.com.rc.mobile.service.mail.MailSenderService;
@@ -137,48 +138,66 @@ public class ClanServiceImpl implements ClanService {
 		return response;
 	}
 
-	public void buildTeam(TeamBuildRequest request) {
-		Game game = gameDAO.find(new Game(request.getGameId()));
-		User user = userDAO.find(new User(request.getUserId()));
-		MemberType memberType = memberTypeDAO.find(new MemberType(1L));
+	public GenericResponse buildTeam(TeamBuildRequest request) throws ServiceException {
+		logger.info("Process - Build Team.");
+		try {
+			Game game = gameDAO.find(new Game(request.getGameId()));
+			User user = userDAO.find(new User(request.getUserId()));
+			MemberType memberType = memberTypeDAO.find(new MemberType(1L));
 
-		Clan clan = new Clan();
-		clan.setName(request.getNombre());
-		clan.setGame(game);
-		clan.setDecription(request.getDescripcion());
-		clan.setStarsNumber(0);
-		clan.setCreateDate(new Date());
-		clan.setActive(1);
+			Clan clan = new Clan();
+			clan.setName(request.getNombre());
+			clan.setGame(game);
+			clan.setDecription(request.getDescripcion());
+			clan.setStarsNumber(0);
+			clan.setCreateDate(new Date());
+			clan.setActive(1);
 
-		clanDAO.save(clan);
+			clanDAO.save(clan);
+			logger.info("Clan saved.");
 
-		ClanMembers members = new ClanMembers();
-		members.setMemberType(memberType);
-		members.setCreateDate(new Date());
-		members.setClan(clan);
-		members.setUser(user);
-		members.setActive(1);
-		clan.getClanMembers().add(members);
+			ClanMembers members = new ClanMembers();
+			members.setMemberType(memberType);
+			members.setCreateDate(new Date());
+			members.setClan(clan);
+			members.setUser(user);
+			members.setActive(1);
+			clan.getClanMembers().add(members);
 
-		clanDAO.insertMember(members);
+			clanDAO.insertMember(members);
+			logger.info("Members saved. Team created successfully.");
+			return new GenericResponse("ok");
+		} catch (Exception e) {
+			logger.error("Error trying to build Team.", e);
+		}
+		return new GenericResponse("error");
 	}
 
-	public void deleteTeam(TeamDeleteRequest request) {
-		// Validate if the user is TEAM LEADER
-		System.out.println("VALIDATE");
+	public GenericResponse deleteTeam(TeamDeleteRequest request) throws ServiceException{
+		logger.info("Process - Delete Team.");
 		if (isUserTL(request)) {
-			System.out.println("TRUE");
-			clanDAO.delete(clanDAO.find(new Clan(request.getClanId())));
+			try {
+				clanDAO.delete(clanDAO.find(new Clan(request.getClanId())));
+				logger.info("Delete Team Successfully.");
+				return new GenericResponse("ok");
+			} catch (Exception e) {
+				logger.error("Error trying to delete Team.", e);
+				return new GenericResponse("error");
+			}
+		}else {
+			return new GenericResponse("notLeader");
 		}
 	}
 
 	private boolean isUserTL(TeamDeleteRequest request) {
 		Clan clan = clanDAO.find(new Clan(request.getClanId()));
 		for (ClanMembers member : clan.getClanMembers()) {
-			if (member.getUser().getId().equals(request.getUserId()))
-				return true;
-
+			if (member.getUser().getId().equals(request.getUserId())) {
+				logger.info("User is Team Leader.");
+				return true;	
+			}
 		}
+		logger.info("User is not Leader.");
 		return false;
 	}
 

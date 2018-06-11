@@ -18,6 +18,7 @@ import pe.com.rc.mobile.model.clan.TeamSearch.TeamBuildRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.TeamDeleteRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.TeamSearchRequest;
 import pe.com.rc.mobile.model.clan.TeamSearch.TeamSearchResponse;
+import pe.com.rc.mobile.model.clan.UserReqRes.GenericResponse;
 
 public interface ClanService {
 
@@ -25,9 +26,9 @@ public interface ClanService {
 
 	TeamSearchResponse getTeam(TeamSearchRequest request);
 
-	void buildTeam(TeamBuildRequest request);
+	GenericResponse buildTeam(TeamBuildRequest request) throws ServiceException;
 
-	void deleteTeam(TeamDeleteRequest request);
+	GenericResponse deleteTeam(TeamDeleteRequest request) throws ServiceException;
 
 	String recruitPlayer(RecruitRequest request) throws ServiceException;
 

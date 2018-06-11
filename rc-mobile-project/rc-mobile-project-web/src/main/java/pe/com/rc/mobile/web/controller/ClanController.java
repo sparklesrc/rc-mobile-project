@@ -47,14 +47,14 @@ public class ClanController {
 
 	// CREAR TEAM
 	@RequestMapping(value = "/team/build", method = RequestMethod.POST, produces = { "application/json" })
-	public void buildTeam(@RequestBody TeamBuildRequest request) throws ServiceException {
-		clanService.buildTeam(request);
+	public GenericResponse buildTeam(@RequestBody TeamBuildRequest request) throws ServiceException {
+		return clanService.buildTeam(request);
 	}
 
 	// ELIMINAR CLAN
 	@RequestMapping(value = "/team/eliminar", method = RequestMethod.POST, produces = { "application/json" })
-	public void deleteTeam(@RequestBody TeamDeleteRequest request) throws ServiceException {
-		clanService.deleteTeam(request);
+	public GenericResponse deleteTeam(@RequestBody TeamDeleteRequest request) throws ServiceException {
+		return clanService.deleteTeam(request);
 	}
 
 	// POSTULAR
