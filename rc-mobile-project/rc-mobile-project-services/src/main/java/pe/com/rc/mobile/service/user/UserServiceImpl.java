@@ -164,6 +164,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	public UserByMailResp getUserByMail(String mail) throws ServiceException {
+		logger.info("Get User by Mail :: " + mail);
 		try {
 			List<Object> result = null;
 			User user = userDAO.findByMail(mail);
@@ -172,7 +173,8 @@ public class UserServiceImpl implements UserService {
 			}
 			return prepareUser(user, result);
 		} catch (DaoException e) {
-			throw new ServiceException("Error al obtener usuario por mail." + mail);
+			logger.error("Error al obtener Usuario por mail :: " + mail, e);
+			throw new ServiceException("Error al obtener usuario por mail.");
 		}
 	}
 

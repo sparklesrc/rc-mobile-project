@@ -202,6 +202,7 @@ public class ClanServiceImpl implements ClanService {
 	}
 
 	public String recruitPlayer(RecruitRequest request) throws ServiceException{
+		logger.info("Recruit Player");
 		try {
 			Clan clan = clanDAO.find(new Clan(request.getClanId()));
 			// VALIDAR ROOM EN EL TEAM
@@ -217,12 +218,14 @@ public class ClanServiceImpl implements ClanService {
 			solicitude.setState(stateDAO.find(new State(1L))); // PENDIENTE
 			solicitude.setActive(1);
 			solicitude.setCreateDate(new Date());
+			solicitude.setGame(clan.getGame());
 			solicitudeDAO.save(solicitude);
 			// NOTIFY CANDIDATE BY MAIL
 			mailSender.sendRecruitMail(candidate.getMail(), request.getDescription(), clanDAO.getLeader(clan).getMail(), clan.getName());
 			return "ok";
 		} catch (Exception e) {
-			throw new ServiceException(e.getMessage(), e);
+			logger.error("Error trying to recruit Player.",e);
+			return "error";
 		}
 	}
 

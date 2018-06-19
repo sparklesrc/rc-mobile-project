@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
-	<property name="DEV_HOME" value="F:/logs" />
+	<property name="DEV_HOME" value="D:/logs" />
 
 	<appender name="FILE-AUDIT"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<file>${DEV_HOME}/rc-project.log</file>
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
 			<Pattern>
-				%d{yyyy-MM-dd HH:mm:ss} - %msg%n
+				%d{yyyy-MM-dd HH:mm:ss} [%thread] %level %logger{35} - %msg%n
 			</Pattern>
 		</encoder>
 
