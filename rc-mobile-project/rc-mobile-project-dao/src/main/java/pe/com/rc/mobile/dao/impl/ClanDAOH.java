@@ -125,4 +125,16 @@ public class ClanDAOH extends BaseHibernateDAO implements ClanDAO {
 			return null;
 		}
 	}
+
+	public boolean userHasTeamByGameId(Long gameId, Long userId) throws DaoException {
+		int total = 0;
+		try {
+			total = ((Number) getSession().getNamedQuery("clanmembers.userHasTeamByGameId").setLong("gameId", gameId)
+					.setLong("userId", userId).uniqueResult()).intValue();
+		} catch (Exception e) {
+			logger.error("Error validating if user Has Team By Game Id [userId/gameId] : " + userId + "/" + gameId);
+			return true;
+		}
+		return total > 0;
+	}
 }

@@ -32,6 +32,7 @@ import pe.com.rc.mobile.model.State;
 import pe.com.rc.mobile.model.User;
 import pe.com.rc.mobile.model.UserGameProfile;
 import pe.com.rc.mobile.model.clan.Clan;
+import pe.com.rc.mobile.model.clan.TeamSearch.RecruitRequest;
 import pe.com.rc.mobile.model.clan.UserReqRes.AcceptClanRequest;
 import pe.com.rc.mobile.model.clan.UserReqRes.InvitationsToTeamRequest;
 import pe.com.rc.mobile.model.clan.UserReqRes.InvitationsToTeamResponse;
@@ -408,5 +409,19 @@ public class UserServiceImpl implements UserService {
 			logger.error("Error en Update Game Profile " + e.getMessage(), e);
 			throw new ServiceException("Error en Update Game Profile " + e.getMessage(), e);
 		}
+	}
+
+	@Transactional
+	public boolean userHasTeamByGameId(RecruitRequest request) throws ServiceException {
+		// By default, not allow user to join another clan
+		boolean userHasTeam = true;
+		try {
+			Clan clan = clanDAO.find(new Clan(request.getClanId()));
+			userHasTeam = clanDAO.userHasTeamByGameId(clan.getGame().getId(), request.getUserId());
+		} catch (DaoException e) {
+			logger.error("Error validating if user Has Team", e);
+			throw new ServiceException("Error validating if user Has Team", e);
+		}
+		return userHasTeam;
 	}
 }

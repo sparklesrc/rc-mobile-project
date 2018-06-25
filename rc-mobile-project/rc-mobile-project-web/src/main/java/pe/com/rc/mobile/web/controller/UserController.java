@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import pe.com.rc.mobile.core.exception.ServiceException;
+import pe.com.rc.mobile.model.clan.TeamSearch.RecruitRequest;
 import pe.com.rc.mobile.model.clan.UserReqRes.AcceptClanRequest;
 import pe.com.rc.mobile.model.clan.UserReqRes.GenericResponse;
 import pe.com.rc.mobile.model.clan.UserReqRes.InvitationsToTeamRequest;
@@ -92,5 +93,10 @@ public class UserController {
 	@RequestMapping(value = "/user/updateUserGameProfile", method = RequestMethod.POST, produces = { "application/json" })
 	public GenericResponse updateUserGameProfile(@RequestBody SignUpGameProfile request) throws ServiceException {
 		return new GenericResponse(userService.updateGameProfile(request));
+	}
+
+	@RequestMapping(value = "/user/userHasTeamByGameId", method = RequestMethod.POST, produces = { "application/json" })
+	public GenericResponse userHasTeamByGameId(@RequestBody RecruitRequest request) throws ServiceException {
+		return new GenericResponse(userService.userHasTeamByGameId(request));
 	}
 }

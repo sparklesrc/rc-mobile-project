@@ -9,6 +9,8 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -16,6 +18,8 @@ import javax.persistence.Transient;
 import pe.com.rc.mobile.model.clan.Clan;
 
 @Entity
+@NamedQueries({
+	@NamedQuery(name = "clanmembers.userHasTeamByGameId", query = "select count(*) from ClanMembers where primaryKey.user.id=:userId and primaryKey.clan.game.id=:gameId"), })
 @Table(name = "clan_members")
  @AssociationOverrides({ @AssociationOverride(name = "primaryKey.user",
  joinColumns = @JoinColumn(name = "user_id")),

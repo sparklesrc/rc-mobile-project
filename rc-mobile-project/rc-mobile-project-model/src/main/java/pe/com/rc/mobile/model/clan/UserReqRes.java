@@ -408,6 +408,20 @@ public class UserReqRes {
 
 	public static class GenericResponse {
 		private String msg;
+		private boolean state;
+
+		public GenericResponse(boolean state) {
+			this.msg = "ok";
+			this.state = state;
+		}
+
+		public boolean isState() {
+			return state;
+		}
+
+		public void setState(boolean state) {
+			this.state = state;
+		}
 
 		public GenericResponse(String msg) {
 			this.msg = msg;

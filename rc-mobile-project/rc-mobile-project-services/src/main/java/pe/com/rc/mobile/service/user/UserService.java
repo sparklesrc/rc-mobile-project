@@ -2,6 +2,7 @@ package pe.com.rc.mobile.service.user;
 
 import java.util.List;
 import pe.com.rc.mobile.core.exception.ServiceException;
+import pe.com.rc.mobile.model.clan.TeamSearch.RecruitRequest;
 import pe.com.rc.mobile.model.clan.UserReqRes.AcceptClanRequest;
 import pe.com.rc.mobile.model.clan.UserReqRes.InvitationsToTeamRequest;
 import pe.com.rc.mobile.model.clan.UserReqRes.InvitationsToTeamResponse;
@@ -30,4 +31,6 @@ public interface UserService {
 	SignUpGameProfile getGameProfile(UserGame request) throws ServiceException;
 
 	String updateGameProfile(SignUpGameProfile request) throws ServiceException;
+
+	boolean userHasTeamByGameId(RecruitRequest request) throws ServiceException;
 }

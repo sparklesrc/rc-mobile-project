@@ -202,9 +202,11 @@ public class ClanServiceImpl implements ClanService {
 	}
 
 	public String recruitPlayer(RecruitRequest request) throws ServiceException{
-		logger.info("Recruit Player");
+		logger.info("Recruit Player - ClanId : " + request.getClanId() + " UserId : " + request.getUserId());
 		try {
 			Clan clan = clanDAO.find(new Clan(request.getClanId()));
+			logger.info("Clan : " + clan.getName());
+			logger.info("ClanMembers : " + clan.getClanMembers());
 			// VALIDAR ROOM EN EL TEAM
 			if (clan.getClanMembers().size() == 10) {
 				return "full";
