@@ -12,6 +12,7 @@ import pe.com.rc.mobile.core.exception.ServiceException;
 import pe.com.rc.mobile.model.clan.TeamSearch.RecruitRequest;
 import pe.com.rc.mobile.model.clan.UserReqRes.AcceptClanRequest;
 import pe.com.rc.mobile.model.clan.UserReqRes.GenericResponse;
+import pe.com.rc.mobile.model.clan.UserReqRes.GenericResponse2;
 import pe.com.rc.mobile.model.clan.UserReqRes.InvitationsToTeamRequest;
 import pe.com.rc.mobile.model.clan.UserReqRes.InvitationsToTeamResponse;
 import pe.com.rc.mobile.model.clan.UserReqRes.SignUpCode;
@@ -41,14 +42,14 @@ public class UserController {
 
 	// LISTAR PROPUESTA DE TEAMS
 	@RequestMapping(value = "/user/invitationsTeams", method = RequestMethod.POST, produces = { "application/json" })
-	public List<InvitationsToTeamResponse> getInvitationsTeams(@RequestBody InvitationsToTeamRequest request)
+	public GenericResponse2<InvitationsToTeamResponse> getInvitationsTeams(@RequestBody InvitationsToTeamRequest request)
 			throws ServiceException {
 		return userService.getInvitationsTeams(request);
 	}
 
 	// LISTAR POSTULACIONES
 	@RequestMapping(value = "/user/postulaciones", method = RequestMethod.POST, produces = { "application/json" })
-	public List<InvitationsToTeamResponse> getPostulaciones(@RequestBody InvitationsToTeamRequest request)
+	public GenericResponse2<InvitationsToTeamResponse> getPostulaciones(@RequestBody InvitationsToTeamRequest request)
 			throws ServiceException {
 		return userService.getInvitationsTeams(request);
 	}

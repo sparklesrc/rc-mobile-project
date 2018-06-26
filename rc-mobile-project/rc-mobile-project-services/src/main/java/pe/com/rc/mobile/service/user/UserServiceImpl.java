@@ -33,7 +33,9 @@ import pe.com.rc.mobile.model.User;
 import pe.com.rc.mobile.model.UserGameProfile;
 import pe.com.rc.mobile.model.clan.Clan;
 import pe.com.rc.mobile.model.clan.TeamSearch.RecruitRequest;
+import pe.com.rc.mobile.model.clan.UserReqRes;
 import pe.com.rc.mobile.model.clan.UserReqRes.AcceptClanRequest;
+import pe.com.rc.mobile.model.clan.UserReqRes.GenericResponse2;
 import pe.com.rc.mobile.model.clan.UserReqRes.InvitationsToTeamRequest;
 import pe.com.rc.mobile.model.clan.UserReqRes.InvitationsToTeamResponse;
 import pe.com.rc.mobile.model.clan.UserReqRes.SignUpCode;
@@ -122,7 +124,7 @@ public class UserServiceImpl implements UserService {
 		return memberType;
 	}
 
-	public List<InvitationsToTeamResponse> getInvitationsTeams(InvitationsToTeamRequest request)
+	public GenericResponse2<InvitationsToTeamResponse> getInvitationsTeams(InvitationsToTeamRequest request)
 			throws ServiceException {
 		try {
 			User user = userDAO.find(new User(request.getUserId()));
@@ -136,7 +138,9 @@ public class UserServiceImpl implements UserService {
 			List<Solicitude> solicitudes = solicitudeDAO.getSolicitudesByUserAndGameAndStateAndType(user, game, state,
 					type);
 			if (solicitudes != null) {
-				return getResponse(solicitudes);
+				List<InvitationsToTeamResponse> resp = getResponse(solicitudes);
+				return new GenericResponse2(resp);
+//				return getResponse(solicitudes);
 			}
 		} catch (DaoException e) {
 			throw new ServiceException(e.getMessage(), e);

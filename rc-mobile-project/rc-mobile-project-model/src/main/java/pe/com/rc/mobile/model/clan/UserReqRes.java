@@ -436,6 +436,45 @@ public class UserReqRes {
 		}
 	}
 
+	public static class GenericResponse2<T> {
+		private String msg;
+		private boolean state;
+		private List<T> list;
+
+		public GenericResponse2() {
+		}
+
+		public GenericResponse2(List<T> lista) {
+			this.msg = "ok";
+			this.list = lista;
+		}
+
+		public String getMsg() {
+			return msg;
+		}
+
+		public void setMsg(String msg) {
+			this.msg = msg;
+		}
+
+		public boolean isState() {
+			return state;
+		}
+
+		public void setState(boolean state) {
+			this.state = state;
+		}
+
+		public List<T> getList() {
+			return list;
+		}
+
+		public void setList(List<T> list) {
+			this.list = list;
+		}
+
+	}
+
 	public static class SignUpCode {
 		private String mail;
 		private String code;
