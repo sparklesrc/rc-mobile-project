@@ -37,14 +37,15 @@ public class SolicitudeDAOH extends BaseHibernateDAO implements SolicitudeDAO {
 	}
 
 	public void update(Solicitude t) {
-		Query query = getSession()
-				.createSQLQuery(
-						"UPDATE solicitude SET state_id = :stateId, update_date = :updateDate where user_id = :userId and clan_id = :clanId");
-		query.setParameter("stateId", t.getState().getId());
-		query.setParameter("updateDate", new Date());
-		query.setParameter("userId", t.getUser().getId());
-		query.setParameter("clanId", t.getClan().getId());
-		query.executeUpdate();
+//		Query query = getSession()
+//				.createSQLQuery(
+//						"UPDATE solicitude SET state_id = :stateId, update_date = :updateDate where user_id = :userId and clan_id = :clanId");
+//		query.setParameter("stateId", t.getState().getId());
+//		query.setParameter("updateDate", new Date());
+//		query.setParameter("userId", t.getUser().getId());
+//		query.setParameter("clanId", t.getClan().getId());
+//		query.executeUpdate();
+		this.getSession().merge(t);
 	}
 
 	public void delete(Solicitude t) {
@@ -66,6 +67,17 @@ public class SolicitudeDAOH extends BaseHibernateDAO implements SolicitudeDAO {
 		Criteria criteria = this.getSession().createCriteria(Solicitude.class);
 		criteria.add(Restrictions.eq("user.id", user.getId()))
 				.add(Restrictions.eq("game.id", game.getId()))
+				.add(Restrictions.eq("state.id", state.getId()))
+				.add(Restrictions.eq("solicitudeType.id", type.getId()))
+				.add(Restrictions.eq("active", 1));
+		return criteria.list();
+	}
+
+	public List<Solicitude> getSolicitudeByUserAndClanAndStateAndType(User user, Clan clan, State state,
+			SolicitudeType type) throws DaoException {
+		Criteria criteria = this.getSession().createCriteria(Solicitude.class);
+		criteria.add(Restrictions.eq("user.id", user.getId()))
+				.add(Restrictions.eq("clan.id", clan.getId()))
 				.add(Restrictions.eq("state.id", state.getId()))
 				.add(Restrictions.eq("solicitudeType.id", type.getId()))
 				.add(Restrictions.eq("active", 1));

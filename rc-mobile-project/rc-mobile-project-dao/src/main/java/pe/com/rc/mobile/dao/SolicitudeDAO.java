@@ -13,9 +13,11 @@ import pe.com.rc.mobile.model.clan.Clan;
 
 public interface SolicitudeDAO extends GenericDAO<Solicitude> {
 
-	List<Solicitude> getSolicitudesByClanAndState(Clan clan, State state,
-			Integer active);
+	List<Solicitude> getSolicitudesByClanAndState(Clan clan, State state, Integer active);
 
-	List<Solicitude> getSolicitudesByUserAndGameAndStateAndType(User user, Game game,
-			State state, SolicitudeType type) throws DaoException;
+	List<Solicitude> getSolicitudesByUserAndGameAndStateAndType(User user, Game game, State state, SolicitudeType type)
+			throws DaoException;
+
+	List<Solicitude> getSolicitudeByUserAndClanAndStateAndType(User user, Clan clan, State state, SolicitudeType type)
+			throws DaoException;
 }

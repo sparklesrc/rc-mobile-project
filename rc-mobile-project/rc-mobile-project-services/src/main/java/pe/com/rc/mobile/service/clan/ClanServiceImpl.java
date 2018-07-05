@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import pe.com.rc.mobile.core.exception.DaoException;
 import pe.com.rc.mobile.core.exception.ServiceException;
@@ -201,29 +202,40 @@ public class ClanServiceImpl implements ClanService {
 		return false;
 	}
 
+	@Transactional
 	public String recruitPlayer(RecruitRequest request) throws ServiceException{
 		logger.info("Recruit Player - ClanId : " + request.getClanId() + " UserId : " + request.getUserId());
 		try {
 			Clan clan = clanDAO.find(new Clan(request.getClanId()));
-			logger.info("Clan : " + clan.getName());
-			logger.info("ClanMembers : " + clan.getClanMembers());
 			// VALIDAR ROOM EN EL TEAM
 			if (clan.getClanMembers().size() == 10) {
 				return "full";
 			}
-			// INSERT SOLICITUDE TABLE
-			Solicitude solicitude = new Solicitude();
-			solicitude.setClan(clan);
-			User candidate = userDAO.find(new User(request.getUserId()));
-			solicitude.setUser(candidate);
-			solicitude.setSolicitudeType(solicitudeTypeDAO.find(new SolicitudeType(1L))); // RECLUTAR
-			solicitude.setState(stateDAO.find(new State(1L))); // PENDIENTE
-			solicitude.setActive(1);
-			solicitude.setCreateDate(new Date());
-			solicitude.setGame(clan.getGame());
-			solicitudeDAO.save(solicitude);
+			// VALIDAR SI LA SOLICITUD YA EXISTE
+			User user = userDAO.find(new User(request.getUserId()));
+			State state = stateDAO.find(new State(1L));
+			SolicitudeType type = solicitudeTypeDAO.find(new SolicitudeType(1L));
+			List<Solicitude> currentSolicitudes = solicitudeDAO.getSolicitudeByUserAndClanAndStateAndType(user, clan, state, type);
+
+			if(currentSolicitudes!=null && !currentSolicitudes.isEmpty()) {
+				logger.info("Record already exists. - updating " + currentSolicitudes.size());
+				Solicitude solicitude = currentSolicitudes.get(0);
+				solicitude.setUpdateDate(new Date());
+				solicitudeDAO.update(solicitude);
+			}else {
+				logger.info("New Record - inserting");
+				Solicitude solicitude = new Solicitude();
+				solicitude.setClan(clan);
+				solicitude.setUser(user);
+				solicitude.setSolicitudeType(type); // RECLUTAR
+				solicitude.setState(state); // PENDIENTE
+				solicitude.setActive(1);
+				solicitude.setCreateDate(new Date());
+				solicitude.setGame(clan.getGame());
+				solicitudeDAO.save(solicitude);
+			}
 			// NOTIFY CANDIDATE BY MAIL
-			mailSender.sendRecruitMail(candidate.getMail(), request.getDescription(), clanDAO.getLeader(clan).getMail(), clan.getName());
+			mailSender.sendRecruitMail(user.getMail(), request.getDescription(), clanDAO.getLeader(clan).getMail(), clan.getName());
 			return "ok";
 		} catch (Exception e) {
 			logger.error("Error trying to recruit Player.",e);
@@ -231,12 +243,14 @@ public class ClanServiceImpl implements ClanService {
 		}
 	}
 
+	@Transactional
 	public void acceptPlayer(AcceptMemberRequest request) throws ServiceException{
 		try {
 			// ACTUALIZA SOLICITUDE
 			Solicitude solicitude = solicitudeDAO.find(new Solicitude(request.getSolicitudeId()));
 			// VALIDAR LOS ESTADOS
-			if (solicitude != null && (request.getState().equals(2L) || request.getState().equals(3L))) {
+			if (solicitude != null && (request.getState().equals(5L) || request.getState().equals(6L))) {
+				logger.info("Actualizando Record");
 				solicitude.setState(stateDAO.find(new State(request.getState())));
 				solicitude.setUpdateDate(new Date());
 				solicitudeDAO.update(solicitude);
